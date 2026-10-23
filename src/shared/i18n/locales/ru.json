@@ -1,11 +1,50 @@
 {
   "nav": {
-    "home": "Главная",
+    "pages": "Страницы",
     "languageSwitcher": "Язык"
+  },
+  "pages": {
+    "home": "Главная",
+    "about": "Обо мне",
+    "experience": "Опыт",
+    "projects": "Проекты",
+    "learning": "Обучение",
+    "resume": "Резюме"
+  },
+  "meta": {
+    "title": "{{page}} — {{name}}",
+    "experience": "Опыт работы: {{name}}, {{headline}}.",
+    "projects": "Проекты: {{name}}, {{headline}}.",
+    "learning": "Образование, курсы, сертификаты и книги: {{name}}, {{headline}}.",
+    "resume": "Резюме: {{name}}, {{headline}}."
   },
   "home": {
     "title": "{{name}} — {{headline}}",
-    "linksHeading": "Я в сети"
+    "contactHeading": "Контакты",
+    "more": {
+      "about": "Подробнее обо мне",
+      "experience": "Весь опыт",
+      "projects": "Все проекты",
+      "learning": "Всё обучение"
+    }
+  },
+  "learning": {
+    "kinds": {
+      "education": "Образование",
+      "course": "Курсы",
+      "certification": "Сертификаты",
+      "book": "Книги"
+    }
+  },
+  "projects": {
+    "visit": "Открыть {{name}}"
+  },
+  "resume": {
+    "placeholder": "Резюме скоро появится здесь."
+  },
+  "period": {
+    "present": "по настоящее время",
+    "months": ["янв.", "февр.", "март", "апр.", "май", "июнь", "июль", "авг.", "сент.", "окт.", "нояб.", "дек."]
   },
   "notFound": {
     "title": "Страница не найдена",

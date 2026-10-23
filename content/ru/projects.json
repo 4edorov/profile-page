@@ -1,0 +1,18 @@
+[
+  {
+    "id": "profile-site",
+    "featured": true,
+    "name": "Сайт-профиль",
+    "url": "https://github.com/4edorov/profile-page",
+    "summary": "Этот сайт: предварительно отрендеренное SPA на React Router на двух языках.",
+    "details": ["Временная подробность о проекте."]
+  },
+  {
+    "id": "placeholder-project",
+    "featured": false,
+    "name": "Временный проект",
+    "url": null,
+    "summary": "Временное описание проекта.",
+    "details": ["Временная подробность о проекте."]
+  }
+]

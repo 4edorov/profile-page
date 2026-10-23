@@ -1,0 +1,22 @@
+[
+  {
+    "id": "previous-job",
+    "featured": false,
+    "role": "Placeholder role",
+    "organisation": "Previous Company",
+    "start": "2019-03",
+    "end": "2022-08",
+    "summary": "Placeholder summary of the previous job.",
+    "details": ["Placeholder achievement.", "Another placeholder achievement."]
+  },
+  {
+    "id": "current-job",
+    "featured": true,
+    "role": "Placeholder role",
+    "organisation": "Current Company",
+    "start": "2022-09",
+    "end": null,
+    "summary": "Placeholder summary of the current job.",
+    "details": ["Placeholder achievement.", "Another placeholder achievement."]
+  }
+]
