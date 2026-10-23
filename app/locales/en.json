@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "home": "Home",
+    "languageSwitcher": "Language"
+  },
+  "home": {
+    "title": "{{name}} — {{headline}}",
+    "linksHeading": "Find me online"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "The page you are looking for does not exist.",
+    "backHome": "Go to the home page"
+  }
+}
