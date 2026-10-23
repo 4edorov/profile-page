@@ -1,5 +1,6 @@
-import { LANGUAGES } from "../languages";
-import { absoluteUrl, PAGES, pagePath } from "../pages";
+import { LANGUAGES } from "@/shared/i18n";
+import { absoluteUrl, pagePath } from "@/shared/routing";
+import { PAGES } from "../pages";
 
 // Prerendered to `/sitemap.xml`; lists every Page in every Language with hreflang alternates.
 export function loader() {
@@ -7,9 +8,9 @@ export function loader() {
     LANGUAGES.map((language) => {
       const alternates = LANGUAGES.map(
         (alternate) =>
-          `    <xhtml:link rel="alternate" hreflang="${alternate}" href="${absoluteUrl(pagePath(alternate, page))}"/>`,
+          `    <xhtml:link rel="alternate" hreflang="${alternate}" href="${absoluteUrl(pagePath(alternate, page.path))}"/>`,
       ).join("\n");
-      return `  <url>\n    <loc>${absoluteUrl(pagePath(language, page))}</loc>\n${alternates}\n  </url>`;
+      return `  <url>\n    <loc>${absoluteUrl(pagePath(language, page.path))}</loc>\n${alternates}\n  </url>`;
     }),
   );
   const xml = [

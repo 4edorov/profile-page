@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
-import { DEFAULT_LANGUAGE, LANGUAGES } from "../app/languages";
+import { DEFAULT_LANGUAGE, LANGUAGES } from "@/shared/i18n";
 import { shapeOf } from "./shape";
 
 const contentDir = join(import.meta.dirname, "..", "content");

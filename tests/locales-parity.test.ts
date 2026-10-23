@@ -1,6 +1,5 @@
 import { expect, test } from "vitest";
-import { resources } from "../app/i18n";
-import { DEFAULT_LANGUAGE, LANGUAGES } from "../app/languages";
+import { DEFAULT_LANGUAGE, LANGUAGES, resources } from "@/shared/i18n";
 import { shapeOf } from "./shape";
 
 test.each(LANGUAGES.filter((language) => language !== DEFAULT_LANGUAGE))(
