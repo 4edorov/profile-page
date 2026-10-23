@@ -1,17 +1,18 @@
 import type { MetaDescriptor } from "react-router";
-import { DEFAULT_LANGUAGE, LANGUAGES, OG_LOCALES, type Language } from "./languages";
-import { absoluteUrl, pagePath, type Page } from "./pages";
+import { DEFAULT_LANGUAGE, LANGUAGES, OG_LOCALES, type Language } from "@/shared/i18n";
+import { absoluteUrl, pagePath } from "@/shared/routing";
 
 interface PageMetaOptions {
   language: Language;
-  page: Pick<Page, "path">;
+  /** The Page's path below the Language prefix; `""` is the Language root. */
+  path: string;
   title: string;
   description: string;
 }
 
 /** Title, description, canonical, hreflang alternates and Open Graph tags for a Page. */
-export function pageMeta({ language, page, title, description }: PageMetaOptions): MetaDescriptor[] {
-  const url = absoluteUrl(pagePath(language, page));
+export function pageMeta({ language, path, title, description }: PageMetaOptions): MetaDescriptor[] {
+  const url = absoluteUrl(pagePath(language, path));
   return [
     { title },
     { name: "description", content: description },
@@ -20,13 +21,13 @@ export function pageMeta({ language, page, title, description }: PageMetaOptions
       tagName: "link",
       rel: "alternate",
       hrefLang: alternate,
-      href: absoluteUrl(pagePath(alternate, page)),
+      href: absoluteUrl(pagePath(alternate, path)),
     })),
     {
       tagName: "link",
       rel: "alternate",
       hrefLang: "x-default",
-      href: absoluteUrl(pagePath(DEFAULT_LANGUAGE, page)),
+      href: absoluteUrl(pagePath(DEFAULT_LANGUAGE, path)),
     },
     { property: "og:type", content: "website" },
     { property: "og:title", content: title },

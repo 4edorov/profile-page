@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
   const siteUrl = loadEnv(mode, process.cwd(), "").SITE_URL;
   return {
     plugins: [requireSiteUrl(siteUrl), tailwindcss(), reactRouter()],
+    resolve: { tsconfigPaths: true },
     define: {
       "import.meta.env.SITE_URL": JSON.stringify((siteUrl || DEV_SITE_URL).replace(/\/+$/, "")),
     },

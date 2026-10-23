@@ -1,6 +1,9 @@
 import { index, route, type RouteConfig } from "@react-router/dev/routes";
-import { LANGUAGES } from "./languages";
+// Relative, not `@/`: React Router loads this file with its own resolver, which ignores the alias.
+import { LANGUAGES } from "../shared/i18n";
 import { PAGES } from "./pages";
+
+const NOT_FOUND_PAGE = "../pages/not-found/ui/page.tsx";
 
 // One static route tree per Language instead of a `:lang` param, so a URL
 // with an unknown Language never matches Page routes. Every unknown URL then
@@ -16,9 +19,9 @@ export default [
           : index(page.file, { id: `${language}/${page.id}` }),
       ),
       // Also prerendered as `/<language>/404`.
-      route("*", "routes/not-found.tsx", { id: `${language}/not-found` }),
+      route("*", NOT_FOUND_PAGE, { id: `${language}/not-found` }),
     ]),
   ),
   // Everything outside the Language routes; prerendered as `/404`.
-  route("*", "routes/not-found.tsx", { id: "not-found" }),
+  route("*", NOT_FOUND_PAGE, { id: "not-found" }),
 ] satisfies RouteConfig;

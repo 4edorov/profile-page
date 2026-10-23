@@ -21,7 +21,7 @@ declare module "i18next" {
 const instances = new Map<Language, i18n>();
 
 /**
- * One i18next instance per Language, chosen from the `:lang` URL segment.
+ * One i18next instance per Language, chosen from the Language URL segment.
  * Resources are bundled, so initialisation is synchronous and prerendering
  * in Node is deterministic.
  */

@@ -2,15 +2,15 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { createRoutesStub } from "react-router";
 import { afterEach, expect, test } from "vitest";
-import { getProfile } from "../app/content";
-import { LANGUAGES } from "../app/languages";
-import Home from "../app/routes/home";
-import LanguageLayout from "../app/routes/language";
-import NotFoundPage from "../app/routes/not-found";
+import LanguageLayout from "@/app/routes/language";
+import { getProfile } from "@/entities/profile";
+import Home from "@/pages/home/ui/page";
+import NotFoundPage from "@/pages/not-found/ui/page";
+import { LANGUAGES } from "@/shared/i18n";
 
 afterEach(cleanup);
 
-// Mirrors app/routes.ts: one route tree per Language plus a top-level 404.
+// Mirrors src/app/routes.ts: one route tree per Language plus a top-level 404.
 function renderPath(path: string) {
   const Stub = createRoutesStub([
     ...LANGUAGES.map((language) => ({

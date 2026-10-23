@@ -1,4 +1,4 @@
-import { absoluteUrl } from "../pages";
+import { absoluteUrl } from "@/shared/routing";
 
 // Prerendered to `/robots.txt`.
 export function loader() {

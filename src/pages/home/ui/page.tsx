@@ -1,9 +1,8 @@
 import { useTranslation } from "react-i18next";
-import type { Route } from "./+types/home";
-import { getProfile } from "../content";
-import { getI18n } from "../i18n";
-import { languageFromPath } from "../languages";
-import { pageMeta } from "../seo";
+import { getProfile } from "@/entities/profile";
+import { getI18n, languageFromPath } from "@/shared/i18n";
+import { pageMeta } from "@/shared/seo";
+import type { Route } from "./+types/page";
 
 // Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: Route.LoaderArgs) {
@@ -16,7 +15,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
   const t = getI18n(language).t;
   return pageMeta({
     language,
-    page: { path: "" },
+    path: "",
     title: t("home.title", { name: profile.name, headline: profile.headline }),
     description: profile.summary,
   });

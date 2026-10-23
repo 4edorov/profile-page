@@ -1,6 +1,6 @@
 /**
  * Profile Content shapes. Every Language has one JSON file per type under
- * `content/<language>/`, and all Languages must match in shape and ids.
+ * the root `content/<language>/` folder, and all Languages must match in shape and ids.
  */
 
 export interface Profile {

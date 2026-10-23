@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router";
-import { LANGUAGE_NAMES, LANGUAGES, type Language } from "../languages";
-import { switchLanguagePath } from "../pages";
+import { LANGUAGE_NAMES, LANGUAGES, type Language } from "@/shared/i18n";
+import { switchLanguagePath } from "@/shared/routing";
 
 export function LanguageSwitcher({ current }: { current: Language }) {
   const { t } = useTranslation();
