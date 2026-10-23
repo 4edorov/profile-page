@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "home": "Главная",
+    "languageSwitcher": "Язык"
+  },
+  "home": {
+    "title": "{{name}} — {{headline}}",
+    "linksHeading": "Я в сети"
+  },
+  "notFound": {
+    "title": "Страница не найдена",
+    "message": "Такой страницы не существует.",
+    "backHome": "На главную"
+  }
+}
