@@ -32,6 +32,7 @@ export function pageMeta(pageId: PageId) {
     const title = t(`meta.${pageId}.title`, values);
     const description = t(`meta.${pageId}.description`, values);
     const url = absoluteUrl(pagePath(language, pageId));
+    const ogImage = absoluteUrl("/og-image.png");
     return [
       { title },
       { name: "description", content: description },
@@ -52,11 +53,19 @@ export function pageMeta(pageId: PageId) {
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:url", content: url },
+      { property: "og:image", content: ogImage },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: `${name} — ${headline}` },
       { property: "og:locale", content: OG_LOCALES[language] },
       ...LANGUAGES.filter((alternate) => alternate !== language).map((alternate) => ({
         property: "og:locale:alternate",
         content: OG_LOCALES[alternate],
       })),
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+      { name: "twitter:image", content: ogImage },
     ];
   };
 }
