@@ -1,16 +1,56 @@
 /**
- * Profile Content shapes. Every Language has one JSON file per type under
- * the root `content/<language>/` folder, and all Languages must match in shape and ids.
+ * Profile Content shapes, one per Topic. Every Language has one JSON file per
+ * Topic under the root `content/<language>/` folder, and all Languages must
+ * match in shape, ids and untranslated values.
  */
 
-export interface Profile {
+export interface About {
   name: string;
   headline: string;
+  /** Shown in the About Section on the Home Page. */
   summary: string;
-  links: ProfileLink[];
+  /** Paragraphs shown on the About Page. */
+  bio: string[];
 }
 
-export interface ProfileLink {
+/** Months as `YYYY-MM`; an `end` of `null` means still in progress. */
+export interface Period {
+  start: string;
+  end: string | null;
+}
+
+/** Fields every Entry has, whatever its Topic. */
+export interface Entry {
+  id: string;
+  featured: boolean;
+  /** Shown wherever the Entry appears. */
+  summary: string;
+  /** Shown only on its Topic Page. */
+  details: string[];
+}
+
+export interface ExperienceEntry extends Entry, Period {
+  role: string;
+  organisation: string;
+}
+
+export interface ProjectEntry extends Entry {
+  name: string;
+  url: string | null;
+}
+
+export const LEARNING_KINDS = ["education", "course", "certification", "book"] as const;
+
+export type LearningKind = (typeof LEARNING_KINDS)[number];
+
+export interface LearningEntry extends Entry, Period {
+  kind: LearningKind;
+  title: string;
+  /** School, platform, issuer or author. */
+  provider: string;
+}
+
+export interface ContactLink {
   id: string;
   label: string;
   url: string;

@@ -26,21 +26,24 @@ SITE_URL=https://example.com pnpm build   # writes build/client/
 
 ## Layout
 
-| Path                       | What                                                                             |
-| -------------------------- | -------------------------------------------------------------------------------- |
-| `app/pages.ts`             | The list of Pages. Routes, prerendering and the sitemap are all derived from it. |
-| `app/routes.ts`            | One route tree per Language, plus a top-level 404.                               |
-| `app/routes/`              | Route modules: the Language layout, Pages, 404, `sitemap.xml`, `robots.txt`.     |
-| `app/locales/{en,ru}.json` | UI Strings.                                                                      |
-| `content/{en,ru}/*.json`   | Profile Content. Its types live in `content/types.ts`.                           |
-| `deploy/nginx/`            | nginx site config and shared snippet.                                            |
-| `scripts/deploy.sh`        | Build and deploy over SSH.                                                       |
+Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-feature-sliced-design.md).
+
+| Path                             | What                                                                                 |
+| -------------------------------- | ------------------------------------------------------------------------------------ |
+| `src/shared/routing/pages.ts`    | Every Page's path, in Header order.                                                  |
+| `src/app/pages.ts`               | Every Page's route module. Routes, prerendering and the sitemap are derived from it. |
+| `src/app/routes.ts`              | One route tree per Language, plus a top-level 404.                                   |
+| `src/pages/<page>/ui/page.tsx`   | Each Page's route module: `loader`, `meta` and component.                            |
+| `src/shared/i18n/locales/*.json` | UI Strings.                                                                          |
+| `content/{en,ru}/<topic>.json`   | Profile Content, one file per Topic. Its types live in `src/entities/profile`.       |
+| `deploy/nginx/`                  | nginx site config and shared snippet.                                                |
+| `scripts/deploy.sh`              | Build and deploy over SSH.                                                           |
 
 ### Adding a Page
 
-1. Create `app/routes/<page>.tsx` with a `loader` (runs at build time), `meta` (use `pageMeta` from `app/seo.ts`) and a component.
-2. Add it to `PAGES` in `app/pages.ts`. Routes, prerendering and the sitemap pick it up from there.
-3. Add its UI Strings to both `app/locales/*.json`, and any Profile Content to both `content/*/`.
+1. Create `src/pages/<page>/ui/page.tsx` with a `loader` (runs at build time), `meta` (use `pageMeta` from `@/shared/seo`) and a component, typed with `PageProps<typeof loader>`.
+2. Add its path to `PAGE_PATHS` in `src/shared/routing/pages.ts` and its route module to `PAGE_FILES` in `src/app/pages.ts`. Routes, prerendering, the sitemap and the Header pick it up from there.
+3. Add its UI Strings to both `src/shared/i18n/locales/*.json`, and any Profile Content to both `content/*/`.
 
 ### Both Languages must always be complete
 
