@@ -31,33 +31,35 @@ export default function Learning({ loaderData }: PageProps<typeof loader>) {
     entries: learning.filter((entry) => entry.kind === kind),
   })).filter((group) => group.entries.length > 0);
   return (
-    <main className="mx-auto max-w-2xl p-8">
+    <main className="py-12">
       <h1 className="text-3xl font-bold">{t("pages.learning")}</h1>
-      {groups.map(({ kind, entries }) => (
-        <section key={kind} aria-labelledby={`${kind}-heading`} className="mt-8">
-          <h2 id={`${kind}-heading`} className="text-xl font-semibold">
-            {t(`learning.kinds.${kind}`)}
-          </h2>
-          <ul className="mt-3 space-y-6">
-            {entries.map((entry) => (
-              <li key={entry.id}>
-                <h3 className="font-semibold">
-                  {entry.title} · {entry.provider}
-                </h3>
-                <PeriodLabel period={entry} />
-                <p className="mt-2">{entry.summary}</p>
-                {entry.details.length > 0 && (
-                  <ul className="mt-2 list-disc space-y-1 pl-5">
-                    {entry.details.map((detail) => (
-                      <li key={detail}>{detail}</li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
+      <div className="mt-4 divide-y divide-text/10">
+        {groups.map(({ kind, entries }) => (
+          <section key={kind} aria-labelledby={`${kind}-heading`} className="py-8">
+            <h2 id={`${kind}-heading`} className="text-xl font-semibold">
+              {t(`learning.kinds.${kind}`)}
+            </h2>
+            <ul className="mt-3 space-y-6">
+              {entries.map((entry) => (
+                <li key={entry.id}>
+                  <h3 className="font-semibold">
+                    {entry.title} · {entry.provider}
+                  </h3>
+                  <PeriodLabel period={entry} />
+                  <p className="mt-2">{entry.summary}</p>
+                  {entry.details.length > 0 && (
+                    <ul className="mt-2 list-disc space-y-1 pl-5">
+                      {entry.details.map((detail) => (
+                        <li key={detail}>{detail}</li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
     </main>
   );
 }

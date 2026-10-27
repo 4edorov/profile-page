@@ -1,7 +1,8 @@
 {
   "nav": {
     "pages": "Страницы",
-    "languageSwitcher": "Язык"
+    "openMenu": "Открыть меню",
+    "closeMenu": "Закрыть меню"
   },
   "pages": {
     "home": "Главная",
@@ -20,13 +21,15 @@
   },
   "home": {
     "title": "{{name}} — {{headline}}",
-    "contactHeading": "Контакты",
     "more": {
       "about": "Подробнее обо мне",
       "experience": "Весь опыт",
       "projects": "Все проекты",
       "learning": "Всё обучение"
     }
+  },
+  "footer": {
+    "contactHeading": "Контакты"
   },
   "learning": {
     "kinds": {
@@ -50,5 +53,9 @@
     "title": "Страница не найдена",
     "message": "Такой страницы не существует.",
     "backHome": "На главную"
+  },
+  "theme": {
+    "switchToDark": "Включить тёмную тему",
+    "switchToLight": "Включить светлую тему"
   }
 }

@@ -13,11 +13,11 @@ One route of the Profile Site, such as the Home Page. Every Page exists once per
 _Avoid_: Screen, view, route (when meaning the visitor-facing page)
 
 **Home Page**:
-The Page at a Language's root. It holds one Section per Topic, in Topic order, and nothing else.
+The Page at a Language's root. It holds one Section per Topic except Contact, in Topic order, and nothing else.
 _Avoid_: Landing page, index
 
 **Topic**:
-One subject of Profile Content, in this order: About, Experience, Projects, Learning, Contact. Every Topic has a Section on the Home Page; every Topic except Contact also has a Topic Page.
+One subject of Profile Content, in this order: About, Experience, Projects, Learning, Contact. Every Topic has a Section: Contact's is in the Footer, every other one is on the Home Page and also has a Topic Page.
 _Avoid_: Category, area, section (when meaning the subject rather than the block)
 
 **Topic Page**:
@@ -45,12 +45,20 @@ The Page shown for a URL that matches no other Page. It exists once per Language
 _Avoid_: 404 page, error page
 
 **Header**:
-The strip above every Page's Sections that links to the Home Page, every Topic Page and the Resume Page, and switches Language; identical on every Page in a Language apart from marking the current Page. Not a Section.
-_Avoid_: Navbar, nav (in prose)
+The strip above every Page's Sections that links to the Home Page, every Topic Page and the Resume Page, and switches Language and Theme; identical on every Page in a Language apart from marking the current Page. Stays in view while the Page scrolls. Not a Section.
+_Avoid_: Navbar, nav (in prose), top bar
+
+**Footer**:
+The strip below every Page's other Sections, holding the Contact Section and nothing else; identical on every Page in a Language.
+_Avoid_: Bottom bar
 
 **Section**:
 A block of content within a Page, below the Header.
 _Avoid_: Part, component, widget (when meaning visitor-facing content)
+
+**Page Metadata**:
+A Page's title, description, canonical URL, Language alternates and link-preview tags, derived from the Page, its Language and Profile Content; never written per Page. The Not Found Page has only a title and is never indexed.
+_Avoid_: SEO tags, head, meta (in prose)
 
 ## Languages
 
@@ -79,3 +87,9 @@ _Avoid_: Education (for the whole Topic), studies
 **Contact**:
 The Topic listing the ways to reach the owner, each one a link.
 _Avoid_: Links, socials
+
+## Appearance
+
+**Theme**:
+How the Profile Site looks: Light or Dark. Every visit starts in Light, whatever the visitor's system setting; the visitor switches it from the Header, and the choice lasts while they move between Pages (including switching Language) but is never remembered, so a reload or new tab starts in Light again.
+_Avoid_: Color scheme, mode, dark mode

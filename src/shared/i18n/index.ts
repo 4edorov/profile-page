@@ -5,6 +5,7 @@ export {
   LANGUAGE_NAMES,
   LANGUAGES,
   languageFromPath,
+  languageInPath,
   OG_LOCALES,
   type Language,
 } from "./languages";

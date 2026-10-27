@@ -1,7 +1,8 @@
 {
   "nav": {
     "pages": "Pages",
-    "languageSwitcher": "Language"
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "pages": {
     "home": "Home",
@@ -20,13 +21,15 @@
   },
   "home": {
     "title": "{{name}} — {{headline}}",
-    "contactHeading": "Contact",
     "more": {
       "about": "More about me",
       "experience": "All experience",
       "projects": "All projects",
       "learning": "All learning"
     }
+  },
+  "footer": {
+    "contactHeading": "Contact"
   },
   "learning": {
     "kinds": {
@@ -50,5 +53,9 @@
     "title": "Page not found",
     "message": "The page you are looking for does not exist.",
     "backHome": "Go to the home page"
+  },
+  "theme": {
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme"
   }
 }

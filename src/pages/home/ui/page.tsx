@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Link, type LoaderFunctionArgs } from "react-router";
-import { getAbout, getContact, getExperience, getLearning, getProjects, PeriodLabel } from "@/entities/profile";
+import { getAbout, getExperience, getLearning, getProjects, PeriodLabel } from "@/entities/profile";
 import { getI18n, languageFromPath } from "@/shared/i18n";
 import { PAGE_PATHS, pagePath, type PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
@@ -14,7 +14,6 @@ export function loader({ request }: LoaderFunctionArgs) {
     experience: getExperience(language).filter((entry) => entry.featured),
     projects: getProjects(language).filter((entry) => entry.featured),
     learning: getLearning(language).filter((entry) => entry.featured),
-    contact: getContact(language),
   };
 }
 
@@ -30,15 +29,15 @@ export function meta({ loaderData }: PageProps<typeof loader>) {
 }
 
 export default function Home({ loaderData }: PageProps<typeof loader>) {
-  const { language, about, experience, projects, learning, contact } = loaderData;
+  const { language, about, experience, projects, learning } = loaderData;
   const { t } = useTranslation();
   return (
-    <main className="mx-auto max-w-2xl space-y-12 p-8">
-      <section aria-labelledby="about-heading">
+    <main className="divide-y divide-text/10">
+      <section aria-labelledby="about-heading" className="py-12">
         <h1 id="about-heading" className="text-3xl font-bold">
           {about.name}
         </h1>
-        <p className="mt-1 text-lg text-neutral-600 dark:text-neutral-400">{about.headline}</p>
+        <p className="mt-1 text-lg text-text/70">{about.headline}</p>
         <p className="mt-6">{about.summary}</p>
         <MoreLink to={pagePath(language, PAGE_PATHS.about)}>{t("home.more.about")}</MoreLink>
       </section>
@@ -87,21 +86,11 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
           </li>
         ))}
       </TopicSection>
-
-      <TopicSection id="contact" heading={t("home.contactHeading")}>
-        {contact.map((link) => (
-          <li key={link.id}>
-            <a href={link.url} className="underline underline-offset-4">
-              {link.label}
-            </a>
-          </li>
-        ))}
-      </TopicSection>
     </main>
   );
 }
 
-/** A Topic's Section: a heading, a list of its Entries (or links), and optionally a link to its Topic Page. */
+/** A Topic's Section: a heading, a list of its Featured Entries and a link to its Topic Page. */
 function TopicSection({
   id,
   heading,
@@ -110,23 +99,23 @@ function TopicSection({
 }: {
   id: string;
   heading: string;
-  more?: { to: string; label: string };
+  more: { to: string; label: string };
   children: React.ReactNode;
 }) {
   return (
-    <section aria-labelledby={`${id}-heading`}>
+    <section aria-labelledby={`${id}-heading`} className="py-12">
       <h2 id={`${id}-heading`} className="text-xl font-semibold">
         {heading}
       </h2>
       <ul className="mt-3 space-y-4">{children}</ul>
-      {more && <MoreLink to={more.to}>{more.label}</MoreLink>}
+      <MoreLink to={more.to}>{more.label}</MoreLink>
     </section>
   );
 }
 
 function MoreLink({ to, children }: { to: string; children: React.ReactNode }) {
   return (
-    <Link to={to} className="mt-4 inline-block underline underline-offset-4">
+    <Link to={to} className="mt-4 inline-block text-primary underline underline-offset-4">
       {children}
     </Link>
   );

@@ -26,7 +26,7 @@ export default function About({ loaderData }: PageProps<typeof loader>) {
   const { about } = loaderData;
   const { t } = useTranslation();
   return (
-    <main className="mx-auto max-w-2xl p-8">
+    <main className="py-12">
       <h1 className="text-3xl font-bold">{t("pages.about")}</h1>
       <div className="mt-6 space-y-4">
         {about.bio.map((paragraph) => (

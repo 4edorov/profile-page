@@ -20,12 +20,17 @@ export function isLanguage(value: unknown): value is Language {
   return LANGUAGES.includes(value as Language);
 }
 
+/** The Language a URL path starts with, if its first segment is one. */
+export function languageInPath(pathname: string): Language | undefined {
+  const segment = pathname.split("/")[1];
+  return isLanguage(segment) ? segment : undefined;
+}
+
 /**
  * The Language of a URL is its first path segment; anything else (only
  * possible outside the Language routes, e.g. the top-level 404) is the
  * Default Language.
  */
 export function languageFromPath(pathname: string): Language {
-  const segment = pathname.split("/")[1];
-  return isLanguage(segment) ? segment : DEFAULT_LANGUAGE;
+  return languageInPath(pathname) ?? DEFAULT_LANGUAGE;
 }

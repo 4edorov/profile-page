@@ -26,7 +26,7 @@ export default function Experience({ loaderData }: PageProps<typeof loader>) {
   const { experience } = loaderData;
   const { t } = useTranslation();
   return (
-    <main className="mx-auto max-w-2xl p-8">
+    <main className="py-12">
       <h1 className="text-3xl font-bold">{t("pages.experience")}</h1>
       <ul className="mt-6 space-y-8">
         {experience.map((entry) => (
