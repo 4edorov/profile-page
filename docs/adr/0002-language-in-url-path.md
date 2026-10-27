@@ -5,4 +5,4 @@ Every Page URL starts with its Language (`/en/...`, `/ru/...`), and that path se
 ## Consequences
 
 - Routes are generated as one static tree per Language rather than a `:lang` param. With a param, an unknown first segment (`/foo`, `/de/projects`) would match Page routes, and the 404 HTML nginx serves there would hydrate against different routes than it was prerendered with. With static trees, every unknown URL matches the same catch-all as its 404 page. As a side effect, switching Language always loads fresh Page data, because it moves to different routes.
-- Code reads the Language from the URL (`languageFromPath`, `useLanguage`), never from route params.
+- Code reads the Language from the URL (`languageFromPath`, `languageFromRequest`, `useLanguage`), never from route params.

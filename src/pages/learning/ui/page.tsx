@@ -1,26 +1,17 @@
 import { useTranslation } from "react-i18next";
 import type { LoaderFunctionArgs } from "react-router";
 import { getAbout, getLearning, LEARNING_KINDS, PeriodLabel } from "@/entities/profile";
-import { getI18n, languageFromPath } from "@/shared/i18n";
-import { PAGE_PATHS, type PageProps } from "@/shared/routing";
+import { languageFromRequest } from "@/shared/i18n";
+import type { PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
 
 // Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
-  const language = languageFromPath(new URL(request.url).pathname);
-  return { language, about: getAbout(language), learning: getLearning(language) };
+  const language = languageFromRequest(request);
+  return { about: getAbout(language), learning: getLearning(language) };
 }
 
-export function meta({ loaderData }: PageProps<typeof loader>) {
-  const { language, about } = loaderData;
-  const t = getI18n(language).t;
-  return pageMeta({
-    language,
-    path: PAGE_PATHS.learning,
-    title: t("meta.title", { page: t("pages.learning"), name: about.name }),
-    description: t("meta.learning", { name: about.name, headline: about.headline }),
-  });
-}
+export const meta = pageMeta("learning");
 
 export default function Learning({ loaderData }: PageProps<typeof loader>) {
   const { learning } = loaderData;

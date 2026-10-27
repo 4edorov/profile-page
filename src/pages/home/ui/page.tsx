@@ -1,15 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { Link, type LoaderFunctionArgs } from "react-router";
 import { getAbout, getExperience, getLearning, getProjects, PeriodLabel } from "@/entities/profile";
-import { getI18n, languageFromPath } from "@/shared/i18n";
+import { languageFromRequest, useLanguage } from "@/shared/i18n";
 import { PAGE_PATHS, pagePath, type PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
 
 // Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
-  const language = languageFromPath(new URL(request.url).pathname);
+  const language = languageFromRequest(request);
   return {
-    language,
     about: getAbout(language),
     experience: getExperience(language).filter((entry) => entry.featured),
     projects: getProjects(language).filter((entry) => entry.featured),
@@ -17,19 +16,11 @@ export function loader({ request }: LoaderFunctionArgs) {
   };
 }
 
-export function meta({ loaderData }: PageProps<typeof loader>) {
-  const { language, about } = loaderData;
-  const t = getI18n(language).t;
-  return pageMeta({
-    language,
-    path: PAGE_PATHS.home,
-    title: t("home.title", { name: about.name, headline: about.headline }),
-    description: about.summary,
-  });
-}
+export const meta = pageMeta("home");
 
 export default function Home({ loaderData }: PageProps<typeof loader>) {
-  const { language, about, experience, projects, learning } = loaderData;
+  const { about, experience, projects, learning } = loaderData;
+  const language = useLanguage();
   const { t } = useTranslation();
   return (
     <main className="divide-y divide-text/10">
