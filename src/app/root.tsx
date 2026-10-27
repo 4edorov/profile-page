@@ -2,7 +2,7 @@ import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration }
 import type { Route } from "./+types/root";
 import { NotFound } from "@/pages/not-found";
 import { useLanguage } from "@/shared/i18n";
-import { Frame } from "./ui/frame";
+import { Frame } from "./layouts/frame";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml" }];
