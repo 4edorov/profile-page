@@ -1,19 +1,10 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { createRoutesStub, type LoaderFunctionArgs } from "react-router";
+import { createRoutesStub } from "react-router";
 import { afterEach, expect, test } from "vitest";
-import LanguageLayout from "@/app/routes/language";
 import { getAbout } from "@/entities/profile";
-import * as about from "@/pages/about/ui/page";
-import * as experience from "@/pages/experience/ui/page";
-import * as home from "@/pages/home/ui/page";
-import * as learning from "@/pages/learning/ui/page";
-import NotFoundPage from "@/pages/not-found/ui/page";
-import * as projects from "@/pages/projects/ui/page";
-import * as resume from "@/pages/resume/ui/page";
-import { LANGUAGES } from "@/shared/i18n";
-import { PAGE_IDS, PAGE_PATHS, type PageId } from "@/shared/routing";
 import { setTheme } from "@/shared/theme";
+import { stubRoutes } from "./route-modules";
 
 afterEach(() => {
   cleanup();
@@ -21,37 +12,9 @@ afterEach(() => {
   setTheme("light");
 });
 
-interface PageModule {
-  loader: (args: LoaderFunctionArgs) => unknown;
-  default: React.ComponentType;
-}
-
-const MODULES: Record<PageId, PageModule> = {
-  home: home as unknown as PageModule,
-  about: about as unknown as PageModule,
-  experience: experience as unknown as PageModule,
-  projects: projects as unknown as PageModule,
-  learning: learning as unknown as PageModule,
-  resume: resume as unknown as PageModule,
-};
-
-// Mirrors src/app/routes.ts: one route tree per Language plus a top-level Not Found Page.
+// The real route tree of src/app/routes.ts, with each route's own module.
 function renderPath(path: string) {
-  const Stub = createRoutesStub([
-    ...LANGUAGES.map((language) => ({
-      path: `/${language}`,
-      Component: LanguageLayout,
-      children: [
-        ...PAGE_IDS.map((id) => ({
-          ...(PAGE_PATHS[id] ? { path: PAGE_PATHS[id] } : { index: true as const }),
-          Component: MODULES[id].default,
-          loader: (args: LoaderFunctionArgs) => MODULES[id].loader(args),
-        })),
-        { path: "*", Component: NotFoundPage },
-      ],
-    })),
-    { Component: LanguageLayout, children: [{ path: "*", Component: NotFoundPage }] },
-  ]);
+  const Stub = createRoutesStub(stubRoutes());
   render(<Stub initialEntries={[path]} />);
 }
 

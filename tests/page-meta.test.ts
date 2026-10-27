@@ -1,14 +1,9 @@
-import type { LoaderFunctionArgs, MetaDescriptor } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { expect, test } from "vitest";
-import * as about from "@/pages/about/ui/page";
-import * as experience from "@/pages/experience/ui/page";
-import * as home from "@/pages/home/ui/page";
-import * as learning from "@/pages/learning/ui/page";
-import * as projects from "@/pages/projects/ui/page";
-import * as resume from "@/pages/resume/ui/page";
 import { LANGUAGES, type Language } from "@/shared/i18n";
 import { PAGE_IDS, type PageId } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
+import { findRoute, routeModule } from "./route-modules";
 
 const ABOUT = { name: "Ada Lovelace", headline: "Analyst", summary: "Notes on the Analytical Engine." };
 
@@ -62,25 +57,14 @@ test("no Page Metadata without loader data", () => {
   expect(pageMeta("home")({ loaderData: undefined, location: { pathname: "/en/" } })).toEqual([]);
 });
 
-interface PageModule {
-  loader: (args: LoaderFunctionArgs) => unknown;
-  meta: (args: { loaderData: unknown; location: { pathname: string } }) => MetaDescriptor[];
-}
-
-const MODULES: Record<PageId, PageModule> = {
-  home: home as unknown as PageModule,
-  about: about as unknown as PageModule,
-  experience: experience as unknown as PageModule,
-  projects: projects as unknown as PageModule,
-  learning: learning as unknown as PageModule,
-  resume: resume as unknown as PageModule,
-};
-
 test.each(PAGE_IDS.flatMap((pageId) => LANGUAGES.map((language) => [pageId, language] as const)))(
   "the %s Page's own meta, fed its own loader in %s, is canonical for that Page",
   (pageId, language) => {
     const request = new Request(url(pageId, language));
-    const { loader, meta } = MODULES[pageId];
+    const { loader, meta } = routeModule(findRoute(`${language}/${pageId}`));
+    if (!loader || !meta) {
+      throw new Error(`The ${pageId} Page's route module needs a loader and a meta`);
+    }
     const loaderData = loader({ request, params: {}, context: {} } as LoaderFunctionArgs);
     const tags = meta({ loaderData, location: { pathname: new URL(request.url).pathname } });
     expect(tags).toContainEqual({ tagName: "link", rel: "canonical", href: url(pageId, language) });

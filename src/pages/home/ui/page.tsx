@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link, type LoaderFunctionArgs } from "react-router";
 import { getAbout, getExperience, getLearning, getProjects, PeriodLabel } from "@/entities/profile";
 import { languageFromRequest, useLanguage } from "@/shared/i18n";
-import { PAGE_PATHS, pagePath, type PageProps } from "@/shared/routing";
+import { pagePath, type PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
 
 // Runs at build time only: the result is baked into the prerendered HTML.
@@ -30,13 +30,13 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
         </h1>
         <p className="mt-1 text-lg text-text/70">{about.headline}</p>
         <p className="mt-6">{about.summary}</p>
-        <MoreLink to={pagePath(language, PAGE_PATHS.about)}>{t("home.more.about")}</MoreLink>
+        <MoreLink to={pagePath(language, "about")}>{t("home.more.about")}</MoreLink>
       </section>
 
       <TopicSection
         id="experience"
         heading={t("pages.experience")}
-        more={{ to: pagePath(language, PAGE_PATHS.experience), label: t("home.more.experience") }}
+        more={{ to: pagePath(language, "experience"), label: t("home.more.experience") }}
       >
         {experience.map((entry) => (
           <li key={entry.id}>
@@ -52,7 +52,7 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
       <TopicSection
         id="projects"
         heading={t("pages.projects")}
-        more={{ to: pagePath(language, PAGE_PATHS.projects), label: t("home.more.projects") }}
+        more={{ to: pagePath(language, "projects"), label: t("home.more.projects") }}
       >
         {projects.map((entry) => (
           <li key={entry.id}>
@@ -65,7 +65,7 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
       <TopicSection
         id="learning"
         heading={t("pages.learning")}
-        more={{ to: pagePath(language, PAGE_PATHS.learning), label: t("home.more.learning") }}
+        more={{ to: pagePath(language, "learning"), label: t("home.more.learning") }}
       >
         {learning.map((entry) => (
           <li key={entry.id}>

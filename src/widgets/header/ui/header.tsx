@@ -2,7 +2,7 @@ import { useEffect, useId, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useLocation } from "react-router";
 import type { Language } from "@/shared/i18n";
-import { PAGE_IDS, PAGE_PATHS, pagePath } from "@/shared/routing";
+import { PAGE_IDS, pagePath } from "@/shared/routing";
 import { CloseIcon, MenuIcon } from "./icons";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeSwitcher } from "./theme-switcher";
@@ -125,11 +125,7 @@ function PageLinks({ language }: { language: Language }) {
   const { t } = useTranslation();
   return PAGE_IDS.map((id) => (
     <li key={id}>
-      <NavLink
-        to={pagePath(language, PAGE_PATHS[id])}
-        end
-        className="hover:text-primary aria-[current=page]:text-primary"
-      >
+      <NavLink to={pagePath(language, id)} end className="hover:text-primary aria-[current=page]:text-primary">
         {t(`pages.${id}`)}
       </NavLink>
     </li>
