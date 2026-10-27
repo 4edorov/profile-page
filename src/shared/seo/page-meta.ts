@@ -1,6 +1,6 @@
 import type { MetaDescriptor } from "react-router";
 import { DEFAULT_LANGUAGE, getI18n, LANGUAGES, languageFromPath, OG_LOCALES } from "@/shared/i18n";
-import { absoluteUrl, PAGE_PATHS, pagePath, type PageId } from "@/shared/routing";
+import { absoluteUrl, pagePath, type PageId } from "@/shared/routing";
 
 /**
  * What Page Metadata needs from a Page's loader data. Typed structurally
@@ -21,7 +21,6 @@ interface PageMetaArgs {
  * return `about`.
  */
 export function pageMeta(pageId: PageId) {
-  const path = PAGE_PATHS[pageId];
   return ({ loaderData, location }: PageMetaArgs): MetaDescriptor[] => {
     if (!loaderData) {
       return [];
@@ -32,7 +31,7 @@ export function pageMeta(pageId: PageId) {
     const values = { page: t(`pages.${pageId}`), name, headline, summary };
     const title = t(`meta.${pageId}.title`, values);
     const description = t(`meta.${pageId}.description`, values);
-    const url = absoluteUrl(pagePath(language, path));
+    const url = absoluteUrl(pagePath(language, pageId));
     return [
       { title },
       { name: "description", content: description },
@@ -41,13 +40,13 @@ export function pageMeta(pageId: PageId) {
         tagName: "link",
         rel: "alternate",
         hrefLang: alternate,
-        href: absoluteUrl(pagePath(alternate, path)),
+        href: absoluteUrl(pagePath(alternate, pageId)),
       })),
       {
         tagName: "link",
         rel: "alternate",
         hrefLang: "x-default",
-        href: absoluteUrl(pagePath(DEFAULT_LANGUAGE, path)),
+        href: absoluteUrl(pagePath(DEFAULT_LANGUAGE, pageId)),
       },
       { property: "og:type", content: "website" },
       { property: "og:title", content: title },

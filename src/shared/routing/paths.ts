@@ -1,11 +1,10 @@
 // Relative, not `@/`: react-router.config.ts loads this file with its own resolver, which ignores the alias.
 import { languageInPath, type Language } from "../i18n";
+import { PAGE_PATHS, type PageId } from "./pages";
 
-/**
- * Canonical path of a Page, given its path below the Language prefix
- * (`""` is the Language root): `/en/` for the root, `/en/projects` otherwise.
- */
-export function pagePath(language: Language, path: string): string {
+/** Canonical path of a Page in a Language: `/en/` for the Home Page, `/en/projects` otherwise. */
+export function pagePath(language: Language, pageId: PageId): string {
+  const path = PAGE_PATHS[pageId];
   return path ? `/${language}/${path}` : `/${language}/`;
 }
 
@@ -21,7 +20,7 @@ export function notFoundPath(language?: Language): string {
  */
 export function switchLanguagePath(pathname: string, language: Language): string {
   if (!languageInPath(pathname)) {
-    return pagePath(language, "");
+    return pagePath(language, "home");
   }
   return pathname.replace(/^\/[^/]+/, `/${language}`);
 }

@@ -12,7 +12,7 @@ export function NotFound({ language }: { language: Language }) {
       <meta name="robots" content="noindex" />
       <h1 className="text-2xl font-semibold">{t("notFound.title")}</h1>
       <p className="mt-4">{t("notFound.message")}</p>
-      <Link className="mt-6 inline-block text-primary underline underline-offset-4" to={pagePath(language, "")}>
+      <Link className="mt-6 inline-block text-primary underline underline-offset-4" to={pagePath(language, "home")}>
         {t("notFound.backHome")}
       </Link>
     </main>

@@ -28,22 +28,21 @@ SITE_URL=https://example.com pnpm build   # writes build/client/
 
 Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-feature-sliced-design.md).
 
-| Path                             | What                                                                                 |
-| -------------------------------- | ------------------------------------------------------------------------------------ |
-| `src/shared/routing/pages.ts`    | Every Page's path, in Header order.                                                  |
-| `src/app/pages.ts`               | Every Page's route module. Routes, prerendering and the sitemap are derived from it. |
-| `src/app/routes.ts`              | One route tree per Language, plus a top-level 404.                                   |
-| `src/app/ui/frame.tsx`           | Every Page's frame: the Header, the Page and the Footer in a 1280px column.          |
-| `src/pages/<page>/ui/page.tsx`   | Each Page's route module: `loader`, `meta` and component.                            |
-| `src/shared/i18n/locales/*.json` | UI Strings.                                                                          |
-| `content/{en,ru}/<topic>.json`   | Profile Content, one file per Topic. Its types live in `src/entities/profile`.       |
-| `deploy/nginx/`                  | nginx site config and shared snippet.                                                |
-| `scripts/deploy.sh`              | Build and deploy over SSH.                                                           |
+| Path                             | What                                                                                                               |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `src/shared/routing/pages.ts`    | Every Page's path, in Header order. Routes, prerendering, the sitemap and the Header are derived from it.          |
+| `src/app/routes.ts`              | One route tree per Language, plus a top-level 404.                                                                 |
+| `src/app/ui/frame.tsx`           | Every Page's frame: the Header, the Page and the Footer in a 1280px column.                                        |
+| `src/pages/<page>/ui/page.tsx`   | Each Page's route module: `loader`, `meta` and component. `<page>` is its key in `PAGE_PATHS`, except `not-found`. |
+| `src/shared/i18n/locales/*.json` | UI Strings.                                                                                                        |
+| `content/{en,ru}/<topic>.json`   | Profile Content, one file per Topic. Its types live in `src/entities/profile`.                                     |
+| `deploy/nginx/`                  | nginx site config and shared snippet.                                                                              |
+| `scripts/deploy.sh`              | Build and deploy over SSH.                                                                                         |
 
 ### Adding a Page
 
 1. Create `src/pages/<page>/ui/page.tsx` with a `loader` (runs at build time), `meta` (use `pageMeta` from `@/shared/seo`) and a component, typed with `PageProps<typeof loader>`.
-2. Add its path to `PAGE_PATHS` in `src/shared/routing/pages.ts` and its route module to `PAGE_FILES` in `src/app/pages.ts`. Routes, prerendering, the sitemap and the Header pick it up from there.
+2. Add its path to `PAGE_PATHS` in `src/shared/routing/pages.ts`, keyed by the slice's name. Routes, prerendering, the sitemap and the Header pick it up from there.
 3. Add its UI Strings to both `src/shared/i18n/locales/*.json`, and any Profile Content to both `content/*/`.
 
 ### Both Languages must always be complete

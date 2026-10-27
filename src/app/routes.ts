@@ -1,7 +1,7 @@
 import { index, layout, route, type RouteConfig } from "@react-router/dev/routes";
 // Relative, not `@/`: React Router loads this file with its own resolver, which ignores the alias.
 import { LANGUAGES } from "../shared/i18n";
-import { PAGES } from "./pages";
+import { PAGE_IDS, PAGE_PATHS } from "../shared/routing/pages";
 
 const NOT_FOUND_PAGE = "../pages/not-found/ui/page.tsx";
 
@@ -13,11 +13,13 @@ export default [
   route("robots.txt", "routes/robots.ts"),
   ...LANGUAGES.map((language) =>
     route(language, "routes/language.tsx", { id: language }, [
-      ...PAGES.map((page) =>
-        page.path
-          ? route(page.path, page.file, { id: `${language}/${page.id}` })
-          : index(page.file, { id: `${language}/${page.id}` }),
-      ),
+      ...PAGE_IDS.map((id) => {
+        // Every Page's slice is named after its PageId.
+        const file = `../pages/${id}/ui/page.tsx`;
+        const path = PAGE_PATHS[id];
+        const options = { id: `${language}/${id}` };
+        return path ? route(path, file, options) : index(file, options);
+      }),
       // Also prerendered as `/<language>/404`.
       route("*", NOT_FOUND_PAGE, { id: `${language}/not-found` }),
     ]),
