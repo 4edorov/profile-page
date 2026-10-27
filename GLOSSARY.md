@@ -9,15 +9,43 @@ The whole site, in every Language.
 _Avoid_: Profile page, portfolio, website
 
 **Page**:
-One route of the Profile Site, such as the home page. Every Page exists once per Language, except the Not Found Page.
+One route of the Profile Site, such as the Home Page. Every Page exists once per Language, except the Not Found Page.
 _Avoid_: Screen, view, route (when meaning the visitor-facing page)
+
+**Home Page**:
+The Page at a Language's root. It holds one Section per Topic, in Topic order, and nothing else.
+_Avoid_: Landing page, index
+
+**Topic**:
+One subject of Profile Content, in this order: About, Experience, Projects, Learning, Contact. Every Topic has a Section on the Home Page; every Topic except Contact also has a Topic Page.
+_Avoid_: Category, area, section (when meaning the subject rather than the block)
+
+**Topic Page**:
+The Page dedicated to one Topic, showing more than that Topic's Section on the Home Page.
+_Avoid_: Detail page, subpage
+
+**Entry**:
+One item of Experience, Projects or Learning (a job, a project, a course). Written once per Language with a short summary and fuller detail. Every Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section, and only by their summary.
+_Avoid_: Item, record, card
+
+**Featured Entry**:
+An Entry the owner has chosen to show in its Topic's Section on the Home Page, in the same order as on its Topic Page.
+_Avoid_: Highlight, pinned, top entry
+
+**Resume Page**:
+The Page showing the Resume in its Language. Not a Topic: it has no Section on the Home Page.
+_Avoid_: CV page
+
+**Resume**:
+The owner's hand-made resume document, one per Language, maintained separately from Profile Content.
+_Avoid_: CV
 
 **Not Found Page**:
 The Page shown for a URL that matches no other Page. It exists once per Language, plus once outside any Language (shown in the Default Language), and is never indexed.
 _Avoid_: 404 page, error page
 
 **Header**:
-The strip above every Page's Sections that links home and switches Language; identical on every Page in a Language. Not a Section.
+The strip above every Page's Sections that links to the Home Page, every Topic Page and the Resume Page, and switches Language; identical on every Page in a Language apart from marking the current Page. Not a Section.
 _Avoid_: Navbar, nav (in prose)
 
 **Section**:
@@ -41,5 +69,13 @@ The interface's own wording (navigation, labels, buttons), translated per Langua
 _Avoid_: Translations, messages, copy
 
 **Profile Content**:
-The owner's data shown on Pages (headline, summary, experience, projects, links), written per Language and identical in shape across Languages.
+The owner's data shown on Pages, organised by Topic, written per Language and identical in shape across Languages.
 _Avoid_: Content (unqualified), data, CMS content
+
+**Learning**:
+The Topic covering what the owner has studied or is studying: education, courses, certifications and books.
+_Avoid_: Education (for the whole Topic), studies
+
+**Contact**:
+The Topic listing the ways to reach the owner, each one a link.
+_Avoid_: Links, socials

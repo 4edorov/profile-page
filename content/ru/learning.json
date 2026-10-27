@@ -1,0 +1,46 @@
+[
+  {
+    "id": "degree",
+    "featured": true,
+    "kind": "education",
+    "title": "Временная специальность",
+    "provider": "Временный университет",
+    "start": "2010-09",
+    "end": "2015-06",
+    "summary": "Временное описание образования.",
+    "details": []
+  },
+  {
+    "id": "course",
+    "featured": false,
+    "kind": "course",
+    "title": "Временный курс",
+    "provider": "Временная платформа",
+    "start": "2025-01",
+    "end": null,
+    "summary": "Временное описание курса.",
+    "details": []
+  },
+  {
+    "id": "certification",
+    "featured": false,
+    "kind": "certification",
+    "title": "Временный сертификат",
+    "provider": "Временный издатель",
+    "start": "2023-04",
+    "end": "2023-05",
+    "summary": "Временное описание сертификата.",
+    "details": []
+  },
+  {
+    "id": "book",
+    "featured": true,
+    "kind": "book",
+    "title": "Временная книга",
+    "provider": "Временный автор",
+    "start": "2026-09",
+    "end": null,
+    "summary": "Временное описание книги.",
+    "details": ["Временный вывод."]
+  }
+]

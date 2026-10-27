@@ -1,11 +1,50 @@
 {
   "nav": {
-    "home": "Home",
+    "pages": "Pages",
     "languageSwitcher": "Language"
+  },
+  "pages": {
+    "home": "Home",
+    "about": "About",
+    "experience": "Experience",
+    "projects": "Projects",
+    "learning": "Learning",
+    "resume": "Resume"
+  },
+  "meta": {
+    "title": "{{page}} — {{name}}",
+    "experience": "Work experience of {{name}}, {{headline}}.",
+    "projects": "Projects by {{name}}, {{headline}}.",
+    "learning": "Education, courses, certifications and books of {{name}}, {{headline}}.",
+    "resume": "The resume of {{name}}, {{headline}}."
   },
   "home": {
     "title": "{{name}} — {{headline}}",
-    "linksHeading": "Find me online"
+    "contactHeading": "Contact",
+    "more": {
+      "about": "More about me",
+      "experience": "All experience",
+      "projects": "All projects",
+      "learning": "All learning"
+    }
+  },
+  "learning": {
+    "kinds": {
+      "education": "Education",
+      "course": "Courses",
+      "certification": "Certifications",
+      "book": "Books"
+    }
+  },
+  "projects": {
+    "visit": "Visit {{name}}"
+  },
+  "resume": {
+    "placeholder": "The resume will appear here soon."
+  },
+  "period": {
+    "present": "present",
+    "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
   },
   "notFound": {
     "title": "Page not found",
