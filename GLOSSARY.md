@@ -57,7 +57,7 @@ A block of content within a Page, below the Header.
 _Avoid_: Part, component, widget (when meaning visitor-facing content)
 
 **Page Metadata**:
-A Page's title, description, canonical URL, Language alternates and link-preview tags, derived from the Page, its Language and Profile Content; never written per Page. The Not Found Page has only a title and is never indexed.
+A Page's title, description, canonical URL, Language alternates and link-preview tags, worded per Page in UI Strings and filled from its Language and Profile Content; no Page assembles its own. The Not Found Page has only a title and is never indexed.
 _Avoid_: SEO tags, head, meta (in prose)
 
 ## Languages
@@ -73,7 +73,7 @@ _Avoid_: Fallback locale, primary language
 ## Text
 
 **UI Strings**:
-The interface's own wording (navigation, labels, buttons), translated per Language.
+The Profile Site's own wording (navigation, labels, buttons, Page Metadata), translated per Language.
 _Avoid_: Translations, messages, copy
 
 **Profile Content**:

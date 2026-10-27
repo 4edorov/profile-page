@@ -34,3 +34,8 @@ export function languageInPath(pathname: string): Language | undefined {
 export function languageFromPath(pathname: string): Language {
   return languageInPath(pathname) ?? DEFAULT_LANGUAGE;
 }
+
+/** The Language of a request's URL, for a Page's `loader`. */
+export function languageFromRequest(request: Request): Language {
+  return languageFromPath(new URL(request.url).pathname);
+}

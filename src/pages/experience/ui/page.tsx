@@ -1,26 +1,17 @@
 import { useTranslation } from "react-i18next";
 import type { LoaderFunctionArgs } from "react-router";
 import { getAbout, getExperience, PeriodLabel } from "@/entities/profile";
-import { getI18n, languageFromPath } from "@/shared/i18n";
-import { PAGE_PATHS, type PageProps } from "@/shared/routing";
+import { languageFromRequest } from "@/shared/i18n";
+import type { PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
 
 // Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
-  const language = languageFromPath(new URL(request.url).pathname);
-  return { language, about: getAbout(language), experience: getExperience(language) };
+  const language = languageFromRequest(request);
+  return { about: getAbout(language), experience: getExperience(language) };
 }
 
-export function meta({ loaderData }: PageProps<typeof loader>) {
-  const { language, about } = loaderData;
-  const t = getI18n(language).t;
-  return pageMeta({
-    language,
-    path: PAGE_PATHS.experience,
-    title: t("meta.title", { page: t("pages.experience"), name: about.name }),
-    description: t("meta.experience", { name: about.name, headline: about.headline }),
-  });
-}
+export const meta = pageMeta("experience");
 
 export default function Experience({ loaderData }: PageProps<typeof loader>) {
   const { experience } = loaderData;

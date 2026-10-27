@@ -13,14 +13,32 @@
     "resume": "Резюме"
   },
   "meta": {
-    "title": "{{page}} — {{name}}",
-    "experience": "Опыт работы: {{name}}, {{headline}}.",
-    "projects": "Проекты: {{name}}, {{headline}}.",
-    "learning": "Образование, курсы, сертификаты и книги: {{name}}, {{headline}}.",
-    "resume": "Резюме: {{name}}, {{headline}}."
+    "home": {
+      "title": "{{name}} — {{headline}}",
+      "description": "{{summary}}"
+    },
+    "about": {
+      "title": "{{page}} — {{name}}",
+      "description": "{{summary}}"
+    },
+    "experience": {
+      "title": "{{page}} — {{name}}",
+      "description": "Опыт работы: {{name}}, {{headline}}."
+    },
+    "projects": {
+      "title": "{{page}} — {{name}}",
+      "description": "Проекты: {{name}}, {{headline}}."
+    },
+    "learning": {
+      "title": "{{page}} — {{name}}",
+      "description": "Образование, курсы, сертификаты и книги: {{name}}, {{headline}}."
+    },
+    "resume": {
+      "title": "{{page}} — {{name}}",
+      "description": "Резюме: {{name}}, {{headline}}."
+    }
   },
   "home": {
-    "title": "{{name}} — {{headline}}",
     "more": {
       "about": "Подробнее обо мне",
       "experience": "Весь опыт",

@@ -13,14 +13,32 @@
     "resume": "Resume"
   },
   "meta": {
-    "title": "{{page}} — {{name}}",
-    "experience": "Work experience of {{name}}, {{headline}}.",
-    "projects": "Projects by {{name}}, {{headline}}.",
-    "learning": "Education, courses, certifications and books of {{name}}, {{headline}}.",
-    "resume": "The resume of {{name}}, {{headline}}."
+    "home": {
+      "title": "{{name}} — {{headline}}",
+      "description": "{{summary}}"
+    },
+    "about": {
+      "title": "{{page}} — {{name}}",
+      "description": "{{summary}}"
+    },
+    "experience": {
+      "title": "{{page}} — {{name}}",
+      "description": "Work experience of {{name}}, {{headline}}."
+    },
+    "projects": {
+      "title": "{{page}} — {{name}}",
+      "description": "Projects by {{name}}, {{headline}}."
+    },
+    "learning": {
+      "title": "{{page}} — {{name}}",
+      "description": "Education, courses, certifications and books of {{name}}, {{headline}}."
+    },
+    "resume": {
+      "title": "{{page}} — {{name}}",
+      "description": "The resume of {{name}}, {{headline}}."
+    }
   },
   "home": {
-    "title": "{{name}} — {{headline}}",
     "more": {
       "about": "More about me",
       "experience": "All experience",
