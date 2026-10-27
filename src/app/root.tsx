@@ -2,6 +2,7 @@ import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration }
 import type { Route } from "./+types/root";
 import { NotFound } from "@/pages/not-found";
 import { useLanguage } from "@/shared/i18n";
+import { Frame } from "./ui/frame";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml" }];
@@ -16,7 +17,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="bg-white text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100">
+      <body className="bg-background text-text antialiased">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -32,7 +33,11 @@ export default function App() {
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   const language = useLanguage();
   if (isRouteErrorResponse(error) && error.status === 404) {
-    return <NotFound language={language} />;
+    return (
+      <Frame language={language}>
+        <NotFound language={language} />
+      </Frame>
+    );
   }
   if (import.meta.env.DEV) {
     console.error(error);

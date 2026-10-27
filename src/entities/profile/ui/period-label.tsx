@@ -14,7 +14,7 @@ export function PeriodLabel({ period }: { period: Period }) {
     return `${months[Number(monthNumber) - 1]} ${year}`;
   };
   return (
-    <span className="text-sm text-neutral-600 dark:text-neutral-400">
+    <span className="text-sm text-text/70">
       {month(period.start)} – {period.end ? month(period.end) : t("period.present")}
     </span>
   );

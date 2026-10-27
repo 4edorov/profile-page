@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { createRoutesStub, type LoaderFunctionArgs } from "react-router";
 import { afterEach, expect, test } from "vitest";
 import LanguageLayout from "@/app/routes/language";
@@ -13,8 +13,13 @@ import * as projects from "@/pages/projects/ui/page";
 import * as resume from "@/pages/resume/ui/page";
 import { LANGUAGES } from "@/shared/i18n";
 import { PAGE_IDS, PAGE_PATHS, type PageId } from "@/shared/routing";
+import { setTheme } from "@/shared/theme";
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  // The Theme is module state, so a test that switches it must not leak it.
+  setTheme("light");
+});
 
 interface PageModule {
   loader: (args: LoaderFunctionArgs) => unknown;
@@ -30,7 +35,7 @@ const MODULES: Record<PageId, PageModule> = {
   resume: resume as unknown as PageModule,
 };
 
-// Mirrors src/app/routes.ts: one route tree per Language plus a top-level 404.
+// Mirrors src/app/routes.ts: one route tree per Language plus a top-level Not Found Page.
 function renderPath(path: string) {
   const Stub = createRoutesStub([
     ...LANGUAGES.map((language) => ({
@@ -45,17 +50,24 @@ function renderPath(path: string) {
         { path: "*", Component: NotFoundPage },
       ],
     })),
-    { path: "*", Component: NotFoundPage },
+    { Component: LanguageLayout, children: [{ path: "*", Component: NotFoundPage }] },
   ]);
   render(<Stub initialEntries={[path]} />);
 }
 
-test("renders the Russian Home Page with every Topic's Section and a link to English", async () => {
+/** Queries the Header itself, not the mobile menu that repeats its controls. */
+async function findInHeader(...args: Parameters<typeof screen.getByRole>) {
+  return within(await screen.findByRole("banner")).getByRole(...args);
+}
+
+test("renders the Russian Home Page with every Topic's Section except Contact, and a link to English", async () => {
   renderPath("/ru/");
   expect(await screen.findByRole("heading", { level: 1, name: getAbout("ru").name })).toBeDefined();
-  const sections = screen.getAllByRole("heading", { level: 2 }).map((heading) => heading.textContent);
-  expect(sections).toEqual(["Опыт", "Проекты", "Обучение", "Контакты"]);
-  expect(screen.getByRole("link", { name: "English" }).getAttribute("href")).toBe("/en/");
+  const sections = within(screen.getByRole("main"))
+    .getAllByRole("heading", { level: 2 })
+    .map((heading) => heading.textContent);
+  expect(sections).toEqual(["Опыт", "Проекты", "Обучение"]);
+  expect((await findInHeader("link", { name: /English/ })).getAttribute("href")).toBe("/en/");
 });
 
 test("shows only Featured Entries on the Home Page, with links to their Topic Pages", async () => {
@@ -97,20 +109,60 @@ test.each([
 test("the Experience Page shows every Entry, newest first", async () => {
   renderPath("/en/experience");
   await screen.findByRole("heading", { level: 1, name: "Experience" });
-  const entries = screen.getAllByRole("heading", { level: 2 }).map((heading) => heading.textContent);
+  const entries = within(screen.getByRole("main"))
+    .getAllByRole("heading", { level: 2 })
+    .map((heading) => heading.textContent);
   expect(entries).toEqual(["Placeholder role · Current Company", "Placeholder role · Previous Company"]);
 });
 
 test("the Learning Page groups Entries by kind", async () => {
   renderPath("/ru/learning");
   await screen.findByRole("heading", { level: 1, name: "Обучение" });
-  const groups = screen.getAllByRole("heading", { level: 2 }).map((heading) => heading.textContent);
+  const groups = within(screen.getByRole("main"))
+    .getAllByRole("heading", { level: 2 })
+    .map((heading) => heading.textContent);
   expect(groups).toEqual(["Образование", "Курсы", "Сертификаты", "Книги"]);
 });
 
 test("switching Language keeps the Page", async () => {
   renderPath("/ru/experience");
-  expect((await screen.findByRole("link", { name: "English" })).getAttribute("href")).toBe("/en/experience");
+  expect((await findInHeader("link", { name: /English/ })).getAttribute("href")).toBe("/en/experience");
+});
+
+test("the Language switcher is a single link to the other Language, named by its visible code and full name", async () => {
+  renderPath("/en/projects");
+  expect(await findInHeader("link", { name: "RU Русский" })).toBeDefined();
+  expect(within(screen.getByRole("banner")).queryByRole("link", { name: /English/ })).toBeNull();
+});
+
+test("the Theme starts in Light, and a switch lasts across Pages and Languages", async () => {
+  renderPath("/en/");
+  const html = document.documentElement;
+  expect(html.dataset.theme).not.toBe("dark");
+
+  fireEvent.click(await findInHeader("button", { name: "Switch to dark theme" }));
+  expect(html.dataset.theme).toBe("dark");
+
+  fireEvent.click(await findInHeader("link", { name: "Projects" }));
+  await screen.findByRole("heading", { level: 1, name: "Projects" });
+  fireEvent.click(await findInHeader("link", { name: /Русский/ }));
+  await screen.findByRole("heading", { level: 1, name: "Проекты" });
+  expect(html.dataset.theme).toBe("dark");
+
+  fireEvent.click(await findInHeader("button", { name: "Включить светлую тему" }));
+  expect(html.dataset.theme).toBe("light");
+  expect(await findInHeader("button", { name: "Включить тёмную тему" })).toBeDefined();
+});
+
+test.each([
+  ["/en/", "Contact"],
+  ["/ru/learning", "Контакты"],
+  ["/ru/nope", "Контакты"],
+])("%s has a Footer holding the Contact Section", async (path, heading) => {
+  renderPath(path);
+  const footer = within(await screen.findByRole("contentinfo"));
+  expect(footer.getByRole("heading", { name: heading })).toBeDefined();
+  expect(footer.getByRole("link", { name: "GitHub" }).getAttribute("href")).toBe("https://github.com/4edorov");
 });
 
 test("renders the Russian 404 for an unknown Russian path", async () => {
@@ -121,4 +173,10 @@ test("renders the Russian 404 for an unknown Russian path", async () => {
 test("renders the English 404 for an unknown Language", async () => {
   renderPath("/de/");
   expect(await screen.findByRole("heading", { name: "Page not found" })).toBeDefined();
+});
+
+test("the 404 outside any Language has the Header and Footer, switching to the Russian Home Page", async () => {
+  renderPath("/de/projects");
+  expect((await findInHeader("link", { name: /Русский/ })).getAttribute("href")).toBe("/ru/");
+  expect(within(screen.getByRole("contentinfo")).getByRole("heading", { name: "Contact" })).toBeDefined();
 });

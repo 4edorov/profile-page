@@ -1,4 +1,4 @@
-import { index, route, type RouteConfig } from "@react-router/dev/routes";
+import { index, layout, route, type RouteConfig } from "@react-router/dev/routes";
 // Relative, not `@/`: React Router loads this file with its own resolver, which ignores the alias.
 import { LANGUAGES } from "../shared/i18n";
 import { PAGES } from "./pages";
@@ -22,6 +22,7 @@ export default [
       route("*", NOT_FOUND_PAGE, { id: `${language}/not-found` }),
     ]),
   ),
-  // Everything outside the Language routes; prerendered as `/404`.
-  route("*", NOT_FOUND_PAGE, { id: "not-found" }),
+  // Everything outside the Language routes, framed in the Default Language;
+  // prerendered as `/404`.
+  layout("routes/language.tsx", { id: "outside-language" }, [route("*", NOT_FOUND_PAGE, { id: "not-found" })]),
 ] satisfies RouteConfig;

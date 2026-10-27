@@ -26,7 +26,7 @@ export default function Projects({ loaderData }: PageProps<typeof loader>) {
   const { projects } = loaderData;
   const { t } = useTranslation();
   return (
-    <main className="mx-auto max-w-2xl p-8">
+    <main className="py-12">
       <h1 className="text-3xl font-bold">{t("pages.projects")}</h1>
       <ul className="mt-6 space-y-8">
         {projects.map((entry) => (
@@ -39,7 +39,7 @@ export default function Projects({ loaderData }: PageProps<typeof loader>) {
               ))}
             </ul>
             {entry.url && (
-              <a href={entry.url} className="mt-2 inline-block underline underline-offset-4">
+              <a href={entry.url} className="mt-2 inline-block text-primary underline underline-offset-4">
                 {t("projects.visit", { name: entry.name })}
               </a>
             )}

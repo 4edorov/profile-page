@@ -7,7 +7,7 @@ A professional Profile Site. It's an SPA built with React 19, React Router 8 and
 - **React Router 8 framework mode** with `ssr: false` and `prerender`: static HTML for every Page in every Language. See [ADR-0001](docs/adr/0001-prerendered-spa.md).
 - **Language in the URL path**. See [ADR-0002](docs/adr/0002-language-in-url-path.md).
 - **react-i18next** for UI Strings, with bundled and typed resources.
-- **Tailwind CSS 4**. Dark mode follows the system setting.
+- **Tailwind CSS 4**, limited to three colors per Theme (Background, Text, Primary) in `src/app/app.css`. Every visit starts in Light, whatever the system setting. The Header switches the Theme, and the choice is never stored.
 - **Vite 8**, **Vitest**, **ESLint** (typescript-eslint, react-hooks, jsx-a11y) and **Prettier**.
 - **Self-hosted nginx**, deployed manually over SSH. See [ADR-0003](docs/adr/0003-self-hosted-manual-deploy.md).
 
@@ -33,6 +33,7 @@ Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-fe
 | `src/shared/routing/pages.ts`    | Every Page's path, in Header order.                                                  |
 | `src/app/pages.ts`               | Every Page's route module. Routes, prerendering and the sitemap are derived from it. |
 | `src/app/routes.ts`              | One route tree per Language, plus a top-level 404.                                   |
+| `src/app/ui/frame.tsx`           | Every Page's frame: the Header, the Page and the Footer in a 1280px column.          |
 | `src/pages/<page>/ui/page.tsx`   | Each Page's route module: `loader`, `meta` and component.                            |
 | `src/shared/i18n/locales/*.json` | UI Strings.                                                                          |
 | `content/{en,ru}/<topic>.json`   | Profile Content, one file per Topic. Its types live in `src/entities/profile`.       |
