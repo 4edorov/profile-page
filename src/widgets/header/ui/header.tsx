@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { NavLink, useLocation } from "react-router";
 import type { Language } from "@/shared/i18n";
 import { PAGE_IDS, pagePath } from "@/shared/routing";
+import { IconButton } from "@/shared/ui/button";
 import { CloseIcon, MenuIcon } from "./icons";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeSwitcher } from "./theme-switcher";
@@ -72,15 +73,9 @@ export function Header({ language }: { language: Language }) {
           <div className="col-start-3 flex items-center justify-self-end">
             <LanguageSwitcher current={language} />
             <ThemeSwitcher />
-            <button
-              type="button"
-              popoverTarget={menuId}
-              aria-label={t("nav.openMenu")}
-              title={t("nav.openMenu")}
-              className="flex size-10 items-center justify-center rounded-md hover:text-primary lg:hidden"
-            >
+            <IconButton popoverTarget={menuId} label={t("nav.openMenu")} className="lg:hidden">
               <MenuIcon />
-            </button>
+            </IconButton>
           </div>
         </div>
       </header>
@@ -93,16 +88,9 @@ export function Header({ language }: { language: Language }) {
         <div className="flex h-16 items-center justify-end border-b border-text/10 px-6 md:px-12">
           <LanguageSwitcher current={language} />
           <ThemeSwitcher />
-          <button
-            type="button"
-            popoverTarget={menuId}
-            popoverTargetAction="hide"
-            aria-label={t("nav.closeMenu")}
-            title={t("nav.closeMenu")}
-            className="flex size-10 items-center justify-center rounded-md hover:text-primary"
-          >
+          <IconButton popoverTarget={menuId} popoverTargetAction="hide" label={t("nav.closeMenu")}>
             <CloseIcon />
-          </button>
+          </IconButton>
         </div>
         <nav aria-label={t("nav.pages")} className="px-6 py-8 md:px-12">
           <ul className="space-y-6 text-2xl font-semibold">

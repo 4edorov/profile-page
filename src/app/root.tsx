@@ -2,6 +2,7 @@ import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration }
 import type { Route } from "./+types/root";
 import { NotFound } from "@/pages/not-found";
 import { useLanguage } from "@/shared/i18n";
+import { Heading } from "@/shared/ui/typography";
 import { Frame } from "./layouts/frame";
 import "./app.css";
 
@@ -44,7 +45,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
   return (
     <main className="mx-auto max-w-2xl p-8">
-      <h1 className="text-2xl font-semibold">Something went wrong</h1>
+      <Heading level="page" as="h1">
+        Something went wrong
+      </Heading>
     </main>
   );
 }

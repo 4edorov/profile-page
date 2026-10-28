@@ -3,6 +3,7 @@ import type { LoaderFunctionArgs } from "react-router";
 import { getAbout } from "@/entities/profile";
 import { languageFromRequest } from "@/shared/i18n";
 import { pageMeta } from "@/shared/seo";
+import { Heading } from "@/shared/ui/typography";
 
 // Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
@@ -18,7 +19,9 @@ export default function Resume() {
   const { t } = useTranslation();
   return (
     <main className="py-12">
-      <h1 className="text-3xl font-bold">{t("pages.resume")}</h1>
+      <Heading level="page" as="h1">
+        {t("pages.resume")}
+      </Heading>
       <p className="mt-6">{t("resume.placeholder")}</p>
     </main>
   );

@@ -4,6 +4,7 @@ import { getAbout, getExperience, PeriodLabel } from "@/entities/profile";
 import { languageFromRequest } from "@/shared/i18n";
 import type { PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
+import { Heading } from "@/shared/ui/typography";
 
 // Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
@@ -18,13 +19,15 @@ export default function Experience({ loaderData }: PageProps<typeof loader>) {
   const { t } = useTranslation();
   return (
     <main className="py-12">
-      <h1 className="text-3xl font-bold">{t("pages.experience")}</h1>
+      <Heading level="page" as="h1">
+        {t("pages.experience")}
+      </Heading>
       <ul className="mt-6 space-y-8">
         {experience.map((entry) => (
           <li key={entry.id}>
-            <h2 className="text-xl font-semibold">
+            <Heading level="entry" as="h2">
               {entry.role} · {entry.organisation}
-            </h2>
+            </Heading>
             <PeriodLabel period={entry} />
             <p className="mt-2">{entry.summary}</p>
             <ul className="mt-2 list-disc space-y-1 pl-5">

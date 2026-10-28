@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Text } from "@/shared/ui/typography";
 import type { Period } from "../model/types";
 
 /**
@@ -14,8 +15,8 @@ export function PeriodLabel({ period }: { period: Period }) {
     return `${months[Number(monthNumber) - 1]} ${year}`;
   };
   return (
-    <span className="text-sm text-text/70">
+    <Text tone="muted" size="sm" as="span">
       {month(period.start)} – {period.end ? month(period.end) : t("period.present")}
-    </span>
+    </Text>
   );
 }
