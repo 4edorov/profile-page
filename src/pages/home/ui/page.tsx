@@ -1,9 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { Link, type LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { getAbout, getExperience, getLearning, getProjects, PeriodLabel } from "@/entities/profile";
 import { languageFromRequest, useLanguage } from "@/shared/i18n";
 import { pagePath, type PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
+import { Link } from "@/shared/ui/link";
+import { Heading, Text } from "@/shared/ui/typography";
 
 // Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
@@ -25,10 +27,12 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
   return (
     <main className="divide-y divide-text/10">
       <section aria-labelledby="about-heading" className="py-12">
-        <h1 id="about-heading" className="text-3xl font-bold">
+        <Heading level="page" as="h1" id="about-heading">
           {about.name}
-        </h1>
-        <p className="mt-1 text-lg text-text/70">{about.headline}</p>
+        </Heading>
+        <Text tone="muted" size="lg" className="mt-1">
+          {about.headline}
+        </Text>
         <p className="mt-6">{about.summary}</p>
         <MoreLink to={pagePath(language, "about")}>{t("home.more.about")}</MoreLink>
       </section>
@@ -40,9 +44,9 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
       >
         {experience.map((entry) => (
           <li key={entry.id}>
-            <h3 className="font-semibold">
+            <Heading level="entry" as="h3">
               {entry.role} · {entry.organisation}
-            </h3>
+            </Heading>
             <PeriodLabel period={entry} />
             <p className="mt-1">{entry.summary}</p>
           </li>
@@ -56,7 +60,9 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
       >
         {projects.map((entry) => (
           <li key={entry.id}>
-            <h3 className="font-semibold">{entry.name}</h3>
+            <Heading level="entry" as="h3">
+              {entry.name}
+            </Heading>
             <p className="mt-1">{entry.summary}</p>
           </li>
         ))}
@@ -69,9 +75,9 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
       >
         {learning.map((entry) => (
           <li key={entry.id}>
-            <h3 className="font-semibold">
+            <Heading level="entry" as="h3">
               {entry.title} · {entry.provider}
-            </h3>
+            </Heading>
             <PeriodLabel period={entry} />
             <p className="mt-1">{entry.summary}</p>
           </li>
@@ -95,9 +101,9 @@ function TopicSection({
 }) {
   return (
     <section aria-labelledby={`${id}-heading`} className="py-12">
-      <h2 id={`${id}-heading`} className="text-xl font-semibold">
+      <Heading level="section" as="h2" id={`${id}-heading`}>
         {heading}
-      </h2>
+      </Heading>
       <ul className="mt-3 space-y-4">{children}</ul>
       <MoreLink to={more.to}>{more.label}</MoreLink>
     </section>
@@ -106,7 +112,7 @@ function TopicSection({
 
 function MoreLink({ to, children }: { to: string; children: React.ReactNode }) {
   return (
-    <Link to={to} className="mt-4 inline-block text-primary underline underline-offset-4">
+    <Link to={to} className="mt-4 inline-block">
       {children}
     </Link>
   );

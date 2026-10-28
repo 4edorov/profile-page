@@ -4,6 +4,8 @@ import { getAbout, getProjects } from "@/entities/profile";
 import { languageFromRequest } from "@/shared/i18n";
 import type { PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
+import { Link } from "@/shared/ui/link";
+import { Heading } from "@/shared/ui/typography";
 
 // Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
@@ -18,11 +20,15 @@ export default function Projects({ loaderData }: PageProps<typeof loader>) {
   const { t } = useTranslation();
   return (
     <main className="py-12">
-      <h1 className="text-3xl font-bold">{t("pages.projects")}</h1>
+      <Heading level="page" as="h1">
+        {t("pages.projects")}
+      </Heading>
       <ul className="mt-6 space-y-8">
         {projects.map((entry) => (
           <li key={entry.id}>
-            <h2 className="text-xl font-semibold">{entry.name}</h2>
+            <Heading level="entry" as="h2">
+              {entry.name}
+            </Heading>
             <p className="mt-2">{entry.summary}</p>
             <ul className="mt-2 list-disc space-y-1 pl-5">
               {entry.details.map((detail) => (
@@ -30,9 +36,9 @@ export default function Projects({ loaderData }: PageProps<typeof loader>) {
               ))}
             </ul>
             {entry.url && (
-              <a href={entry.url} className="mt-2 inline-block text-primary underline underline-offset-4">
+              <Link to={entry.url} className="mt-2 inline-block">
                 {t("projects.visit", { name: entry.name })}
-              </a>
+              </Link>
             )}
           </li>
         ))}

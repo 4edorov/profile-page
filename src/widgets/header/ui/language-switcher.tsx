@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router";
 import { LANGUAGE_NAMES, LANGUAGES, type Language } from "@/shared/i18n";
 import { switchLanguagePath } from "@/shared/routing";
+import { ICON_CONTROL_LOOK } from "@/shared/ui/button";
 import { GlobeIcon } from "./icons";
 
 /**
@@ -18,7 +19,7 @@ export function LanguageSwitcher({ current }: { current: Language }) {
       lang={language}
       aria-label={`${language.toUpperCase()} ${LANGUAGE_NAMES[language]}`}
       title={LANGUAGE_NAMES[language]}
-      className="flex h-10 items-center gap-1.5 rounded-md px-2 text-sm font-medium hover:text-primary"
+      className={`${ICON_CONTROL_LOOK} gap-1.5 px-2 text-sm font-medium`}
     >
       <GlobeIcon />
       {language.toUpperCase()}
