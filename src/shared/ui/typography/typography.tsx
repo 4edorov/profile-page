@@ -59,5 +59,10 @@ export function Text({
   children: React.ReactNode;
 }) {
   const look = [TEXT_SIZES[size], weight && TEXT_WEIGHTS[weight], tone && TEXT_TONES[tone]].filter(Boolean).join(" ");
-  return <Tag className={withLayout(look, className)}>{children}</Tag>;
+  // Safari drops the list role of a `ul` without bullets unless it is explicit.
+  return (
+    <Tag role={Tag === "ul" ? "list" : undefined} className={withLayout(look, className)}>
+      {children}
+    </Tag>
+  );
 }

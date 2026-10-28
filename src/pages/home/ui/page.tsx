@@ -34,10 +34,11 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
           <Text size="lead" weight="semibold" className="mt-4">
             {about.headline}
           </Text>
-          <Text tone="muted" size="lg" as="ul" className="mt-2 flex flex-wrap">
+          <Text tone="muted" size="lg" as="ul" className="mt-2 flex flex-wrap gap-x-2">
             {about.stack.map((item) => (
               // The dot is decoration: its alt text is empty, so screen readers skip it.
-              <li key={item} className="not-last:after:mx-2 not-last:after:content-['·'_/_'']">
+              // Browsers without alt text drop the dot, but the gap keeps the items apart.
+              <li key={item} className="not-last:after:ml-2 not-last:after:content-['·'_/_'']">
                 {item}
               </li>
             ))}
