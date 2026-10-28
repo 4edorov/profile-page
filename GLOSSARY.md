@@ -77,7 +77,7 @@ The Profile Site's own wording (navigation, labels, buttons, Page Metadata), tra
 _Avoid_: Translations, messages, copy
 
 **Profile Content**:
-The owner's data shown on Pages, organised by Topic, written per Language and identical in shape across Languages.
+The owner's data shown on Pages, organised by Topic, written per Language and identical in shape across Languages, apart from how many Accents the tagline has.
 _Avoid_: Content (unqualified), data, CMS content
 
 **Learning**:
@@ -97,3 +97,7 @@ _Avoid_: Skills, tech, tags
 **Theme**:
 How the Profile Site looks: Light or Dark. Every visit starts in Light, whatever the visitor's system setting; the visitor switches it from the Header, and the choice lasts while they move between Pages (including switching Language) but is never remembered, so a reload or new tab starts in Light again.
 _Avoid_: Color scheme, mode, dark mode
+
+**Accent**:
+A run of words in the About tagline shown in the Theme's primary color, chosen by the owner per Language. Purely visual: it adds no emphasis for screen readers, and no other Profile Content has Accents.
+_Avoid_: Highlight, emphasis

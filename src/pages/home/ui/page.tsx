@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { LoaderFunctionArgs } from "react-router";
-import { getAbout, getExperience, getLearning, getProjects, PeriodLabel } from "@/entities/profile";
+import { getAbout, getExperience, getLearning, getProjects, PeriodLabel, Tagline } from "@/entities/profile";
 import { languageFromRequest, useLanguage } from "@/shared/i18n";
 import { pagePath, type PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
@@ -44,7 +44,7 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
             ))}
           </Text>
           <Text size="display" weight="bold" className="mt-8">
-            {about.tagline}
+            <Tagline tagline={about.tagline} />
           </Text>
           <Text size="lead" className="mt-4">
             {about.summary}

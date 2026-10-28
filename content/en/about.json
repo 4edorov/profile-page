@@ -2,7 +2,10 @@
   "name": "Alexander Fedorov",
   "headline": "Frontend/Fullstack Software Engineer",
   "stack": ["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Express"],
-  "tagline": "I build the things that matter",
+  "tagline": {
+    "text": "I build the things that matter",
+    "accents": ["build", "things", "matter"]
+  },
   "summary": "Senior Software Engineer with 9+ years of building apps in fintech, e-commerce, govtech, and IoT",
   "bio": ["Placeholder bio, first paragraph.", "Placeholder bio, second paragraph."]
 }
