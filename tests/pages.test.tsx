@@ -33,6 +33,17 @@ test("renders the Russian Home Page with every Topic's Section except Contact, a
   expect((await findInHeader("link", { name: /English/ })).getAttribute("href")).toBe("/en/");
 });
 
+test("the About Section shows the Stack as a list, in order", async () => {
+  renderPath("/en/");
+  const about = getAbout("en");
+  const section = (await screen.findByRole("heading", { level: 1, name: about.name })).closest("section");
+  expect(section).not.toBeNull();
+  const items = within(section as HTMLElement)
+    .getAllByRole("listitem")
+    .map((item) => item.textContent);
+  expect(items).toEqual(about.stack);
+});
+
 test("shows only Featured Entries on the Home Page, with links to their Topic Pages", async () => {
   renderPath("/en/");
   const section = (await screen.findByRole("heading", { level: 2, name: "Experience" })).closest("section");

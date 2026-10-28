@@ -1,6 +1,7 @@
 import { withLayout } from "@/shared/lib";
 
 const HEADING_LOOKS = {
+  hero: "text-4xl font-bold md:text-5xl",
   page: "text-3xl font-bold",
   section: "text-xl font-semibold",
   entry: "font-semibold",
@@ -33,21 +34,30 @@ export function Heading({
 }
 
 const TEXT_TONES = { muted: "text-text/70" } as const;
-const TEXT_SIZES = { sm: "text-sm", lg: "text-lg" } as const;
+const TEXT_SIZES = {
+  sm: "text-sm",
+  lg: "text-lg",
+  lead: "text-xl md:text-2xl",
+  display: "text-3xl md:text-4xl",
+} as const;
+const TEXT_WEIGHTS = { semibold: "font-semibold", bold: "font-bold" } as const;
 
 /** Text set apart from ordinary paragraphs, which need no component. `className` is for layout only. */
 export function Text({
   tone,
   size,
+  weight,
   as: Tag = "p",
   className,
   children,
 }: {
-  tone: keyof typeof TEXT_TONES;
+  tone?: keyof typeof TEXT_TONES;
   size: keyof typeof TEXT_SIZES;
-  as?: "p" | "span";
+  weight?: keyof typeof TEXT_WEIGHTS;
+  as?: "p" | "span" | "ul";
   className?: string;
   children: React.ReactNode;
 }) {
-  return <Tag className={withLayout(`${TEXT_SIZES[size]} ${TEXT_TONES[tone]}`, className)}>{children}</Tag>;
+  const look = [TEXT_SIZES[size], weight && TEXT_WEIGHTS[weight], tone && TEXT_TONES[tone]].filter(Boolean).join(" ");
+  return <Tag className={withLayout(look, className)}>{children}</Tag>;
 }
