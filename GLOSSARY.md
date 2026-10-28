@@ -88,6 +88,10 @@ _Avoid_: Education (for the whole Topic), studies
 The Topic listing the ways to reach the owner, each one a link.
 _Avoid_: Links, socials
 
+**Stack**:
+The languages and technologies the owner works with, as part of the About Topic. Identical in every Language.
+_Avoid_: Skills, tech, tags
+
 ## Appearance
 
 **Theme**:

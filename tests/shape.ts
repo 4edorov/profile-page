@@ -1,5 +1,5 @@
 /** Keys whose values are not translated, so they must be equal in every Language. */
-const UNTRANSLATED_KEYS = new Set(["id", "featured", "kind", "start", "end", "url"]);
+const UNTRANSLATED_KEYS = new Set(["id", "featured", "kind", "start", "end", "url", "stack"]);
 
 /**
  * Describes a JSON value's structure without its translatable text: object

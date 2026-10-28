@@ -7,6 +7,9 @@
 export interface About {
   name: string;
   headline: string;
+  /** The Stack: identical in every Language. */
+  stack: string[];
+  tagline: string;
   /** Shown in the About Section on the Home Page. */
   summary: string;
   /** Paragraphs shown on the About Page. */
