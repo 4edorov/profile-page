@@ -12,3 +12,4 @@ export {
   type ProjectEntry,
 } from "./model/types";
 export { PeriodLabel } from "./ui/period-label";
+export { Tagline } from "./ui/tagline";

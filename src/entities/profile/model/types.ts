@@ -1,7 +1,7 @@
 /**
  * Profile Content shapes, one per Topic. Every Language has one JSON file per
  * Topic under the root `content/<language>/` folder, and all Languages must
- * match in shape, ids and untranslated values.
+ * match in shape, ids and untranslated values; only the number of Accents may differ.
  */
 
 export interface About {
@@ -9,7 +9,8 @@ export interface About {
   headline: string;
   /** The Stack: identical in every Language. */
   stack: string[];
-  tagline: string;
+  /** `accents` are the Accents: runs of words in `text`, per Language. */
+  tagline: { text: string; accents: string[] };
   /** Shown in the About Section on the Home Page. */
   summary: string;
   /** Paragraphs shown on the About Page. */
