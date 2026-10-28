@@ -1,7 +1,7 @@
 import { withLayout } from "@/shared/lib";
 
 const HEADING_LOOKS = {
-  hero: "text-4xl font-bold md:text-5xl",
+  hero: "text-3xl font-bold md:text-4xl",
   page: "text-3xl font-bold",
   section: "text-xl font-semibold",
   entry: "font-semibold",
