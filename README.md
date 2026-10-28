@@ -32,7 +32,7 @@ Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-fe
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | `src/shared/routing/pages.ts`    | Every Page's path, in Header order. Routes, prerendering, the sitemap and the Header are derived from it.          |
 | `src/app/routes.ts`              | One route tree per Language, plus a top-level 404.                                                                 |
-| `src/app/ui/frame.tsx`           | Every Page's frame: the Header, the Page and the Footer in a 1280px column.                                        |
+| `src/app/layouts/frame.tsx`      | Every Page's frame: the Header, the Page and the Footer in a 1280px column.                                        |
 | `src/pages/<page>/ui/page.tsx`   | Each Page's route module: `loader`, `meta` and component. `<page>` is its key in `PAGE_PATHS`, except `not-found`. |
 | `src/shared/i18n/locales/*.json` | UI Strings.                                                                                                        |
 | `content/{en,ru}/<topic>.json`   | Profile Content, one file per Topic. Its types live in `src/entities/profile`.                                     |
