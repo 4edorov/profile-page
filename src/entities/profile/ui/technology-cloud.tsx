@@ -24,7 +24,7 @@ const MAX_STEP_MS = 50;
 
 /**
  * The Technology Cloud: the Technologies on a turning sphere, steered by the
- * pointer. Placement depends only on the order of `technologies`, so the
+ * pointer and stopped while it is on a Technology. Placement depends only on the order of `technologies`, so the
  * prerendered HTML already shows the still sphere and hydration matches it;
  * it starts turning once hydrated, unless the visitor asks for reduced motion,
  * and pauses while off screen. Purely visual: the caller hides it from screen
@@ -34,6 +34,8 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
   const cloudRef = useRef<HTMLDivElement>(null);
   // How the pointer steers the sphere; `null` while it is elsewhere.
   const steeringRef = useRef<Spin | null>(null);
+  // Whether the pointer is on a Technology, which stops the sphere.
+  const holdingRef = useRef(false);
   const startingPoints = useMemo(
     () => technologies.map((_, index) => startingPoint(index, technologies.length)),
     [technologies],
@@ -63,8 +65,10 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
     const tick = (now: number) => {
       const seconds = Math.min(now - (last ?? now), MAX_STEP_MS) / 1000;
       last = now;
-      const spin = steeringRef.current ?? IDLE_SPIN;
-      place((point) => rotate(point, spin.yaw * seconds, spin.pitch * seconds));
+      if (!holdingRef.current) {
+        const spin = steeringRef.current ?? IDLE_SPIN;
+        place((point) => rotate(point, spin.yaw * seconds, spin.pitch * seconds));
+      }
       frame = requestAnimationFrame(tick);
     };
     const restart = () => {
@@ -113,6 +117,8 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
         {technologies.map((technology, index) => (
           <li
             key={technology.name}
+            onPointerEnter={() => (holdingRef.current = true)}
+            onPointerLeave={() => (holdingRef.current = false)}
             className="absolute top-1/2 left-1/2 whitespace-nowrap hover:text-primary"
             style={startingPoints[index] && itemStyle(startingPoints[index])}
           >
