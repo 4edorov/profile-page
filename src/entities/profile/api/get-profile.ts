@@ -4,6 +4,7 @@ import enContact from "../../../../content/en/contact.json";
 import enExperience from "../../../../content/en/experience.json";
 import enLearning from "../../../../content/en/learning.json";
 import enProjects from "../../../../content/en/projects.json";
+import portrait from "../../../../content/portrait.jpg";
 import ruAbout from "../../../../content/ru/about.json";
 import ruContact from "../../../../content/ru/contact.json";
 import ruExperience from "../../../../content/ru/experience.json";
@@ -24,13 +25,6 @@ import {
 
 const technologies = allTechnologies satisfies Technology[];
 const stack = technologies.filter((technology) => technology.stack).map((technology) => technology.name);
-// A glob rather than an import, so the build works before the Portrait exists.
-const portraits = import.meta.glob<string>("../../../../content/portrait.jpg", {
-  eager: true,
-  query: "?url",
-  import: "default",
-});
-const portrait = Object.values(portraits)[0] ?? null;
 const about = {
   en: { ...enAbout, stack, technologies, portrait },
   ru: { ...ruAbout, stack, technologies, portrait },
@@ -44,8 +38,17 @@ const learning = { en: enLearning, ru: ruLearning } satisfies Record<
   (Omit<LearningEntry, "kind"> & { kind: string })[]
 >;
 
+/** What Page Metadata reads from About; every Page's loader returns at least these. */
+export const ABOUT_META_FIELDS = ["name", "headline", "summary"] as const satisfies (keyof About)[];
+
 export function getAbout(language: Language): About {
   return about[language];
+}
+
+/** Only the `fields` of About, so a Page's prerendered data carries nothing it doesn't show. */
+export function pickAbout<Field extends keyof About>(language: Language, fields: readonly Field[]): Pick<About, Field> {
+  const all = about[language];
+  return Object.fromEntries(fields.map((field) => [field, all[field]])) as Pick<About, Field>;
 }
 
 /** Newest first. */

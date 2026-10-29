@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { LoaderFunctionArgs } from "react-router";
-import { getAbout, getLearning, LEARNING_KINDS, PeriodLabel } from "@/entities/profile";
+import { ABOUT_META_FIELDS, getLearning, LEARNING_KINDS, PeriodLabel, pickAbout } from "@/entities/profile";
 import { languageFromRequest } from "@/shared/i18n";
 import type { PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
@@ -9,7 +9,7 @@ import { Heading } from "@/shared/ui/typography";
 // Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
   const language = languageFromRequest(request);
-  return { about: getAbout(language), learning: getLearning(language) };
+  return { about: pickAbout(language, ABOUT_META_FIELDS), learning: getLearning(language) };
 }
 
 export const meta = pageMeta("learning");

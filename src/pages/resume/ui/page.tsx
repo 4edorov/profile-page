@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { LoaderFunctionArgs } from "react-router";
-import { getAbout } from "@/entities/profile";
+import { ABOUT_META_FIELDS, pickAbout } from "@/entities/profile";
 import { languageFromRequest } from "@/shared/i18n";
 import { pageMeta } from "@/shared/seo";
 import { Heading } from "@/shared/ui/typography";
@@ -8,7 +8,7 @@ import { Heading } from "@/shared/ui/typography";
 // Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
   const language = languageFromRequest(request);
-  return { about: getAbout(language) };
+  return { about: pickAbout(language, ABOUT_META_FIELDS) };
 }
 
 export const meta = pageMeta("resume");

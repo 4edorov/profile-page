@@ -22,8 +22,8 @@ export interface About {
   introduction: string[];
   /** The Bio: paragraphs shown on the About Page. */
   bio: string[];
-  /** The Portrait's URL, or `null` until the owner adds `content/portrait.jpg`. */
-  portrait: string | null;
+  /** The Portrait's URL. */
+  portrait: string;
 }
 
 /** `url` is the Technology's own website, if it has a link; `stack` puts it in the Stack. */

@@ -8,12 +8,15 @@ import { withLayout } from "@/shared/lib";
  */
 export function TiltedPanel({
   tilt,
+  inset = "text",
   as: Tag = "div",
   labelledBy,
   className,
   children,
 }: {
   tilt: number;
+  /** `photo` is the narrow, Polaroid-like inset around a single image. */
+  inset?: "text" | "photo";
   as?: "div" | "section";
   /** The id of the heading that names a `section`. */
   labelledBy?: string;
@@ -24,7 +27,7 @@ export function TiltedPanel({
     <Tag
       aria-labelledby={labelledBy}
       // `isolate` keeps the background behind the content but in front of the page.
-      className={withLayout("relative isolate p-6 md:p-10", className)}
+      className={withLayout(`relative isolate ${INSETS[inset]}`, className)}
       style={{ "--tilt": `${tilt}deg` } as React.CSSProperties}
     >
       <div
@@ -35,3 +38,5 @@ export function TiltedPanel({
     </Tag>
   );
 }
+
+const INSETS = { text: "p-6 md:p-10", photo: "p-4 md:p-6" };

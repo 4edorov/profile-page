@@ -1,5 +1,6 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { expect, test } from "vitest";
+import { getAbout } from "@/entities/profile";
 import { LANGUAGES, type Language } from "@/shared/i18n";
 import { PAGE_IDS, type PageId } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
@@ -58,7 +59,7 @@ test("no Page Metadata without loader data", () => {
 });
 
 test.each(PAGE_IDS.flatMap((pageId) => LANGUAGES.map((language) => [pageId, language] as const)))(
-  "the %s Page's own meta, fed its own loader in %s, is canonical for that Page",
+  "the %s Page's own meta, fed its own loader in %s, is canonical for that Page and names the owner",
   (pageId, language) => {
     const request = new Request(url(pageId, language));
     const { loader, meta } = routeModule(findRoute(`${language}/${pageId}`));
@@ -68,5 +69,6 @@ test.each(PAGE_IDS.flatMap((pageId) => LANGUAGES.map((language) => [pageId, lang
     const loaderData = loader({ request, params: {}, context: {} } as LoaderFunctionArgs);
     const tags = meta({ loaderData, location: { pathname: new URL(request.url).pathname } });
     expect(tags).toContainEqual({ tagName: "link", rel: "canonical", href: url(pageId, language) });
+    expect(tags).toContainEqual({ property: "og:title", content: expect.stringContaining(getAbout(language).name) });
   },
 );

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { LoaderFunctionArgs } from "react-router";
-import { getAbout } from "@/entities/profile";
+import { ABOUT_META_FIELDS, pickAbout } from "@/entities/profile";
 import { languageFromRequest } from "@/shared/i18n";
 import type { PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
@@ -10,7 +10,7 @@ import { Heading } from "@/shared/ui/typography";
 // Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
   const language = languageFromRequest(request);
-  return { about: getAbout(language) };
+  return { about: pickAbout(language, [...ABOUT_META_FIELDS, "introduction", "bio", "portrait"]) };
 }
 
 export const meta = pageMeta("about");
@@ -42,16 +42,20 @@ export default function About({ loaderData }: PageProps<typeof loader>) {
         </Heading>
         <Paragraphs paragraphs={about.bio} />
       </TiltedPanel>
+      {/* Leans like the Introduction, so the tilts alternate in reading order. */}
       <TiltedPanel
-        tilt={-3}
-        className="w-full max-w-sm justify-self-center p-4 md:col-start-1 md:row-start-1 md:max-w-none md:self-start md:p-6"
+        tilt={3}
+        inset="photo"
+        className="w-full max-w-sm justify-self-center md:col-start-1 md:row-start-1 md:max-w-none md:self-start"
       >
-        {about.portrait === null ? (
-          // Until the owner adds the Portrait: an empty frame that screen readers skip.
-          <div aria-hidden="true" className="aspect-[3/4] w-full border border-text/20" />
-        ) : (
-          <img src={about.portrait} alt={about.name} className="aspect-[3/4] w-full object-cover" />
-        )}
+        {/* Lazy: below 768px it is the last panel, well below the fold. */}
+        <img
+          src={about.portrait}
+          alt={about.name}
+          loading="lazy"
+          decoding="async"
+          className="aspect-[3/4] w-full object-cover"
+        />
       </TiltedPanel>
     </main>
   );

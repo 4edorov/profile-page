@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { createRoutesStub } from "react-router";
+import { createRoutesStub, type LoaderFunctionArgs } from "react-router";
 import { afterEach, expect, test } from "vitest";
 import { getAbout } from "@/entities/profile";
+import { PAGE_IDS } from "@/shared/routing";
 import { setTheme } from "@/shared/theme";
-import { stubRoutes } from "./route-modules";
+import { findRoute, routeModule, stubRoutes } from "./route-modules";
 
 afterEach(() => {
   cleanup();
@@ -106,6 +107,18 @@ test.each(["en", "ru"] as const)(
     renderPath(`/${language}/about`);
     const portrait = await within(await screen.findByRole("main")).findByRole("img", { name: getAbout(language).name });
     expect(portrait.getAttribute("src")).toBe(getAbout(language).portrait);
+  },
+);
+
+test.each(PAGE_IDS.filter((pageId) => pageId !== "about"))(
+  "the %s Page's loader leaves out the Introduction, the Bio and the Portrait",
+  (pageId) => {
+    const { loader } = routeModule(findRoute(`en/${pageId}`));
+    const request = new Request(`https://example.com/en/${pageId}`);
+    const { about } = loader?.({ request, params: {}, context: {} } as LoaderFunctionArgs) as { about: object };
+    for (const field of ["introduction", "bio", "portrait"]) {
+      expect(about).not.toHaveProperty(field);
+    }
   },
 );
 
