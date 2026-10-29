@@ -93,12 +93,24 @@ Whether the owner is currently looking for work, set by the owner in Profile Con
 _Avoid_: Availability, status, hiring
 
 **Technologies**:
-Every language and technology the owner has worked with, one per item, as part of the About Topic, each optionally linked to its own website. Shown in the Technology Cloud and listed on the About Page. Identical in every Language.
+Every language and technology the owner has worked with, one per item, as part of the About Topic, each optionally linked to its own website. Shown only in the Technology Cloud. Identical in every Language.
 _Avoid_: Skills, tech, tags
 
 **Stack**:
 The few Technologies the owner leads with, shown under the headline in the About Section. Every Stack item is one of the Technologies. Identical in every Language.
 _Avoid_: Skills, tech, tags
+
+**Introduction**:
+The owner's professional introduction, part of the About Topic: a few paragraphs on their experience, stack and way of working, written per Language and shown on the About Page under the heading "About Me".
+_Avoid_: About Me (as a name), overview, profile
+
+**Bio**:
+The owner's personal story of how they came to software engineering, part of the About Topic, written per Language and shown on the About Page.
+_Avoid_: Biography, story, background
+
+**Portrait**:
+The owner's photo, part of the About Topic: one image for every Language, described per Language for screen readers, and shown on the About Page.
+_Avoid_: Photo, avatar, headshot, picture
 
 ## Appearance
 
@@ -111,5 +123,5 @@ A run of words in the About tagline shown in the Theme's primary color, chosen b
 _Avoid_: Highlight, emphasis
 
 **Technology Cloud**:
-The About Section's turning sphere of the Technologies, which the visitor's pointer steers; the sphere stops while the pointer is on a Technology, which shows in the Theme's primary color, and clicking a linked one opens its website in a new tab. Still for visitors who ask for reduced motion, and not shown on phone-sized screens. Purely visual: screen readers and keyboard navigation skip it, so the About Page lists the Technologies for every visitor.
+The About Section's turning sphere of the Technologies, which the visitor's pointer steers; the sphere stops while the pointer is on a Technology, which shows in the Theme's primary color, and clicking a linked one opens its website in a new tab. Still for visitors who ask for reduced motion, and not shown on phone-sized screens. Purely visual: screen readers and keyboard navigation skip it, and the Technologies are shown nowhere else.
 _Avoid_: Tag cloud, sphere, animation block

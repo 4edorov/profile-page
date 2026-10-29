@@ -83,17 +83,21 @@ test("clicking a Technology in the Technology Cloud doesn't focus it", async () 
   expect(fireEvent.mouseDown(link as HTMLElement)).toBe(false);
 });
 
-test("the About Page lists every Technology, in order, linking those with a website", async () => {
+/** The paragraphs of the Section named by `heading`. */
+function paragraphsUnder(heading: HTMLElement) {
+  const section = heading.closest("section") as HTMLElement;
+  return Array.from(section.querySelectorAll("p"), (paragraph) => paragraph.textContent);
+}
+
+test("the About Page shows the Introduction under its h1, then the Bio, and no Technologies", async () => {
   renderPath("/ru/about");
-  const heading = await screen.findByRole("heading", { level: 2, name: "Технологии" });
-  const scope = within(heading.closest("section") as HTMLElement);
-  const technologies = getAbout("ru").technologies;
-  expect(scope.getAllByRole("listitem").map((item) => item.textContent)).toEqual(
-    technologies.map((technology) => technology.name),
-  );
-  expect(scope.getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(
-    technologies.flatMap((technology) => (technology.url === null ? [] : [technology.url])),
-  );
+  const about = getAbout("ru");
+  const introduction = await screen.findByRole("heading", { level: 1, name: "Обо мне" });
+  expect(paragraphsUnder(introduction)).toEqual(about.introduction);
+  const bio = screen.getByRole("heading", { level: 2, name: "Биография" });
+  expect(paragraphsUnder(bio)).toEqual(about.bio);
+  expect(within(screen.getByRole("main")).queryAllByRole("heading", { level: 2 })).toEqual([bio]);
+  expect(within(screen.getByRole("main")).queryByText(about.technologies[0]?.name ?? "")).toBeNull();
 });
 
 test("shows only Featured Entries on the Home Page, with links to their Topic Pages", async () => {
@@ -122,7 +126,7 @@ test("the Header links to every Page in order and marks the current one", async 
 });
 
 test.each([
-  ["/en/about", "About"],
+  ["/en/about", "About Me"],
   ["/en/experience", "Experience"],
   ["/en/projects", "Projects"],
   ["/en/learning", "Learning"],

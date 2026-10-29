@@ -24,9 +24,16 @@ import {
 
 const technologies = allTechnologies satisfies Technology[];
 const stack = technologies.filter((technology) => technology.stack).map((technology) => technology.name);
+// A glob rather than an import, so the build works before the Portrait exists.
+const portraits = import.meta.glob<string>("../../../../content/portrait.jpg", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+const portrait = Object.values(portraits)[0] ?? null;
 const about = {
-  en: { ...enAbout, stack, technologies },
-  ru: { ...ruAbout, stack, technologies },
+  en: { ...enAbout, stack, technologies, portrait },
+  ru: { ...ruAbout, stack, technologies, portrait },
 } satisfies Record<Language, About>;
 const experience = { en: enExperience, ru: ruExperience } satisfies Record<Language, ExperienceEntry[]>;
 const projects = { en: enProjects, ru: ruProjects } satisfies Record<Language, ProjectEntry[]>;

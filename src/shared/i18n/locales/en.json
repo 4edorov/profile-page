@@ -47,7 +47,8 @@
     }
   },
   "about": {
-    "technologiesHeading": "Technologies"
+    "introductionHeading": "About Me",
+    "bioHeading": "Bio"
   },
   "footer": {
     "contactHeading": "Contact",
