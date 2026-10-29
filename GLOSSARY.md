@@ -85,8 +85,12 @@ The Topic covering what the owner has studied or is studying: education, courses
 _Avoid_: Education (for the whole Topic), studies
 
 **Contact**:
-The Topic listing the ways to reach the owner, each one a link.
+The Topic listing the ways to reach the owner, each one a link (email among them), and saying whether the owner is Open to Work.
 _Avoid_: Links, socials
+
+**Open to Work**:
+Whether the owner is currently looking for work, set by the owner in Profile Content. While true, the Contact Section says so beside a green light; while false, it says nothing about it. The light is purely visual.
+_Avoid_: Availability, status, hiring
 
 **Technologies**:
 Every language and technology the owner has worked with, one per item, as part of the About Topic, each optionally linked to its own website. Shown in the Technology Cloud and listed on the About Page. Identical in every Language.

@@ -50,7 +50,9 @@
     "technologiesHeading": "Technologies"
   },
   "footer": {
-    "contactHeading": "Contact"
+    "contactHeading": "Contact",
+    "invitation": "Let's connect",
+    "openToWorkLabel": "Open to work"
   },
   "learning": {
     "kinds": {

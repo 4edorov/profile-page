@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
-/* Each Theme has three colors only; muted text, borders and hovers are these at lower opacity. */
+/* Each Theme has three colors, plus the green of the Open to Work light; muted text,
+   borders and hovers are these at lower opacity. */
 @theme {
   --color-*: initial;
   --color-background: #f8fafc;
   --color-text: #0f172a;
   --color-primary: #2563eb;
+  --color-open-to-work: #16a34a;
 }
 
 @layer base {
@@ -20,6 +22,7 @@
     --color-background: #0b1220;
     --color-text: #e2e8f0;
     --color-primary: #60a5fa;
+    --color-open-to-work: #4ade80;
   }
 
   /* The page behind the open menu must not scroll. Only below `lg`, where the

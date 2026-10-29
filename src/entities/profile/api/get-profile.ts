@@ -14,7 +14,7 @@ import { newestFirst } from "../lib/order";
 import {
   LEARNING_KINDS,
   type About,
-  type ContactLink,
+  type Contact,
   type ExperienceEntry,
   type LearningEntry,
   type LearningKind,
@@ -30,7 +30,7 @@ const about = {
 } satisfies Record<Language, About>;
 const experience = { en: enExperience, ru: ruExperience } satisfies Record<Language, ExperienceEntry[]>;
 const projects = { en: enProjects, ru: ruProjects } satisfies Record<Language, ProjectEntry[]>;
-const contact = { en: enContact, ru: ruContact } satisfies Record<Language, ContactLink[]>;
+const contact = { en: enContact, ru: ruContact } satisfies Record<Language, Omit<Contact, "email">>;
 // JSON imports widen `kind` to `string`, so it is checked when read instead.
 const learning = { en: enLearning, ru: ruLearning } satisfies Record<
   Language,
@@ -58,8 +58,10 @@ export function getLearning(language: Language): LearningEntry[] {
     .toSorted((a, b) => LEARNING_KINDS.indexOf(a.kind) - LEARNING_KINDS.indexOf(b.kind) || newestFirst(a, b));
 }
 
-export function getContact(language: Language): ContactLink[] {
-  return contact[language];
+export function getContact(language: Language): Contact {
+  const { openToWork, links } = contact[language];
+  const email = links.find((link) => link.id === "email")?.url.replace(/^mailto:/, "") ?? null;
+  return { openToWork, links, email };
 }
 
 function learningKind(kind: string, id: string): LearningKind {

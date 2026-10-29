@@ -191,6 +191,56 @@ test.each([
   expect(footer.getByRole("link", { name: "GitHub" }).getAttribute("href")).toBe("https://github.com/4edorov");
 });
 
+test.each([
+  ["/en/", "Experience", "Contact", "Let's connect"],
+  ["/ru/", "Опыт", "Контакты", "Давайте познакомимся"],
+])(
+  "on %s the Contact Section is headed like every Section, with an invitation under it",
+  async (path, section, heading, invitation) => {
+    renderPath(path);
+    const sectionHeading = await screen.findByRole("heading", { level: 2, name: section });
+    const footer = within(screen.getByRole("contentinfo"));
+    expect(footer.getByRole("heading", { level: 2, name: heading }).className).toBe(sectionHeading.className);
+    expect(footer.getByText(invitation).tagName).toBe("P");
+  },
+);
+
+test.each([
+  ["/en/", "Email me", "https://www.linkedin.com/in/alexander-fedorov-229008156/"],
+  ["/ru/", "Написать мне", "https://www.linkedin.com/in/alexander-fedorov-229008156/?locale=ru-RU"],
+])(
+  "on %s the Contact Section links to email, GitHub and LinkedIn, opening the last two in a new tab",
+  async (path, email, linkedIn) => {
+    renderPath(path);
+    const links = within(await screen.findByRole("contentinfo"))
+      .getAllByRole("link")
+      .map((link) => ({
+        name: link.textContent,
+        href: link.getAttribute("href"),
+        target: link.getAttribute("target"),
+        rel: link.getAttribute("rel"),
+      }));
+    expect(links).toEqual([
+      { name: email, href: "mailto:4edorov@gmail.com", target: null, rel: null },
+      { name: "GitHub", href: "https://github.com/4edorov", target: "_blank", rel: "noopener" },
+      { name: "LinkedIn", href: linkedIn, target: "_blank", rel: "noopener" },
+    ]);
+  },
+);
+
+test.each([
+  ["/en/", "Open to work"],
+  ["/ru/", "Открыт к предложениям"],
+])(
+  "on %s the Contact Section says the owner is Open to Work and shows the email address as text",
+  async (path, openToWork) => {
+    renderPath(path);
+    const footer = within(await screen.findByRole("contentinfo"));
+    expect(footer.getByText(openToWork)).toBeDefined();
+    expect(footer.getByText("4edorov@gmail.com").closest("a")).toBeNull();
+  },
+);
+
 test("renders the Russian 404 for an unknown Russian path", async () => {
   renderPath("/ru/nope");
   expect(await screen.findByRole("heading", { name: "Страница не найдена" })).toBeDefined();

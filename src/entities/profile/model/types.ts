@@ -1,7 +1,8 @@
 /**
  * Profile Content shapes, one per Topic. Every Language has one JSON file per
  * Topic under the root `content/<language>/` folder, and all Languages must
- * match in shape, ids and untranslated values; only the number of Accents may differ.
+ * match in shape, ids and untranslated values; only the number of Accents and
+ * the Contact links' URLs may differ.
  * The Technologies are the exception: identical in every Language, they are written
  * once, in the root `content/technologies.json`.
  */
@@ -63,6 +64,14 @@ export interface LearningEntry extends Entry, Period {
   title: string;
   /** School, platform, issuer or author. */
   provider: string;
+}
+
+export interface Contact {
+  openToWork: boolean;
+  /** In the order they are shown; an `email` link's `url` is `mailto:` the address. */
+  links: ContactLink[];
+  /** The address of the `email` link, shown as text; `null` without one. */
+  email: string | null;
 }
 
 export interface ContactLink {

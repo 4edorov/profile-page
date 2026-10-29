@@ -50,7 +50,9 @@
     "technologiesHeading": "Технологии"
   },
   "footer": {
-    "contactHeading": "Контакты"
+    "contactHeading": "Контакты",
+    "invitation": "Давайте познакомимся",
+    "openToWorkLabel": "Открыт к предложениям"
   },
   "learning": {
     "kinds": {

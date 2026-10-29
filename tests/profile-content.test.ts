@@ -1,5 +1,13 @@
 import { describe, expect, test } from "vitest";
-import { getAbout, getExperience, getLearning, getProjects, LEARNING_KINDS, newestFirst } from "@/entities/profile";
+import {
+  getAbout,
+  getContact,
+  getExperience,
+  getLearning,
+  getProjects,
+  LEARNING_KINDS,
+  newestFirst,
+} from "@/entities/profile";
 import { DEFAULT_LANGUAGE, LANGUAGES } from "@/shared/i18n";
 
 test("newestFirst puts in-progress first, then latest end, then latest start", () => {
@@ -42,8 +50,18 @@ describe.each(LANGUAGES)("Profile Content in %s", (language) => {
     }
   });
 
+  test("Contact links go to https URLs or a mailto: address", () => {
+    const badUrls = getContact(language).links.filter(({ url }) => !/^(https:\/\/|mailto:)/.test(url));
+    expect(badUrls).toEqual([]);
+  });
+
   test("ids are unique within each Topic", () => {
-    for (const entries of [getExperience(language), getProjects(language), getLearning(language)]) {
+    for (const entries of [
+      getExperience(language),
+      getProjects(language),
+      getLearning(language),
+      getContact(language).links,
+    ]) {
       const ids = entries.map((entry) => entry.id);
       expect(new Set(ids).size).toBe(ids.length);
     }

@@ -7,7 +7,7 @@ A professional Profile Site. It's an SPA built with React 19, React Router 8 and
 - **React Router 8 framework mode** with `ssr: false` and `prerender`: static HTML for every Page in every Language. See [ADR-0001](docs/adr/0001-prerendered-spa.md).
 - **Language in the URL path**. See [ADR-0002](docs/adr/0002-language-in-url-path.md).
 - **react-i18next** for UI Strings, with bundled and typed resources.
-- **Tailwind CSS 4**, limited to three colors per Theme (Background, Text, Primary) in `src/app/app.css`. Every visit starts in Light, whatever the system setting. The Header switches the Theme, and the choice is never stored.
+- **Tailwind CSS 4**, limited to three colors per Theme (Background, Text, Primary), plus the green of the Open to Work light, in `src/app/app.css`. Every visit starts in Light, whatever the system setting. The Header switches the Theme, and the choice is never stored.
 - **Vite 8**, **Vitest**, **ESLint** (typescript-eslint, react-hooks, jsx-a11y) and **Prettier**.
 - **Self-hosted nginx**, deployed manually over SSH. See [ADR-0003](docs/adr/0003-self-hosted-manual-deploy.md).
 
@@ -49,7 +49,7 @@ Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-fe
 
 ### Both Languages must always be complete
 
-A UI String key that's missing from `ru.json` is a type error. Profile Content files, ids and shapes must match across Languages (only the number of Accents in the tagline may differ), and `tests/*-parity.test.ts` checks this. Either failure blocks `pnpm check`, and therefore blocks deploy.
+A UI String key that's missing from `ru.json` is a type error. Profile Content files, ids and shapes must match across Languages (only the number of Accents in the tagline and the Contact links' URLs may differ), and `tests/*-parity.test.ts` checks this. Either failure blocks `pnpm check`, and therefore blocks deploy.
 
 ## Server setup (once)
 
