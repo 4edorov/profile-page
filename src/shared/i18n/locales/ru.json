@@ -47,7 +47,8 @@
     }
   },
   "about": {
-    "technologiesHeading": "Технологии"
+    "introductionHeading": "Обо мне",
+    "bioHeading": "Биография"
   },
   "footer": {
     "contactHeading": "Контакты",

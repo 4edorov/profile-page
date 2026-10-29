@@ -1,11 +1,12 @@
 import { useTranslation } from "react-i18next";
 import type { LoaderFunctionArgs } from "react-router";
 import {
-  getAbout,
+  ABOUT_META_FIELDS,
   getExperience,
   getLearning,
   getProjects,
   PeriodLabel,
+  pickAbout,
   Tagline,
   TechnologyCloud,
 } from "@/entities/profile";
@@ -19,7 +20,7 @@ import { Heading, Text } from "@/shared/ui/typography";
 export function loader({ request }: LoaderFunctionArgs) {
   const language = languageFromRequest(request);
   return {
-    about: getAbout(language),
+    about: pickAbout(language, [...ABOUT_META_FIELDS, "stack", "technologies", "tagline"]),
     experience: getExperience(language).filter((entry) => entry.featured),
     projects: getProjects(language).filter((entry) => entry.featured),
     learning: getLearning(language).filter((entry) => entry.featured),
@@ -59,7 +60,7 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
           </Text>
           <MoreLink to={pagePath(language, "about")}>{t("home.more.about")}</MoreLink>
         </div>
-        {/* Purely visual, and hidden below 768px: the About Page lists every Technology as text. */}
+        {/* Purely visual, and hidden below 768px; the Technologies are shown nowhere else. */}
         <div aria-hidden="true" className="hidden items-center md:flex">
           <TechnologyCloud technologies={about.technologies} />
         </div>

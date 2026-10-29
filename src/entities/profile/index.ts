@@ -1,4 +1,12 @@
-export { getAbout, getContact, getExperience, getLearning, getProjects } from "./api/get-profile";
+export {
+  ABOUT_META_FIELDS,
+  getAbout,
+  getContact,
+  getExperience,
+  getLearning,
+  getProjects,
+  pickAbout,
+} from "./api/get-profile";
 export { newestFirst } from "./lib/order";
 export {
   LEARNING_KINDS,

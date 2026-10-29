@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { createRoutesStub } from "react-router";
+import { createRoutesStub, type LoaderFunctionArgs } from "react-router";
 import { afterEach, expect, test } from "vitest";
 import { getAbout } from "@/entities/profile";
+import { PAGE_IDS } from "@/shared/routing";
 import { setTheme } from "@/shared/theme";
-import { stubRoutes } from "./route-modules";
+import { findRoute, routeModule, stubRoutes } from "./route-modules";
 
 afterEach(() => {
   cleanup();
@@ -83,18 +84,43 @@ test("clicking a Technology in the Technology Cloud doesn't focus it", async () 
   expect(fireEvent.mouseDown(link as HTMLElement)).toBe(false);
 });
 
-test("the About Page lists every Technology, in order, linking those with a website", async () => {
+/** The paragraphs of the Section named by `heading`. */
+function paragraphsUnder(heading: HTMLElement) {
+  const section = heading.closest("section") as HTMLElement;
+  return Array.from(section.querySelectorAll("p"), (paragraph) => paragraph.textContent);
+}
+
+test("the About Page shows the Introduction under its h1, then the Bio, and no Technologies", async () => {
   renderPath("/ru/about");
-  const heading = await screen.findByRole("heading", { level: 2, name: "Технологии" });
-  const scope = within(heading.closest("section") as HTMLElement);
-  const technologies = getAbout("ru").technologies;
-  expect(scope.getAllByRole("listitem").map((item) => item.textContent)).toEqual(
-    technologies.map((technology) => technology.name),
-  );
-  expect(scope.getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(
-    technologies.flatMap((technology) => (technology.url === null ? [] : [technology.url])),
-  );
+  const about = getAbout("ru");
+  const introduction = await screen.findByRole("heading", { level: 1, name: "Обо мне" });
+  expect(paragraphsUnder(introduction)).toEqual(about.introduction);
+  const bio = screen.getByRole("heading", { level: 2, name: "Биография" });
+  expect(paragraphsUnder(bio)).toEqual(about.bio);
+  expect(within(screen.getByRole("main")).queryAllByRole("heading", { level: 2 })).toEqual([bio]);
+  expect(within(screen.getByRole("main")).queryByText(about.technologies[0]?.name ?? "")).toBeNull();
 });
+
+test.each(["en", "ru"] as const)(
+  "the About Page in %s shows the Portrait, described by the owner's name",
+  async (language) => {
+    renderPath(`/${language}/about`);
+    const portrait = await within(await screen.findByRole("main")).findByRole("img", { name: getAbout(language).name });
+    expect(portrait.getAttribute("src")).toBe(getAbout(language).portrait);
+  },
+);
+
+test.each(PAGE_IDS.filter((pageId) => pageId !== "about"))(
+  "the %s Page's loader leaves out the Introduction, the Bio and the Portrait",
+  (pageId) => {
+    const { loader } = routeModule(findRoute(`en/${pageId}`));
+    const request = new Request(`https://example.com/en/${pageId}`);
+    const { about } = loader?.({ request, params: {}, context: {} } as LoaderFunctionArgs) as { about: object };
+    for (const field of ["introduction", "bio", "portrait"]) {
+      expect(about).not.toHaveProperty(field);
+    }
+  },
+);
 
 test("shows only Featured Entries on the Home Page, with links to their Topic Pages", async () => {
   renderPath("/en/");
@@ -122,7 +148,7 @@ test("the Header links to every Page in order and marks the current one", async 
 });
 
 test.each([
-  ["/en/about", "About"],
+  ["/en/about", "About Me"],
   ["/en/experience", "Experience"],
   ["/en/projects", "Projects"],
   ["/en/learning", "Learning"],

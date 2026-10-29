@@ -3,8 +3,8 @@
  * Topic under the root `content/<language>/` folder, and all Languages must
  * match in shape, ids and untranslated values; only the number of Accents and
  * the query of a Contact link's URL may differ.
- * The Technologies are the exception: identical in every Language, they are written
- * once, in the root `content/technologies.json`.
+ * The Technologies and the Portrait are the exception: identical in every Language,
+ * they are written once, in the root `content/technologies.json` and `content/portrait.jpg`.
  */
 
 export interface About {
@@ -18,8 +18,12 @@ export interface About {
   tagline: { text: string; accents: string[] };
   /** Shown in the About Section on the Home Page. */
   summary: string;
-  /** Paragraphs shown on the About Page. */
+  /** The Introduction: paragraphs shown on the About Page. */
+  introduction: string[];
+  /** The Bio: paragraphs shown on the About Page. */
   bio: string[];
+  /** The Portrait's URL. */
+  portrait: string;
 }
 
 /** `url` is the Technology's own website, if it has a link; `stack` puts it in the Stack. */

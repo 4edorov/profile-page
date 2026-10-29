@@ -6,5 +6,18 @@
     "accents": ["build", "things", "matter"]
   },
   "summary": "Senior Software Engineer with 9+ years of building apps in fintech, e-commerce, govtech, and IoT",
-  "bio": ["Placeholder bio, first paragraph.", "Placeholder bio, second paragraph."]
+  "introduction": [
+    "Creating things that matter is my passion. The ability to make something out of nothing is what led me to a career in software engineering.",
+    "As a software engineer with over nine years of experience, I have a proven track record of building apps from the ground up. I have worked in different industries and developed a wide range of apps: chatbots for education and medicine, a conversational app for personal management, a CRM system for logistics, a B2B e-commerce platform, an app for car sales, a real estate app and a FinOps app.",
+    "My expertise spans the full stack, from crafting responsive front-end interfaces with React to designing and running scalable back-end systems with Node.js. My stack isn't limited to these, though: it also includes other languages, such as C# and Java.",
+    "In my daily work, I strive for balance in every aspect of development, weighing costs against results. I am deeply committed to writing clean, maintainable code, follow best practices and design patterns, and always rely on principles like DRY, SoC and KISS. I value quality work and long-term relationships with clients.",
+    "In my most recent role, I led a team that developed a React Native virtual collection app. Building it from scratch and publishing it to the app stores was a real challenge.",
+    "Outside my day-to-day work, I enjoy learning new things. A healthy work-life balance is important to me."
+  ],
+  "bio": [
+    "I hold a Master's degree in Economics and a Bachelor's degree in Law, and I spent nine years working in these fields, both in public office and at a private company.",
+    "But one day I felt the need for a change, and a friend advised me to try programming. I remembered how much fun it was to program in Turbo Pascal 7.0 at school and university, and that I was an A student in mathematics. Why not?!",
+    "I started learning HTML, CSS and JavaScript. The turning point was joining the freeCodeCamp community in November 2016.",
+    "Today I work as a Full Stack Software Engineer. I love it, and I keep learning new things. Every step brings results. It's awesome!"
+  ]
 }
