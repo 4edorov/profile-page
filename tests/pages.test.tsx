@@ -188,7 +188,7 @@ test.each([
   renderPath(path);
   const footer = within(await screen.findByRole("contentinfo"));
   expect(footer.getByRole("heading", { name: heading })).toBeDefined();
-  expect(footer.getByRole("link", { name: "GitHub" }).getAttribute("href")).toBe("https://github.com/4edorov");
+  expect(footer.getByRole("link", { name: /^GitHub/ }).getAttribute("href")).toBe("https://github.com/4edorov");
 });
 
 test.each([
@@ -206,11 +206,16 @@ test.each([
 );
 
 test.each([
-  ["/en/", "Email me", "https://www.linkedin.com/in/alexander-fedorov-229008156/"],
-  ["/ru/", "Написать мне", "https://www.linkedin.com/in/alexander-fedorov-229008156/?locale=ru-RU"],
+  ["/en/", "Email me", "https://www.linkedin.com/in/alexander-fedorov-229008156/", "(opens in a new tab)"],
+  [
+    "/ru/",
+    "Написать мне",
+    "https://www.linkedin.com/in/alexander-fedorov-229008156/?locale=ru-RU",
+    "(откроется в новой вкладке)",
+  ],
 ])(
-  "on %s the Contact Section links to email, GitHub and LinkedIn, opening the last two in a new tab",
-  async (path, email, linkedIn) => {
+  "on %s the Contact Section links to email, GitHub and LinkedIn, opening the last two in a new tab and saying so",
+  async (path, email, linkedIn, newTab) => {
     renderPath(path);
     const links = within(await screen.findByRole("contentinfo"))
       .getAllByRole("link")
@@ -222,8 +227,8 @@ test.each([
       }));
     expect(links).toEqual([
       { name: email, href: "mailto:4edorov@gmail.com", target: null, rel: null },
-      { name: "GitHub", href: "https://github.com/4edorov", target: "_blank", rel: "noopener" },
-      { name: "LinkedIn", href: linkedIn, target: "_blank", rel: "noopener" },
+      { name: `GitHub ${newTab}`, href: "https://github.com/4edorov", target: "_blank", rel: "noopener" },
+      { name: `LinkedIn ${newTab}`, href: linkedIn, target: "_blank", rel: "noopener" },
     ]);
   },
 );

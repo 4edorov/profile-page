@@ -16,8 +16,10 @@ function readContent(language: string, file: string): unknown {
   return JSON.parse(readFileSync(join(contentDir, language, file), "utf8"));
 }
 
-/** Untranslated keys a file may still set per Language: a Contact link can go to that Language's version of a profile. */
-const PER_LANGUAGE_KEYS: Record<string, ReadonlySet<string>> = { "contact.json": new Set(["url"]) };
+/** Options for files that may differ in more than wording: a Contact link can go to that Language's version of a profile. */
+const SHAPE_OPTIONS: Record<string, { urlQueryPerLanguage: boolean }> = {
+  "contact.json": { urlQueryPerLanguage: true },
+};
 
 describe.each(LANGUAGES.filter((language) => language !== DEFAULT_LANGUAGE))("Profile Content in %s", (language) => {
   test("has the same files as the Default Language", () => {
@@ -25,9 +27,9 @@ describe.each(LANGUAGES.filter((language) => language !== DEFAULT_LANGUAGE))("Pr
   });
 
   test.each(contentFiles(DEFAULT_LANGUAGE))("%s matches the Default Language in shape and ids", (file) => {
-    const perLanguage = PER_LANGUAGE_KEYS[file];
-    expect(shapeOf(readContent(language, file), perLanguage)).toEqual(
-      shapeOf(readContent(DEFAULT_LANGUAGE, file), perLanguage),
+    const options = SHAPE_OPTIONS[file];
+    expect(shapeOf(readContent(language, file), options)).toEqual(
+      shapeOf(readContent(DEFAULT_LANGUAGE, file), options),
     );
   });
 });

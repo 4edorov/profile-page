@@ -52,7 +52,8 @@
   "footer": {
     "contactHeading": "Contact",
     "invitation": "Let's connect",
-    "openToWorkLabel": "Open to work"
+    "openToWorkLabel": "Open to work",
+    "opensInNewTab": "(opens in a new tab)"
   },
   "learning": {
     "kinds": {

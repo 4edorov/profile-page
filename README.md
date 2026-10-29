@@ -49,7 +49,7 @@ Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-fe
 
 ### Both Languages must always be complete
 
-A UI String key that's missing from `ru.json` is a type error. Profile Content files, ids and shapes must match across Languages (only the number of Accents in the tagline and the Contact links' URLs may differ), and `tests/*-parity.test.ts` checks this. Either failure blocks `pnpm check`, and therefore blocks deploy.
+A UI String key that's missing from `ru.json` is a type error. Profile Content files, ids and shapes must match across Languages (only the number of Accents in the tagline and the query of a Contact link's URL, such as LinkedIn's `?locale=`, may differ), and `tests/*-parity.test.ts` checks this. Either failure blocks `pnpm check`, and therefore blocks deploy.
 
 ## Server setup (once)
 

@@ -12,8 +12,9 @@ const ICONS: Record<string, () => React.ReactNode> = {
 };
 
 /** Below every Page's other Sections: the Contact Section and nothing else. */
-export function Footer({ contact: { openToWork, links, email } }: { contact: Contact }) {
+export function Footer({ contact: { openToWork, links } }: { contact: Contact }) {
   const { t } = useTranslation();
+  const mailto = links.map((link) => new URL(link.url)).find((url) => url.protocol === "mailto:");
   return (
     <footer className="px-6 md:px-12">
       <section aria-labelledby="contact-heading" className="border-t border-text/10 py-12">
@@ -29,16 +30,19 @@ export function Footer({ contact: { openToWork, links, email } }: { contact: Con
             {t("footer.openToWorkLabel")}
           </p>
         )}
-        {email && <p className="mt-2">{email}</p>}
+        {/* The address alone: a mailto: URL's path, without any query such as `?subject=`. */}
+        {mailto && <p className="mt-2">{decodeURIComponent(mailto.pathname)}</p>}
         <ul className="mt-6 flex flex-wrap gap-3">
           {links.map((link) => {
             const Icon = ICONS[link.id];
+            // A web page opens in a new tab; a `mailto:` link opens the visitor's mail app instead.
+            const newTab = link.url.startsWith("https://");
             return (
               <li key={link.id}>
-                {/* A web page opens in a new tab; a `mailto:` link opens the visitor's mail app instead. */}
-                <ButtonLink to={link.url} newTab={link.url.startsWith("https://")}>
+                <ButtonLink to={link.url} newTab={newTab}>
                   {Icon && <Icon />}
                   {link.label}
+                  {newTab && <span className="sr-only"> {t("footer.opensInNewTab")}</span>}
                 </ButtonLink>
               </li>
             );

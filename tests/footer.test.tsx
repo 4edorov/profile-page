@@ -11,7 +11,6 @@ afterEach(cleanup);
 const contact: Contact = {
   openToWork: true,
   links: [{ id: "github", label: "GitHub", url: "https://github.com/4edorov" }],
-  email: null,
 };
 
 function renderFooter(contact: Contact) {
@@ -25,11 +24,10 @@ function renderFooter(contact: Contact) {
 
 test("while the owner is not Open to Work, the Contact Section says nothing about it", () => {
   const footer = renderFooter({ ...contact, openToWork: false });
-  expect(footer.getByRole("link", { name: "GitHub" })).toBeDefined();
+  expect(footer.getByRole("link", { name: /^GitHub/ })).toBeDefined();
   expect(footer.queryByText("Open to work")).toBeNull();
-  // The only things hidden from screen readers are the links' icons, so no light.
-  const hidden = screen.getByRole("contentinfo").querySelectorAll('[aria-hidden="true"]');
-  expect([...hidden].map((element) => element.tagName)).toEqual(["svg"]);
+  // Apart from the links' icons, nothing is hidden from screen readers: no light.
+  expect(screen.getByRole("contentinfo").querySelectorAll('[aria-hidden="true"]:not(svg)')).toHaveLength(0);
 });
 
 test("the Open to Work light is purely visual, so screen readers read only the words", () => {
@@ -38,4 +36,11 @@ test("the Open to Work light is purely visual, so screen readers read only the w
   const light = line.firstElementChild as HTMLElement;
   expect(light.getAttribute("aria-hidden")).toBe("true");
   expect(light.textContent).toBe("");
+});
+
+test("the email address shows without the mailto: link's query", () => {
+  const email = { id: "email", label: "Email me", url: "mailto:someone@example.com?subject=Hello" };
+  const footer = renderFooter({ ...contact, links: [email] });
+  expect(footer.getByText("someone@example.com")).toBeDefined();
+  expect(footer.getByRole("link", { name: "Email me" }).getAttribute("href")).toBe(email.url);
 });

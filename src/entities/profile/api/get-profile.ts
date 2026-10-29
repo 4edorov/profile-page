@@ -30,7 +30,7 @@ const about = {
 } satisfies Record<Language, About>;
 const experience = { en: enExperience, ru: ruExperience } satisfies Record<Language, ExperienceEntry[]>;
 const projects = { en: enProjects, ru: ruProjects } satisfies Record<Language, ProjectEntry[]>;
-const contact = { en: enContact, ru: ruContact } satisfies Record<Language, Omit<Contact, "email">>;
+const contact = { en: enContact, ru: ruContact } satisfies Record<Language, Contact>;
 // JSON imports widen `kind` to `string`, so it is checked when read instead.
 const learning = { en: enLearning, ru: ruLearning } satisfies Record<
   Language,
@@ -59,9 +59,7 @@ export function getLearning(language: Language): LearningEntry[] {
 }
 
 export function getContact(language: Language): Contact {
-  const { openToWork, links } = contact[language];
-  const email = links.find((link) => link.id === "email")?.url.replace(/^mailto:/, "") ?? null;
-  return { openToWork, links, email };
+  return contact[language];
 }
 
 function learningKind(kind: string, id: string): LearningKind {
