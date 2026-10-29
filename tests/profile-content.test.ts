@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getExperience, getLearning, getProjects, LEARNING_KINDS, newestFirst } from "@/entities/profile";
+import { getAbout, getExperience, getLearning, getProjects, LEARNING_KINDS, newestFirst } from "@/entities/profile";
 import { LANGUAGES } from "@/shared/i18n";
 
 test("newestFirst puts in-progress first, then latest end, then latest start", () => {
@@ -31,6 +31,20 @@ describe.each(LANGUAGES)("Profile Content in %s", (language) => {
       const group = learning.filter((entry) => entry.kind === kind);
       expect(group).toEqual(group.toSorted(newestFirst));
     }
+  });
+
+  test("every Stack item is one of the Technologies", () => {
+    const { stack, technologies } = getAbout(language);
+    const names = technologies.map((technology) => technology.name);
+    expect(stack.filter((item) => !names.includes(item))).toEqual([]);
+  });
+
+  test("Technologies are unique and link only to https URLs", () => {
+    const { technologies } = getAbout(language);
+    const names = technologies.map((technology) => technology.name);
+    expect(new Set(names).size).toBe(names.length);
+    const badUrls = technologies.filter(({ url }) => url !== null && !url.startsWith("https://"));
+    expect(badUrls).toEqual([]);
   });
 
   test("ids are unique within each Topic", () => {

@@ -33,15 +33,47 @@ test("renders the Russian Home Page with every Topic's Section except Contact, a
   expect((await findInHeader("link", { name: /English/ })).getAttribute("href")).toBe("/en/");
 });
 
+/** The About Section on the Home Page in `language`. */
+async function findAboutSection(language: "en" | "ru") {
+  renderPath(`/${language}/`);
+  const heading = await screen.findByRole("heading", { level: 1, name: getAbout(language).name });
+  return heading.closest("section") as HTMLElement;
+}
+
+/** Elements of `role` that screen readers skip: in the DOM but hidden from the accessibility tree. */
+function hiddenByRole(container: HTMLElement, role: string) {
+  const scope = within(container);
+  const visible = scope.queryAllByRole(role);
+  return scope.queryAllByRole(role, { hidden: true }).filter((element) => !visible.includes(element));
+}
+
 test("the About Section shows the Stack as a list, in order", async () => {
-  renderPath("/en/");
-  const about = getAbout("en");
-  const section = (await screen.findByRole("heading", { level: 1, name: about.name })).closest("section");
-  expect(section).not.toBeNull();
-  const items = within(section as HTMLElement)
+  const section = await findAboutSection("en");
+  const items = within(section)
     .getAllByRole("listitem")
     .map((item) => item.textContent);
-  expect(items).toEqual(about.stack);
+  expect(items).toEqual(getAbout("en").stack);
+});
+
+test("the About Section holds a Technology Cloud of every Technology, in order, which screen readers skip", async () => {
+  const section = await findAboutSection("ru");
+  const names = hiddenByRole(section, "listitem").map((item) => item.textContent);
+  expect(names).toEqual(getAbout("ru").technologies.map((technology) => technology.name));
+});
+
+test("a linked Technology opens its website in a new tab, and keyboard navigation skips it", async () => {
+  const section = await findAboutSection("en");
+  const links = hiddenByRole(section, "link").map((link) => ({
+    name: link.textContent,
+    href: link.getAttribute("href"),
+    target: link.getAttribute("target"),
+    rel: link.getAttribute("rel"),
+    tabIndex: link.tabIndex,
+  }));
+  const linked = getAbout("en").technologies.filter((technology) => technology.url !== null);
+  expect(links).toEqual(
+    linked.map(({ name, url }) => ({ name, href: url, target: "_blank", rel: "noopener", tabIndex: -1 })),
+  );
 });
 
 test("shows only Featured Entries on the Home Page, with links to their Topic Pages", async () => {

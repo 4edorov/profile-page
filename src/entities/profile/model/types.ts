@@ -7,14 +7,22 @@
 export interface About {
   name: string;
   headline: string;
-  /** The Stack: identical in every Language. */
+  /** The Stack: names of Technologies, identical in every Language. */
   stack: string[];
+  /** The Technologies, in the order the Technology Cloud places them; identical in every Language. The Stack is a subset. */
+  technologies: Technology[];
   /** `accents` are the Accents: runs of words in `text`, per Language. */
   tagline: { text: string; accents: string[] };
   /** Shown in the About Section on the Home Page. */
   summary: string;
   /** Paragraphs shown on the About Page. */
   bio: string[];
+}
+
+/** `url` is the Technology's own website, if it has a link. */
+export interface Technology {
+  name: string;
+  url: string | null;
 }
 
 /** Months as `YYYY-MM`; an `end` of `null` means still in progress. */

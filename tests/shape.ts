@@ -1,5 +1,5 @@
 /** Keys whose values are not translated, so they must be equal in every Language. */
-const UNTRANSLATED_KEYS = new Set(["id", "featured", "kind", "start", "end", "url", "stack"]);
+const UNTRANSLATED_KEYS = new Set(["id", "featured", "kind", "start", "end", "url", "stack", "technologies"]);
 
 /** Keys whose arrays are worded per Language, so their length may differ: each tagline has its own Accents. */
 const ANY_LENGTH_KEYS = new Set(["accents"]);
