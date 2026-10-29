@@ -100,6 +100,15 @@ test("the About Page shows the Introduction under its h1, then the Bio, and no T
   expect(within(screen.getByRole("main")).queryByText(about.technologies[0]?.name ?? "")).toBeNull();
 });
 
+test.each(["en", "ru"] as const)(
+  "the About Page in %s shows the Portrait, described by the owner's name",
+  async (language) => {
+    renderPath(`/${language}/about`);
+    const portrait = await within(await screen.findByRole("main")).findByRole("img", { name: getAbout(language).name });
+    expect(portrait.getAttribute("src")).toBe(getAbout(language).portrait);
+  },
+);
+
 test("shows only Featured Entries on the Home Page, with links to their Topic Pages", async () => {
   renderPath("/en/");
   const section = (await screen.findByRole("heading", { level: 2, name: "Experience" })).closest("section");

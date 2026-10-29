@@ -37,7 +37,7 @@ Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-fe
 | `src/shared/i18n/locales/*.json` | UI Strings.                                                                                                        |
 | `content/{en,ru}/<topic>.json`   | Profile Content, one file per Topic. Its types live in `src/entities/profile`.                                     |
 | `content/technologies.json`      | The Technologies, written once for every Language; `stack` marks the Stack.                                        |
-| `content/portrait.jpg`           | The Portrait, written once for every Language: a 3:4 JPEG, at least 800×1067. Optional until the owner adds it.    |
+| `content/portrait.jpg`           | The Portrait, written once for every Language: a JPEG at least 768×1024; the About Page shows its 3:4 middle.      |
 | `deploy/nginx/`                  | nginx site config and shared snippet.                                                                              |
 | `scripts/deploy.sh`              | Build and deploy over SSH.                                                                                         |
 
