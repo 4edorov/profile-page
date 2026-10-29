@@ -76,6 +76,26 @@ test("a linked Technology opens its website in a new tab, and keyboard navigatio
   );
 });
 
+test("clicking a Technology in the Technology Cloud doesn't focus it", async () => {
+  const section = await findAboutSection("en");
+  const [link] = hiddenByRole(section, "link");
+  // `false` means the default, which would move focus there, was prevented.
+  expect(fireEvent.mouseDown(link as HTMLElement)).toBe(false);
+});
+
+test("the About Page lists every Technology, in order, linking those with a website", async () => {
+  renderPath("/ru/about");
+  const heading = await screen.findByRole("heading", { level: 2, name: "Технологии" });
+  const scope = within(heading.closest("section") as HTMLElement);
+  const technologies = getAbout("ru").technologies;
+  expect(scope.getAllByRole("listitem").map((item) => item.textContent)).toEqual(
+    technologies.map((technology) => technology.name),
+  );
+  expect(scope.getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(
+    technologies.flatMap((technology) => (technology.url === null ? [] : [technology.url])),
+  );
+});
+
 test("shows only Featured Entries on the Home Page, with links to their Topic Pages", async () => {
   renderPath("/en/");
   const section = (await screen.findByRole("heading", { level: 2, name: "Experience" })).closest("section");

@@ -1,0 +1,167 @@
+[
+  {
+    "name": "JavaScript",
+    "url": "https://developer.mozilla.org/docs/Web/JavaScript",
+    "stack": true
+  },
+  {
+    "name": "TypeScript",
+    "url": "https://www.typescriptlang.org",
+    "stack": true
+  },
+  {
+    "name": "React",
+    "url": "https://react.dev",
+    "stack": true
+  },
+  {
+    "name": "Redux",
+    "url": "https://redux.js.org",
+    "stack": false
+  },
+  {
+    "name": "Next.js",
+    "url": "https://nextjs.org",
+    "stack": true
+  },
+  {
+    "name": "SWR",
+    "url": "https://swr.vercel.app",
+    "stack": false
+  },
+  {
+    "name": "React Native",
+    "url": "https://reactnative.dev",
+    "stack": false
+  },
+  {
+    "name": "Expo",
+    "url": "https://expo.dev",
+    "stack": false
+  },
+  {
+    "name": "Vue.js",
+    "url": "https://vuejs.org",
+    "stack": false
+  },
+  {
+    "name": "Angular",
+    "url": "https://angular.dev",
+    "stack": false
+  },
+  {
+    "name": "Material UI",
+    "url": "https://mui.com/material-ui/",
+    "stack": false
+  },
+  {
+    "name": "PrimeReact",
+    "url": "https://primereact.org",
+    "stack": false
+  },
+  {
+    "name": "Chakra UI",
+    "url": "https://chakra-ui.com",
+    "stack": false
+  },
+  {
+    "name": "Smarty",
+    "url": "https://www.smarty.net",
+    "stack": false
+  },
+  {
+    "name": "Apollo",
+    "url": "https://www.apollographql.com",
+    "stack": false
+  },
+  {
+    "name": "Jest",
+    "url": "https://jestjs.io",
+    "stack": false
+  },
+  {
+    "name": "Chai",
+    "url": "https://www.chaijs.com",
+    "stack": false
+  },
+  {
+    "name": "Mocha",
+    "url": "https://mochajs.org",
+    "stack": false
+  },
+  {
+    "name": "Node.js",
+    "url": "https://nodejs.org",
+    "stack": true
+  },
+  {
+    "name": "Express",
+    "url": "https://expressjs.com",
+    "stack": true
+  },
+  {
+    "name": "GraphQL",
+    "url": "https://graphql.org",
+    "stack": false
+  },
+  {
+    "name": "REST",
+    "url": null,
+    "stack": false
+  },
+  {
+    "name": "ASP.NET Web API",
+    "url": "https://dotnet.microsoft.com/apps/aspnet/apis",
+    "stack": false
+  },
+  {
+    "name": "MongoDB",
+    "url": "https://www.mongodb.com",
+    "stack": false
+  },
+  {
+    "name": "PostgreSQL",
+    "url": "https://www.postgresql.org",
+    "stack": false
+  },
+  {
+    "name": "MySQL",
+    "url": "https://www.mysql.com",
+    "stack": false
+  },
+  {
+    "name": "Knex.js",
+    "url": "https://knexjs.org",
+    "stack": false
+  },
+  {
+    "name": "AWS",
+    "url": "https://aws.amazon.com",
+    "stack": false
+  },
+  {
+    "name": "Azure",
+    "url": "https://azure.microsoft.com",
+    "stack": false
+  },
+  {
+    "name": "GCP",
+    "url": "https://cloud.google.com",
+    "stack": false
+  },
+  {
+    "name": "EAS",
+    "url": "https://expo.dev/eas",
+    "stack": false
+  },
+  {
+    "name": "Git",
+    "url": "https://git-scm.com",
+    "stack": false
+  },
+  {
+    "name": "Docker",
+    "url": "https://www.docker.com",
+    "stack": false
+  }
+]

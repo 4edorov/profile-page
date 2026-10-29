@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Text } from "@/shared/ui/typography";
 import type { Technology } from "../model/types";
 
@@ -24,22 +24,18 @@ const MAX_STEP_MS = 50;
 
 /**
  * The Technology Cloud: the Technologies on a turning sphere, steered by the
- * pointer and stopped while it is on a Technology. Placement depends only on the order of `technologies`, so the
+ * pointer and stopped while it is on a Technology. Placement depends only on how many Technologies there are, so the
  * prerendered HTML already shows the still sphere and hydration matches it;
  * it starts turning once hydrated, unless the visitor asks for reduced motion,
  * and pauses while off screen. Purely visual: the caller hides it from screen
- * readers, and its links are left out of keyboard navigation.
+ * readers, and its links never take focus.
  */
 export function TechnologyCloud({ technologies }: { technologies: Technology[] }) {
   const cloudRef = useRef<HTMLDivElement>(null);
   // How the pointer steers the sphere; `null` while it is elsewhere.
   const steeringRef = useRef<Spin | null>(null);
-  // Whether the pointer is on a Technology, which stops the sphere.
-  const holdingRef = useRef(false);
-  const startingPoints = useMemo(
-    () => technologies.map((_, index) => startingPoint(index, technologies.length)),
-    [technologies],
-  );
+  // The effect reruns on the count, not the array: fresh loader data with the same Technologies keeps the sphere where it is.
+  const count = technologies.length;
 
   useEffect(() => {
     const cloud = cloudRef.current;
@@ -50,7 +46,7 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
     const items = Array.from(cloud.querySelectorAll("li"), (element, index) => ({
       element,
-      point: startingPoints[index] ?? { x: 0, y: 0, z: 0 },
+      point: startingPoint(index, count),
     }));
     const place = (move: (point: Point, index: number) => Point) => {
       items.forEach((item, index) => {
@@ -61,14 +57,14 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
     let frame = 0;
     let last: number | null = null;
     let onScreen = false;
+    // Whether the pointer is on a Technology: no frames run until it leaves.
+    let holding = false;
 
     const tick = (now: number) => {
       const seconds = Math.min(now - (last ?? now), MAX_STEP_MS) / 1000;
       last = now;
-      if (!holdingRef.current) {
-        const spin = steeringRef.current ?? IDLE_SPIN;
-        place((point) => rotate(point, spin.yaw * seconds, spin.pitch * seconds));
-      }
+      const spin = steeringRef.current ?? IDLE_SPIN;
+      place((point) => rotate(point, spin.yaw * seconds, spin.pitch * seconds));
       frame = requestAnimationFrame(tick);
     };
     const restart = () => {
@@ -76,10 +72,18 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
       last = null;
       if (reducedMotion.matches) {
         // Asked for mid-turn too: back to the still sphere.
-        place((point, index) => startingPoints[index] ?? point);
-      } else if (onScreen) {
+        place((_, index) => startingPoint(index, count));
+      } else if (onScreen && !holding) {
         frame = requestAnimationFrame(tick);
       }
+    };
+    const hold = () => {
+      holding = true;
+      restart();
+    };
+    const release = () => {
+      holding = false;
+      restart();
     };
 
     // Hidden below `md`, the cloud never intersects, so it never turns there.
@@ -89,19 +93,30 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
     });
     observer.observe(cloud);
     reducedMotion.addEventListener("change", restart);
+    items.forEach(({ element }) => {
+      element.addEventListener("pointerenter", hold);
+      element.addEventListener("pointerleave", release);
+    });
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
       reducedMotion.removeEventListener("change", restart);
+      items.forEach(({ element }) => {
+        element.removeEventListener("pointerenter", hold);
+        element.removeEventListener("pointerleave", release);
+      });
     };
-  }, [startingPoints]);
+  }, [count]);
 
   // The pointer's offset from the centre, from -1 to 1 on each axis, sets the spin.
   const steer = (event: React.PointerEvent) => {
     const box = event.currentTarget.getBoundingClientRect();
+    // Clamped, as the pointer can be on the part of a label past the square's edge.
+    const offset = (position: number, start: number, size: number) =>
+      Math.min(Math.max(((position - start) / size) * 2 - 1, -1), 1);
     steeringRef.current = {
-      yaw: (((event.clientX - box.left) / box.width) * 2 - 1) * STEER_SPEED,
-      pitch: (((event.clientY - box.top) / box.height) * 2 - 1) * STEER_SPEED,
+      yaw: offset(event.clientX, box.left, box.width) * STEER_SPEED,
+      pitch: offset(event.clientY, box.top, box.height) * STEER_SPEED,
     };
   };
 
@@ -115,17 +130,24 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
     >
       <Text as="ul" size="lg" weight="semibold">
         {technologies.map((technology, index) => (
+          // `hover:` applies only where the device can hover, so a tap leaves no color behind.
           <li
             key={technology.name}
-            onPointerEnter={() => (holdingRef.current = true)}
-            onPointerLeave={() => (holdingRef.current = false)}
             className="absolute top-1/2 left-1/2 whitespace-nowrap hover:text-primary"
-            style={startingPoints[index] && itemStyle(startingPoints[index])}
+            style={itemStyle(startingPoint(index, count))}
           >
             {technology.url === null ? (
               technology.name
             ) : (
-              <a href={technology.url} target="_blank" rel="noopener" tabIndex={-1} className="cursor-pointer">
+              // A click still opens it but doesn't focus it, since screen readers can't see the cloud.
+              <a
+                href={technology.url}
+                target="_blank"
+                rel="noopener"
+                tabIndex={-1}
+                onMouseDown={(event) => event.preventDefault()}
+                className="cursor-pointer"
+              >
                 {technology.name}
               </a>
             )}
@@ -155,13 +177,16 @@ function rotate({ x, y, z }: Point, yaw: number, pitch: number): Point {
   };
 }
 
-/** Places an item at `point`: those at the back are smaller, fainter and beneath the front ones, so the pointer reaches the front. */
+/**
+ * Places an item at `point`: those at the back are smaller, fainter and beneath the front ones, so the pointer reaches the front.
+ * A label too wide for the sphere's radius swings out only as far as keeps it inside the square (`50%` is half its own width).
+ */
 function itemStyle({ x, y, z }: Point) {
   const nearness = (z + 1) / 2;
   // Rounded, so the prerendered style is the same string whichever engine computes it.
   const round = (value: number) => Math.round(value * 1000) / 1000;
   return {
-    transform: `translate(-50%, -50%) translate(${round(x * 38)}cqi, ${round(y * 38)}cqi) scale(${round(0.7 + 0.3 * nearness)})`,
+    transform: `translate(-50%, -50%) translate(calc(${round(x)} * min(38cqi, 50cqi - 50%)), ${round(y * 38)}cqi) scale(${round(0.7 + 0.3 * nearness)})`,
     opacity: String(round(0.3 + 0.7 * nearness)),
     zIndex: String(Math.round(nearness * 100)),
   };

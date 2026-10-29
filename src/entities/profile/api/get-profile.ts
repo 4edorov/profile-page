@@ -9,6 +9,7 @@ import ruContact from "../../../../content/ru/contact.json";
 import ruExperience from "../../../../content/ru/experience.json";
 import ruLearning from "../../../../content/ru/learning.json";
 import ruProjects from "../../../../content/ru/projects.json";
+import allTechnologies from "../../../../content/technologies.json";
 import { newestFirst } from "../lib/order";
 import {
   LEARNING_KINDS,
@@ -18,9 +19,15 @@ import {
   type LearningEntry,
   type LearningKind,
   type ProjectEntry,
+  type Technology,
 } from "../model/types";
 
-const about = { en: enAbout, ru: ruAbout } satisfies Record<Language, About>;
+const technologies = allTechnologies satisfies Technology[];
+const stack = technologies.filter((technology) => technology.stack).map((technology) => technology.name);
+const about = {
+  en: { ...enAbout, stack, technologies },
+  ru: { ...ruAbout, stack, technologies },
+} satisfies Record<Language, About>;
 const experience = { en: enExperience, ru: ruExperience } satisfies Record<Language, ExperienceEntry[]>;
 const projects = { en: enProjects, ru: ruProjects } satisfies Record<Language, ProjectEntry[]>;
 const contact = { en: enContact, ru: ruContact } satisfies Record<Language, ContactLink[]>;

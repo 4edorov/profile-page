@@ -46,6 +46,9 @@
       "learning": "All learning"
     }
   },
+  "about": {
+    "technologiesHeading": "Technologies"
+  },
   "footer": {
     "contactHeading": "Contact"
   },

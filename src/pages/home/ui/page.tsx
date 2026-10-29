@@ -59,7 +59,7 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
           </Text>
           <MoreLink to={pagePath(language, "about")}>{t("home.more.about")}</MoreLink>
         </div>
-        {/* Purely visual, and hidden below 768px: the Stack above is the text version. */}
+        {/* Purely visual, and hidden below 768px: the About Page lists every Technology as text. */}
         <div aria-hidden="true" className="hidden items-center md:flex">
           <TechnologyCloud technologies={about.technologies} />
         </div>
