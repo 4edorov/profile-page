@@ -1,6 +1,14 @@
 import { useTranslation } from "react-i18next";
 import type { LoaderFunctionArgs } from "react-router";
-import { getAbout, getExperience, getLearning, getProjects, PeriodLabel, Tagline } from "@/entities/profile";
+import {
+  getAbout,
+  getExperience,
+  getLearning,
+  getProjects,
+  PeriodLabel,
+  Tagline,
+  TechnologyCloud,
+} from "@/entities/profile";
 import { languageFromRequest, useLanguage } from "@/shared/i18n";
 import { pagePath, type PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
@@ -51,8 +59,10 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
           </Text>
           <MoreLink to={pagePath(language, "about")}>{t("home.more.about")}</MoreLink>
         </div>
-        {/* Reserved for the About animation; hidden below 768px. */}
-        <div aria-hidden="true" className="hidden md:block" />
+        {/* Purely visual, and hidden below 768px: the About Page lists every Technology as text. */}
+        <div aria-hidden="true" className="hidden items-center md:flex">
+          <TechnologyCloud technologies={about.technologies} />
+        </div>
       </section>
 
       <TopicSection

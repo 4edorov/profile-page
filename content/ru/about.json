@@ -1,7 +1,6 @@
 {
   "name": "Александр Федоров",
   "headline": "Frontend/Fullstack-разработчик",
-  "stack": ["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Express"],
   "tagline": {
     "text": "Создаю то, что действительно важно",
     "accents": ["Создаю то", "важно"]

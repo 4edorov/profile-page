@@ -88,8 +88,12 @@ _Avoid_: Education (for the whole Topic), studies
 The Topic listing the ways to reach the owner, each one a link.
 _Avoid_: Links, socials
 
+**Technologies**:
+Every language and technology the owner has worked with, one per item, as part of the About Topic, each optionally linked to its own website. Shown in the Technology Cloud and listed on the About Page. Identical in every Language.
+_Avoid_: Skills, tech, tags
+
 **Stack**:
-The languages and technologies the owner works with, as part of the About Topic. Identical in every Language.
+The few Technologies the owner leads with, shown under the headline in the About Section. Every Stack item is one of the Technologies. Identical in every Language.
 _Avoid_: Skills, tech, tags
 
 ## Appearance
@@ -101,3 +105,7 @@ _Avoid_: Color scheme, mode, dark mode
 **Accent**:
 A run of words in the About tagline shown in the Theme's primary color, chosen by the owner per Language. Purely visual: it adds no emphasis for screen readers, and no other Profile Content has Accents.
 _Avoid_: Highlight, emphasis
+
+**Technology Cloud**:
+The About Section's turning sphere of the Technologies, which the visitor's pointer steers; the sphere stops while the pointer is on a Technology, which shows in the Theme's primary color, and clicking a linked one opens its website in a new tab. Still for visitors who ask for reduced motion, and not shown on phone-sized screens. Purely visual: screen readers and keyboard navigation skip it, so the About Page lists the Technologies for every visitor.
+_Avoid_: Tag cloud, sphere, animation block

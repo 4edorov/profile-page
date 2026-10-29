@@ -1,7 +1,6 @@
 {
   "name": "Alexander Fedorov",
   "headline": "Frontend/Fullstack Software Engineer",
-  "stack": ["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Express"],
   "tagline": {
     "text": "I build the things that matter",
     "accents": ["build", "things", "matter"]

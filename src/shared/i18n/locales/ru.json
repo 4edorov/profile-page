@@ -46,6 +46,9 @@
       "learning": "Всё обучение"
     }
   },
+  "about": {
+    "technologiesHeading": "Технологии"
+  },
   "footer": {
     "contactHeading": "Контакты"
   },

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { getExperience, getLearning, getProjects, LEARNING_KINDS, newestFirst } from "@/entities/profile";
-import { LANGUAGES } from "@/shared/i18n";
+import { getAbout, getExperience, getLearning, getProjects, LEARNING_KINDS, newestFirst } from "@/entities/profile";
+import { DEFAULT_LANGUAGE, LANGUAGES } from "@/shared/i18n";
 
 test("newestFirst puts in-progress first, then latest end, then latest start", () => {
   const periods = [
@@ -15,6 +15,15 @@ test("newestFirst puts in-progress first, then latest end, then latest start", (
     { start: "2016-01", end: "2018-01" },
     { start: "2015-01", end: "2018-01" },
   ]);
+});
+
+// Written once for every Language, so checked once.
+test("Technologies are unique and link only to https URLs", () => {
+  const { technologies } = getAbout(DEFAULT_LANGUAGE);
+  const names = technologies.map((technology) => technology.name);
+  expect(new Set(names).size).toBe(names.length);
+  const badUrls = technologies.filter(({ url }) => url !== null && !url.startsWith("https://"));
+  expect(badUrls).toEqual([]);
 });
 
 describe.each(LANGUAGES)("Profile Content in %s", (language) => {

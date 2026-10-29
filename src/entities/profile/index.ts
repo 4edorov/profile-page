@@ -10,6 +10,8 @@ export {
   type LearningKind,
   type Period,
   type ProjectEntry,
+  type Technology,
 } from "./model/types";
 export { PeriodLabel } from "./ui/period-label";
 export { Tagline } from "./ui/tagline";
+export { TechnologyCloud } from "./ui/technology-cloud";
