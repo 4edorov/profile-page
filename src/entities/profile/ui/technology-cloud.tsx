@@ -122,11 +122,12 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
 
   return (
     // `cqi` in the items' positions is a share of this square's width, so nothing needs measuring.
+    // `isolate` keeps the items' z-indexes inside the cloud, so the sticky Header still covers it.
     <div
       ref={cloudRef}
       onPointerMove={steer}
       onPointerLeave={() => (steeringRef.current = null)}
-      className="@container relative aspect-square w-full cursor-default select-none"
+      className="@container relative isolate aspect-square w-full cursor-default select-none"
     >
       <Text as="ul" size="lg" weight="semibold">
         {technologies.map((technology, index) => (
