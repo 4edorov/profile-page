@@ -1,1 +1,8 @@
-[{ "id": "github", "label": "GitHub", "url": "https://github.com/4edorov" }]
+{
+  "openToWork": true,
+  "links": [
+    { "id": "email", "label": "Email me", "url": "mailto:4edorov@gmail.com" },
+    { "id": "github", "label": "GitHub", "url": "https://github.com/4edorov" },
+    { "id": "linkedin", "label": "LinkedIn", "url": "https://www.linkedin.com/in/alexander-fedorov-229008156/" }
+  ]
+}

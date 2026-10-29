@@ -3,6 +3,7 @@ export { newestFirst } from "./lib/order";
 export {
   LEARNING_KINDS,
   type About,
+  type Contact,
   type ContactLink,
   type Entry,
   type ExperienceEntry,

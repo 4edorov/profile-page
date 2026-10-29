@@ -1,20 +1,4 @@
-/** Outline icons drawn in the current text color; decorative, so hidden from assistive technology. */
-function Icon({ children }: { children: React.ReactNode }) {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="size-5 shrink-0"
-    >
-      {children}
-    </svg>
-  );
-}
+import { Icon } from "@/shared/ui/icon";
 
 export function GlobeIcon() {
   return (
