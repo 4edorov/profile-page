@@ -24,6 +24,8 @@ SITE_URL=https://example.com pnpm build   # writes build/client/
 
 `SITE_URL` is the public origin. It's used for canonical URLs, `hreflang` links, Open Graph tags and the sitemap. A build fails without it. Set it in a committed `.env.production` file (`SITE_URL=https://your.domain`) so builds and deploys pick it up automatically.
 
+`pnpm install` also installs a Husky pre-commit hook that runs `pnpm check` on the working tree and blocks the commit if it fails. It only checks; run `pnpm format` to fix formatting. `git commit --no-verify` skips it, but `pnpm run deploy` runs `pnpm check` itself, so deploy stays the gate.
+
 ## Layout
 
 Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-feature-sliced-design.md).
