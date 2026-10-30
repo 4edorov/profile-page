@@ -1,7 +1,8 @@
 ## Working in this repo
 
 - **Done** means `pnpm check` passes. With no CI, it is the only gate before deploy.
-- **Pre-commit hook**: runs `pnpm check`. Never bypass it (`--no-verify`, `HUSKY=0`); fix what fails.
+- **Git hooks**: pre-commit runs `pnpm check`; pre-push rejects a branch over 500 changed lines against `origin/main` (`pnpm-lock.yaml` excluded). Never bypass any hook (`--no-verify`, `HUSKY=0`); fix what fails.
+- **PR size**: split work over 500 lines into sequential PRs, each merged before the next branch is pushed; don't stack branches, since each is measured against `origin/main`. If it can't be split sensibly, stop and ask the owner.
 - **Both Languages**: write every UI String and Profile Content change in `en` and `ru`, properly translated. The parity checks only catch missing keys and mismatched shapes.
 - **Adding a Page**: follow "Adding a Page" in `README.md`.
 - **Deploy**: `pnpm run deploy` publishes to the live site. Leave it to the owner.
