@@ -1,1 +1,1 @@
-export { setTheme, useTheme, type Theme } from "./theme";
+export { setTheme, useTheme } from "./theme";
