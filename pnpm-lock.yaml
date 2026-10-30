@@ -4,6 +4,8 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+packageExtensionsChecksum: sha256-BNH8b/TTD/qcrnIgju9EPbpHkA90CS7TwPrpTdk6Yz8=
+
 importers:
 
   .:
@@ -35,7 +37,7 @@ importers:
         version: 10.0.1(eslint@10.13.0(jiti@2.7.0))
       '@feature-sliced/steiger-plugin':
         specifier: ^0.8.0
-        version: 0.8.0(typescript@6.0.3)
+        version: 0.8.0(typescript@6.0.3)(vitest@5.0.5(@types/node@24.19.2)(jsdom@30.1.3)(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0)))
       '@react-router/dev':
         specifier: ^8.5.0
         version: 8.5.0(react-router@8.5.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(typescript@6.0.3)(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0))
@@ -80,7 +82,7 @@ importers:
         version: 0.8.1(prettier@3.9.10)
       steiger:
         specifier: ^0.8.0
-        version: 0.8.0(typescript@6.0.3)
+        version: 0.8.0(typescript@6.0.3)(vitest@5.0.5(@types/node@24.19.2)(jsdom@30.1.3)(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0)))
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
@@ -480,6 +482,14 @@ packages:
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
+
+  '@steiger/toolkit@0.2.3':
+    resolution: {integrity: sha512-egAgPVSN5+bqmRDc0oGm4cXZtkF8puaBY7A7lft7nxJwb+v/J5aaFJ3vzQ9WxTR/qYl2bK5uKOIAGaj63Z0F1A==}
+    peerDependencies:
+      vitest: ^1.6.0 || ^2.1.8 || ^3.0.0
+    peerDependenciesMeta:
+      vitest:
+        optional: true
 
   '@tailwindcss/node@4.3.3':
     resolution: {integrity: sha512-/T8IKEsf9VTU6tLjgC7+sv2mOPtQxzE2jMw7u4Tt40Tx+QSZxpzh95/H6cMKoja9XuW7iMdLJYBB0o9G1CaAgg==}
@@ -2537,9 +2547,10 @@ snapshots:
     dependencies:
       typescript: 5.9.3
 
-  '@feature-sliced/steiger-plugin@0.8.0(typescript@6.0.3)':
+  '@feature-sliced/steiger-plugin@0.8.0(typescript@6.0.3)(vitest@5.0.5(@types/node@24.19.2)(jsdom@30.1.3)(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0)))':
     dependencies:
       '@feature-sliced/filesystem': 3.1.1
+      '@steiger/toolkit': 0.2.3(vitest@5.0.5(@types/node@24.19.2)(jsdom@30.1.3)(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0)))
       fastest-levenshtein: 1.0.16
       lodash-es: 4.18.1
       pluralize: 8.0.0
@@ -2547,6 +2558,7 @@ snapshots:
       web-tree-sitter: 0.26.13
     transitivePeerDependencies:
       - typescript
+      - vitest
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -2697,6 +2709,10 @@ snapshots:
   '@rolldown/pluginutils@1.0.1': {}
 
   '@sindresorhus/merge-streams@4.0.0': {}
+
+  '@steiger/toolkit@0.2.3(vitest@5.0.5(@types/node@24.19.2)(jsdom@30.1.3)(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0)))':
+    optionalDependencies:
+      vitest: 5.0.5(@types/node@24.19.2)(jsdom@30.1.3)(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0))
 
   '@tailwindcss/node@4.3.3':
     dependencies:
@@ -4214,10 +4230,10 @@ snapshots:
 
   std-env@4.3.0: {}
 
-  steiger@0.8.0(typescript@6.0.3):
+  steiger@0.8.0(typescript@6.0.3)(vitest@5.0.5(@types/node@24.19.2)(jsdom@30.1.3)(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0))):
     dependencies:
       '@clack/prompts': 0.9.1
-      '@feature-sliced/steiger-plugin': 0.8.0(typescript@6.0.3)
+      '@feature-sliced/steiger-plugin': 0.8.0(typescript@6.0.3)(vitest@5.0.5(@types/node@24.19.2)(jsdom@30.1.3)(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0)))
       chokidar: 4.0.3
       cosmiconfig: 10.0.1
       effector: 23.4.4
@@ -4234,6 +4250,7 @@ snapshots:
       zod-validation-error: 3.5.4(zod@3.25.76)
     transitivePeerDependencies:
       - typescript
+      - vitest
 
   stop-iteration-iterator@1.1.0:
     dependencies:

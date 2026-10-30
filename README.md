@@ -8,7 +8,7 @@ A professional Profile Site. It's an SPA built with React 19, React Router 8 and
 - **Language in the URL path**. See [ADR-0002](docs/adr/0002-language-in-url-path.md).
 - **react-i18next** for UI Strings, with bundled and typed resources.
 - **Tailwind CSS 4**, limited to four colors per Theme (Background, Surface, Text, Primary), plus the green of the Open to Work light, in `src/app/app.css`. Every visit starts in Light, whatever the system setting. The Header switches the Theme, and the choice is never stored.
-- **Vite 8**, **Vitest**, **ESLint** (typescript-eslint, react-hooks, jsx-a11y) and **Prettier**.
+- **Vite 8**, **Vitest**, **ESLint** (type-aware typescript-eslint, react-hooks, jsx-a11y) and **Prettier**.
 - **Self-hosted nginx**, deployed manually over SSH. See [ADR-0003](docs/adr/0003-self-hosted-manual-deploy.md).
 
 ## Development

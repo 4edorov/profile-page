@@ -55,7 +55,15 @@
     "peerDependencyRules": {
       "allowedVersions": {
         "eslint-plugin-jsx-a11y>eslint": "10",
-        "tsconfck>typescript": "6"
+        "tsconfck>typescript": "6",
+        "@steiger/toolkit>vitest": "5"
+      }
+    },
+    "packageExtensions": {
+      "@feature-sliced/steiger-plugin@0.8": {
+        "dependencies": {
+          "@steiger/toolkit": "0.2.3"
+        }
       }
     }
   }

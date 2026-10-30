@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
     plugins: [requireSiteUrl(siteUrl), tailwindcss(), reactRouter()],
     resolve: { tsconfigPaths: true },
     define: {
-      "import.meta.env.SITE_URL": JSON.stringify((siteUrl || DEV_SITE_URL).replace(/\/+$/, "")),
+      "import.meta.env.SITE_URL": JSON.stringify((siteUrl ?? DEV_SITE_URL).replace(/\/+$/, "")),
     },
   };
 });

@@ -10,9 +10,11 @@ import type { Period } from "../model/types";
 export function PeriodLabel({ period }: { period: Period }) {
   const { t } = useTranslation();
   const months = t("period.months", { returnObjects: true });
+  // A month with no name, which the Profile Content tests rule out, shows as written.
   const month = (value: string) => {
     const [year, monthNumber] = value.split("-");
-    return `${months[Number(monthNumber) - 1]} ${year}`;
+    const name = months[Number(monthNumber) - 1];
+    return name === undefined || year === undefined ? value : `${name} ${year}`;
   };
   return (
     <Text tone="muted" size="sm" as="span">

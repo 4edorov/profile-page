@@ -9,7 +9,12 @@ export function ThemeSwitcher() {
   const next = useTheme() === "light" ? "dark" : "light";
   const label = next === "dark" ? t("theme.switchToDark") : t("theme.switchToLight");
   return (
-    <IconButton label={label} onClick={() => setTheme(next)}>
+    <IconButton
+      label={label}
+      onClick={() => {
+        setTheme(next);
+      }}
+    >
       {next === "dark" ? <MoonIcon /> : <SunIcon />}
     </IconButton>
   );

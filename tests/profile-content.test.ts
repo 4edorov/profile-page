@@ -50,6 +50,14 @@ describe.each(LANGUAGES)("Profile Content in %s", (language) => {
     }
   });
 
+  test("every Period is in YYYY-MM months and does not end before it starts", () => {
+    const month = /^\d{4}-(0[1-9]|1[0-2])$/;
+    const badPeriods = [...getExperience(language), ...getLearning(language)].filter(
+      ({ start, end }) => !month.test(start) || (end !== null && (!month.test(end) || end < start)),
+    );
+    expect(badPeriods).toEqual([]);
+  });
+
   test("Contact links go to https URLs or a mailto: address", () => {
     const badUrls = getContact(language).links.filter(({ url }) => !/^(https:\/\/|mailto:)/.test(url));
     expect(badUrls).toEqual([]);

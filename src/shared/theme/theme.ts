@@ -15,7 +15,9 @@ export function useTheme(): Theme {
 export function setTheme(theme: Theme): void {
   current = theme;
   document.documentElement.dataset.theme = theme;
-  listeners.forEach((listener) => listener());
+  for (const listener of listeners) {
+    listener();
+  }
 }
 
 function getTheme(): Theme {

@@ -21,7 +21,7 @@ export function routeModule(route: RouteConfigEntry): RouteModule {
   const path = new URL(route.file, `file:///${config.appDirectory}/`).pathname;
   const module = ROUTE_MODULES[path];
   if (!module) {
-    throw new Error(`No route module at ${path} for route ${route.id ?? route.path}`);
+    throw new Error(`No route module at ${path} for route ${route.id ?? route.file}`);
   }
   return module;
 }
