@@ -13,13 +13,11 @@ afterEach(() => {
   setTheme("light");
 });
 
-// The real route tree of src/app/routes.ts, with each route's own module.
 function renderPath(path: string) {
   const Stub = createRoutesStub(stubRoutes());
   render(<Stub initialEntries={[path]} />);
 }
 
-/** Queries the Header itself, not the mobile menu that repeats its controls. */
 async function findInHeader(...args: Parameters<typeof screen.getByRole>) {
   return within(await screen.findByRole("banner")).getByRole(...args);
 }
@@ -34,14 +32,12 @@ test("renders the Russian Home Page with every Topic's Section except Contact, a
   expect((await findInHeader("link", { name: /English/ })).getAttribute("href")).toBe("/en/");
 });
 
-/** The About Section on the Home Page in `language`. */
 async function findAboutSection(language: "en" | "ru") {
   renderPath(`/${language}/`);
   const heading = await screen.findByRole("heading", { level: 1, name: getAbout(language).name });
   return heading.closest("section") as HTMLElement;
 }
 
-/** Elements of `role` that screen readers skip: in the DOM but hidden from the accessibility tree. */
 function hiddenByRole(container: HTMLElement, role: string) {
   const scope = within(container);
   const visible = scope.queryAllByRole(role);
@@ -80,11 +76,10 @@ test("a linked Technology opens its website in a new tab, and keyboard navigatio
 test("clicking a Technology in the Technology Cloud doesn't focus it", async () => {
   const section = await findAboutSection("en");
   const [link] = hiddenByRole(section, "link");
-  // `false` means the default, which would move focus there, was prevented.
-  expect(fireEvent.mouseDown(link as HTMLElement)).toBe(false);
+  const focusAllowed = fireEvent.mouseDown(link as HTMLElement);
+  expect(focusAllowed).toBe(false);
 });
 
-/** The paragraphs of the Section named by `heading`. */
 function paragraphsUnder(heading: HTMLElement) {
   const section = heading.closest("section") as HTMLElement;
   return Array.from(section.querySelectorAll("p"), (paragraph) => paragraph.textContent);

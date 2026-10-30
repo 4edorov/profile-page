@@ -8,12 +8,7 @@ import { CloseIcon, MenuIcon } from "./icons";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeSwitcher } from "./theme-switcher";
 
-/**
- * The Header, plus the full-screen menu that replaces its links on narrow
- * screens. The menu is a native popover, so it opens before hydration and
- * closes on Escape by itself; once hydrated, it also closes on any navigation
- * and keeps keyboard focus inside itself.
- */
+// The menu is a native popover, so it opens before hydration and closes on Escape by itself.
 export function Header({ language }: { language: Language }) {
   const { t } = useTranslation();
   const { pathname } = useLocation();
@@ -21,7 +16,6 @@ export function Header({ language }: { language: Language }) {
   const menu = useRef<HTMLDivElement>(null);
   const shownPath = useRef(pathname);
 
-  // Links, the Language switch and the browser's Back button all change the path.
   useEffect(() => {
     if (shownPath.current !== pathname) {
       shownPath.current = pathname;
@@ -29,8 +23,7 @@ export function Header({ language }: { language: Language }) {
     }
   }, [pathname]);
 
-  // Always listening, and reading the menu's state from the DOM, so a menu
-  // opened before hydration is covered too.
+  // Reads the menu's state from the DOM, so a menu opened before hydration is covered too.
   useEffect(() => {
     const trapFocus = (event: KeyboardEvent) => {
       if (event.key !== "Tab" || !menu.current?.matches(":popover-open")) {
@@ -46,8 +39,7 @@ export function Header({ language }: { language: Language }) {
         (event.shiftKey ? last : first).focus();
       }
     };
-    // Widening past `lg` hides the menu without closing it, which would leave
-    // focus trapped in something invisible; close it for real instead.
+    // Widening past `lg` hides the menu without closing it, which would trap focus in something invisible.
     const closeIfHidden = () => {
       if (menu.current && getComputedStyle(menu.current).display === "none") {
         closeMenu(menu.current);
@@ -108,7 +100,6 @@ function closeMenu(menu: HTMLElement | null) {
   }
 }
 
-/** A link to every Page in Header order, marking the current one. */
 function PageLinks({ language }: { language: Language }) {
   const { t } = useTranslation();
   return PAGE_IDS.map((id) => (

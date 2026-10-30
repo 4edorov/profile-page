@@ -4,14 +4,12 @@ import { ButtonLink } from "@/shared/ui/link";
 import { Heading, Text } from "@/shared/ui/typography";
 import { EnvelopeIcon, GitHubIcon, LinkedInIcon } from "./icons";
 
-/** Each Contact link's icon, by its id. */
 const ICONS: Record<string, () => React.ReactNode> = {
   email: EnvelopeIcon,
   github: GitHubIcon,
   linkedin: LinkedInIcon,
 };
 
-/** Below every Page's other Sections: the Contact Section and nothing else. */
 export function Footer({ contact: { openToWork, links } }: { contact: Contact }) {
   const { t } = useTranslation();
   const mailto = links.map((link) => new URL(link.url)).find((url) => url.protocol === "mailto:");
@@ -30,12 +28,11 @@ export function Footer({ contact: { openToWork, links } }: { contact: Contact })
             {t("footer.openToWorkLabel")}
           </p>
         )}
-        {/* The address alone: a mailto: URL's path, without any query such as `?subject=`. */}
+        {/* The path alone, so a query such as `?subject=` never shows. */}
         {mailto && <p className="mt-2">{decodeURIComponent(mailto.pathname)}</p>}
         <ul className="mt-6 flex flex-wrap gap-3">
           {links.map((link) => {
             const Icon = ICONS[link.id];
-            // A web page opens in a new tab; a `mailto:` link opens the visitor's mail app instead.
             const newTab = link.url.startsWith("https://");
             return (
               <li key={link.id}>

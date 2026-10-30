@@ -7,7 +7,6 @@ import { pageMeta } from "@/shared/seo";
 import { TiltedPanel } from "@/shared/ui/panel";
 import { Heading } from "@/shared/ui/typography";
 
-// Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
   const language = languageFromRequest(request);
   return { about: pickAbout(language, [...ABOUT_META_FIELDS, "introduction", "bio", "portrait"]) };
@@ -15,15 +14,11 @@ export function loader({ request }: LoaderFunctionArgs) {
 
 export const meta = pageMeta("about");
 
-/**
- * The Introduction, the Bio and the Portrait, each on a tilted panel. In
- * reading order, which is also the order below 768px; wider, the Portrait
- * moves up beside the Introduction.
- */
 export default function About({ loaderData }: PageProps<typeof loader>) {
   const { about } = loaderData;
   const { t } = useTranslation();
   return (
+    // In reading order; from `md` up, the grid moves the Portrait up beside the Introduction.
     <main className="grid gap-12 py-12 md:grid-cols-3 md:gap-x-16 md:gap-y-20">
       <TiltedPanel
         as="section"
@@ -42,13 +37,12 @@ export default function About({ loaderData }: PageProps<typeof loader>) {
         </Heading>
         <Paragraphs paragraphs={about.bio} />
       </TiltedPanel>
-      {/* Leans like the Introduction, so the tilts alternate in reading order. */}
       <TiltedPanel
         tilt={3}
         inset="photo"
         className="w-full max-w-sm justify-self-center md:col-start-1 md:row-start-1 md:max-w-none md:self-start"
       >
-        {/* Lazy: below 768px it is the last panel, well below the fold. */}
+        {/* Lazy: below `md` it is the last panel, well below the fold. */}
         <img
           src={about.portrait}
           alt={about.name}

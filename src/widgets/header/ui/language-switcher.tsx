@@ -4,11 +4,6 @@ import { switchLanguagePath } from "@/shared/routing";
 import { ICON_CONTROL_LOOK } from "@/shared/ui/button";
 import { GlobeIcon } from "./icons";
 
-/**
- * A link to the current Page in each other Language, shown by that Language's
- * code. Its accessible name starts with that visible code, so voice control
- * finds it by what is on screen, and goes on with the full name.
- */
 export function LanguageSwitcher({ current }: { current: Language }) {
   const { pathname } = useLocation();
   return LANGUAGES.filter((language) => language !== current).map((language) => (
@@ -17,6 +12,7 @@ export function LanguageSwitcher({ current }: { current: Language }) {
       to={switchLanguagePath(pathname, language)}
       hrefLang={language}
       lang={language}
+      // Starts with the visible code, so voice control finds the link by what is on screen.
       aria-label={`${language.toUpperCase()} ${LANGUAGE_NAMES[language]}`}
       title={LANGUAGE_NAMES[language]}
       className={`${ICON_CONTROL_LOOK} gap-1.5 px-2 text-sm font-medium`}

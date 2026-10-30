@@ -7,7 +7,6 @@ import { pageMeta } from "@/shared/seo";
 import { Link } from "@/shared/ui/link";
 import { Heading } from "@/shared/ui/typography";
 
-// Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
   const language = languageFromRequest(request);
   return { about: pickAbout(language, ABOUT_META_FIELDS), projects: getProjects(language) };

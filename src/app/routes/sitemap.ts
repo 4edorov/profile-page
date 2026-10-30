@@ -1,7 +1,6 @@
 import { LANGUAGES } from "@/shared/i18n";
 import { absoluteUrl, PAGE_IDS, pagePath } from "@/shared/routing";
 
-// Prerendered to `/sitemap.xml`; lists every Page in every Language with hreflang alternates.
 export function loader() {
   const urls = PAGE_IDS.flatMap((id) =>
     LANGUAGES.map((language) => {

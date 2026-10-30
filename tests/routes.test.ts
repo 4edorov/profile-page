@@ -9,7 +9,6 @@ import { flatten } from "./route-tree";
 
 const RESOURCES = ["/sitemap.xml", "/robots.txt"];
 
-/** Every prerendered path except the resource routes, and the id of the route it must land on. */
 const EXPECTED: Record<string, string> = Object.fromEntries([
   ...LANGUAGES.flatMap((language) => [
     ...PAGE_IDS.map((id) => [pagePath(language, id), `${language}/${id}`] as const),
@@ -18,7 +17,6 @@ const EXPECTED: Record<string, string> = Object.fromEntries([
   [notFoundPath(), "not-found"] as const,
 ]);
 
-/** Id of the deepest route a path matches in the real tree of src/app/routes.ts. */
 function matchedRouteId(path: string): string | undefined {
   return matchRoutes(toRouteObjects(routes), path)?.at(-1)?.route.id;
 }

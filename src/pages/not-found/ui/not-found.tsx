@@ -4,7 +4,6 @@ import { pagePath } from "@/shared/routing";
 import { Link } from "@/shared/ui/link";
 import { Heading } from "@/shared/ui/typography";
 
-/** The Not Found Page's content in the given Language, shown inside its Frame. */
 export function NotFound({ language }: { language: Language }) {
   const { t } = useTranslation();
   return (

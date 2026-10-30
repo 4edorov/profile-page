@@ -47,7 +47,7 @@ Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-fe
 
 ### Adding a Page
 
-1. Create `src/pages/<page>/ui/page.tsx` with a `loader` (runs at build time), `meta` (use `pageMeta` from `@/shared/seo`) and a component, typed with `PageProps<typeof loader>`.
+1. Create `src/pages/<page>/ui/page.tsx` with a `loader` (runs at build time), `meta` (use `pageMeta` from `@/shared/seo`) and a component, typed with `PageProps<typeof loader>`. Add `src/pages/<page>/index.ts` with only `export {};`: Steiger requires every slice to have a public API, but `src/app/routes.ts` points at the route module by path, so nothing is imported through it.
 2. Add its path to `PAGE_PATHS` in `src/shared/routing/pages.ts`, keyed by the slice's name. Routes, prerendering, the sitemap and the Header pick it up from there.
 3. Add its UI Strings to both `src/shared/i18n/locales/*.json`, and any Profile Content to both `content/*/`.
 4. Use `src/shared/ui` for headings, muted text, links and icon buttons rather than hand-written Tailwind classes.

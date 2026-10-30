@@ -2,51 +2,36 @@ import { useEffect, useRef } from "react";
 import { Text } from "@/shared/ui/typography";
 import type { Technology } from "../model/types";
 
-/** A point on the unit sphere: `x` right, `y` down, `z` towards the visitor. */
 interface Point {
   x: number;
   y: number;
   z: number;
 }
 
-/** How fast the sphere turns, in radians per second: `yaw` about the vertical axis, `pitch` about the horizontal one. */
 interface Spin {
   yaw: number;
   pitch: number;
 }
 
-/** The spin while the pointer is elsewhere. */
 const IDLE_SPIN: Spin = { yaw: 0.25, pitch: 0.1 };
-/** Radians per second with the pointer at the cloud's edge; near zero at its centre. */
 const STEER_SPEED = 1.2;
-/** Longest step between frames, so a dropped frame or a pause doesn't make the sphere jump. */
 const MAX_STEP_MS = 50;
 
-/**
- * The Technology Cloud: the Technologies on a turning sphere, steered by the
- * pointer and stopped while it is on a Technology. Placement depends only on how many Technologies there are, so the
- * prerendered HTML already shows the still sphere and hydration matches it;
- * it starts turning once hydrated, unless the visitor asks for reduced motion,
- * and pauses while off screen. Purely visual: the caller hides it from screen
- * readers, and its links never take focus.
- */
 export function TechnologyCloud({ technologies }: { technologies: Technology[] }) {
   const cloudRef = useRef<HTMLDivElement>(null);
-  // How the pointer steers the sphere; `null` while it is elsewhere.
   const steeringRef = useRef<Spin | null>(null);
-  // The effect reruns on the count, not the array: fresh loader data with the same Technologies keeps the sphere where it is.
+  // Not the array: fresh loader data with the same Technologies must not reset the sphere.
   const count = technologies.length;
 
   useEffect(() => {
     const cloud = cloudRef.current;
-    // Without these (old browsers, tests) the sphere simply stays still.
     if (!cloud || typeof IntersectionObserver === "undefined" || typeof matchMedia === "undefined") {
       return;
     }
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
     const items = Array.from(cloud.querySelectorAll("li"), (element, index) => ({
       element,
-      point: startingPoint(index, count),
+      point: fibonacciLatticePoint(index, count),
     }));
     const place = (move: (point: Point, index: number) => Point) => {
       items.forEach((item, index) => {
@@ -57,7 +42,6 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
     let frame = 0;
     let last: number | null = null;
     let onScreen = false;
-    // Whether the pointer is on a Technology: no frames run until it leaves.
     let holding = false;
 
     const tick = (now: number) => {
@@ -71,8 +55,7 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
       cancelAnimationFrame(frame);
       last = null;
       if (reducedMotion.matches) {
-        // Asked for mid-turn too: back to the still sphere.
-        place((_, index) => startingPoint(index, count));
+        place((_, index) => fibonacciLatticePoint(index, count));
       } else if (onScreen && !holding) {
         frame = requestAnimationFrame(tick);
       }
@@ -86,7 +69,6 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
       restart();
     };
 
-    // Hidden below `md`, the cloud never intersects, so it never turns there.
     const observer = new IntersectionObserver((entries) => {
       onScreen = entries.at(-1)?.isIntersecting ?? onScreen;
       restart();
@@ -108,10 +90,9 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
     };
   }, [count]);
 
-  // The pointer's offset from the centre, from -1 to 1 on each axis, sets the spin.
   const steer = (event: React.PointerEvent) => {
     const box = event.currentTarget.getBoundingClientRect();
-    // Clamped, as the pointer can be on the part of a label past the square's edge.
+    // A label can stick out past the square's edge, so the pointer can too.
     const offset = (position: number, start: number, size: number) =>
       Math.min(Math.max(((position - start) / size) * 2 - 1, -1), 1);
     steeringRef.current = {
@@ -121,7 +102,6 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
   };
 
   return (
-    // `cqi` in the items' positions is a share of this square's width, so nothing needs measuring.
     // `isolate` keeps the items' z-indexes inside the cloud, so the sticky Header still covers it.
     <div
       ref={cloudRef}
@@ -135,12 +115,12 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
           <li
             key={technology.name}
             className="absolute top-1/2 left-1/2 whitespace-nowrap hover:text-primary"
-            style={itemStyle(startingPoint(index, count))}
+            style={itemStyle(fibonacciLatticePoint(index, count))}
           >
             {technology.url === null ? (
               technology.name
             ) : (
-              // A click still opens it but doesn't focus it, since screen readers can't see the cloud.
+              // Never focused, since screen readers can't see the cloud.
               <a
                 href={technology.url}
                 target="_blank"
@@ -161,15 +141,14 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
   );
 }
 
-/** Spreads `count` points evenly over the sphere (a Fibonacci lattice), from top to bottom. */
-function startingPoint(index: number, count: number): Point {
+// Depends only on the count, so the prerendered sphere matches hydration.
+function fibonacciLatticePoint(index: number, count: number): Point {
   const y = (2 * (index + 0.5)) / count - 1;
   const radius = Math.sqrt(1 - y * y);
   const angle = index * Math.PI * (3 - Math.sqrt(5));
   return { x: Math.cos(angle) * radius, y, z: Math.sin(angle) * radius };
 }
 
-/** Turns `point` by `yaw` radians about the vertical axis, then `pitch` about the horizontal one; positive moves the front right and down. */
 function rotate({ x, y, z }: Point, yaw: number, pitch: number): Point {
   const yawedX = x * Math.cos(yaw) + z * Math.sin(yaw);
   const yawedZ = z * Math.cos(yaw) - x * Math.sin(yaw);
@@ -180,15 +159,12 @@ function rotate({ x, y, z }: Point, yaw: number, pitch: number): Point {
   };
 }
 
-/**
- * Places an item at `point`: those at the back are smaller, fainter and beneath the front ones, so the pointer reaches the front.
- * A label too wide for the sphere's radius swings out only as far as keeps it inside the square (`50%` is half its own width).
- */
 function itemStyle({ x, y, z }: Point) {
   const nearness = (z + 1) / 2;
   // Rounded, so the prerendered style is the same string whichever engine computes it.
   const cssNumber = (value: number) => String(Math.round(value * 1000) / 1000);
   return {
+    // `50%` is the label's own half-width: a wide label swings out only as far as keeps it inside the square.
     transform: `translate(-50%, -50%) translate(calc(${cssNumber(x)} * min(38cqi, 50cqi - 50%)), ${cssNumber(y * 38)}cqi) scale(${cssNumber(0.7 + 0.3 * nearness)})`,
     opacity: cssNumber(0.3 + 0.7 * nearness),
     zIndex: String(Math.round(nearness * 100)),

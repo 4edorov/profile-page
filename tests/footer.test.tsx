@@ -26,7 +26,6 @@ test("while the owner is not Open to Work, the Contact Section says nothing abou
   const footer = renderFooter({ ...contact, openToWork: false });
   expect(footer.getByRole("link", { name: /^GitHub/ })).toBeDefined();
   expect(footer.queryByText("Open to work")).toBeNull();
-  // Apart from the links' icons, nothing is hidden from screen readers: no light.
   expect(screen.getByRole("contentinfo").querySelectorAll('[aria-hidden="true"]:not(svg)')).toHaveLength(0);
 });
 
