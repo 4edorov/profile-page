@@ -14,7 +14,7 @@ export const OG_LOCALES: Record<Language, string> = {
   ru: "ru_RU",
 };
 
-export function isLanguage(value: unknown): value is Language {
+function isLanguage(value: unknown): value is Language {
   return LANGUAGES.includes(value as Language);
 }
 

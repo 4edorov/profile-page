@@ -1,6 +1,6 @@
 {
-  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "$schema": "node_modules/knip/schema.json",
   "entry": ["steiger.config.ts"],
   "ignoreFiles": ["src/pages/*/index.ts"],
-  "ignoreExportsUsedInFile": true
+  "ignoreExportsUsedInFile": { "type": true, "interface": true }
 }
