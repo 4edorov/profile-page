@@ -28,6 +28,24 @@ SITE_URL=https://example.com pnpm build   # writes build/client/
 
 `pnpm install` also installs a pre-push hook that rejects a branch changing more than 500 lines (added + removed) since it branched from `origin/main`, with `pnpm-lock.yaml` excluded, so every PR stays reviewable. Split bigger work into sequential PRs; `git push --no-verify` is the owner's override.
 
+### Updating dependencies
+
+Dependencies are updated once a month, by the owner or an agent. At 09:00 on the 1st, a scheduled Claude Code routine opens an "Update dependencies (YYYY-MM)" issue labelled `ready-for-agent`. Work it on a `<n>-update-deps` branch like any other issue.
+
+1. Run `pnpm outdated` and `pnpm audit`. If both are clean, close the issue with their output as a comment, with no PR.
+2. Run `pnpm update -i --latest` and select the patch and minor updates. Range operators are kept, so `typescript` stays on `~`: its minors can break.
+   - `@types/node` follows the Node major in `engines`, not the latest.
+   - Take pnpm's minor and patch updates in `packageManager`, and Node's patches with `nvm install`. Node and pnpm majors get their own issue, since they move `engines`, `.nvmrc`, `@types/node` and this README together.
+3. Give each major its own PR. If its ecosystem isn't ready (say, typescript-eslint doesn't support it yet), open a standing `ready-for-human` issue such as "Upgrade to TypeScript 7", and comment on it each month with what still blocks it.
+4. Fix every high or critical `pnpm audit` finding, dev-only ones included, since dev tools run on the machine that deploys. Update the package that pulls it in, or, if that has no fix yet, add a `pnpm.overrides` entry until it does. Lower severities can wait for a fix.
+5. Remove every `pnpm.peerDependencyRules`, `pnpm.packageExtensions` and `pnpm.overrides` entry that's no longer needed: a stale one hides the next real conflict.
+6. Run `pnpm check`. If a package that reaches the build changed (any `dependencies` entry, or a build tool such as Vite, Tailwind or `@react-router/dev`), also build, run `pnpm preview`, and check a Page in both Languages and both Themes, and the Technology Cloud.
+7. Open the PR. Once it's merged, the owner deploys if a package that reaches the build changed.
+
+An agent stops, comments on the issue and relabels it `ready-for-human` when a high or critical finding has no fix or safe override, when a major needs code changes or would take the branch over 500 lines, or when verification fails for an unclear reason.
+
+There's no dependency-update bot (Dependabot version updates or Renovate). With no CI (see [ADR-0003](docs/adr/0003-self-hosted-manual-deploy.md)), its PRs would arrive with no checks run, and each would still have to be checked out and tested locally. GitHub's Dependabot alerts, which only notify, cover security advisories between runs. Neither `pnpm outdated` nor `pnpm audit` is part of `pnpm check`: both need the network, and the hook has to stay fast and work offline.
+
 ## Layout
 
 Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-feature-sliced-design.md).
