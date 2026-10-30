@@ -1,7 +1,6 @@
 export { getI18n, resources } from "./i18n";
 export {
   DEFAULT_LANGUAGE,
-  isLanguage,
   LANGUAGE_NAMES,
   LANGUAGES,
   languageFromPath,
