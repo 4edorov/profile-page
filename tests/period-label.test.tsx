@@ -20,7 +20,7 @@ test("a Period shows its months by name", () => {
   expect(screen.getByText("Mar 2019 – Aug 2022")).toBeDefined();
 });
 
-test("a month that has no name shows as written instead of as undefined", () => {
+test("a month that has no name shows as written", () => {
   renderPeriod({ start: "2020-13", end: null });
   expect(screen.getByText("2020-13 – present")).toBeDefined();
 });
