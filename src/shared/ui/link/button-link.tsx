@@ -1,10 +1,5 @@
 import { withLayout } from "@/shared/lib";
 
-/**
- * A link to an external URL that looks like a bordered button, for a call to
- * action such as writing to the owner. `newTab` opens it in a new tab.
- * `className` is for layout only (margins, display); the look is fixed here.
- */
 export function ButtonLink({
   to,
   newTab = false,

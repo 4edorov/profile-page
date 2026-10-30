@@ -1,8 +1,3 @@
-/**
- * Every Page except the Not Found Page, in Header order, with its path below
- * the Language prefix (`""` is the Language root). Paths are the same in every
- * Language, because switching Language only swaps the `/:lang` segment.
- */
 export const PAGE_PATHS = {
   home: "",
   about: "about",

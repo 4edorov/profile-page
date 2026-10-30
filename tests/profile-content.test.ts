@@ -25,7 +25,6 @@ test("newestFirst puts in-progress first, then latest end, then latest start", (
   ]);
 });
 
-// Written once for every Language, so checked once.
 test("Technologies are unique and link only to https URLs", () => {
   const { technologies } = getAbout(DEFAULT_LANGUAGE);
   const names = technologies.map((technology) => technology.name);

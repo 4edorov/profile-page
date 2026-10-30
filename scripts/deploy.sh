@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-# Build the Profile Site locally and copy it to the server over SSH.
-# There is no CI: the local checks below are the only gate before going live.
-# See docs/adr/0003-self-hosted-manual-deploy.md.
-#
-# Usage: pnpm run deploy [--dry-run]
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -41,9 +36,7 @@ git rev-parse HEAD > build/client/VERSION
 rsync_cmd=(rsync -rlz -e "ssh -p ${DEPLOY_PORT:-22}" ${dry_run:+"$dry_run"})
 target="${DEPLOY_HOST}:${DEPLOY_PATH%/}"
 
-# In-place update, ordered so visitors mid-deploy never get HTML that points
-# at missing files: new hashed assets first, then the HTML and data that
-# reference them, and only then remove what the new build no longer has.
+# Assets, then the HTML that references them, then deletions: visitors mid-deploy never get HTML pointing at missing files.
 "${rsync_cmd[@]}" build/client/assets/ "${target}/assets/"
 "${rsync_cmd[@]}" build/client/ "${target}/"
 "${rsync_cmd[@]}" --delete build/client/ "${target}/"

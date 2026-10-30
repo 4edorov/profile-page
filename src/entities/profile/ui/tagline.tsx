@@ -1,10 +1,5 @@
 import type { About } from "../model/types";
 
-/**
- * The About tagline with its Accents in the primary color. An Accent matches
- * whole words only, case-sensitively, wherever it appears; one not found in the
- * text is ignored. The spans are purely visual: screen readers hear one plain sentence.
- */
 export function Tagline({ tagline }: { tagline: About["tagline"] }) {
   return (
     <>
@@ -27,8 +22,8 @@ function splitAccents({ text, accents }: About["tagline"]): string[] {
   if (words.length === 0) {
     return [text];
   }
-  // Longest first, so a shorter Accent never cuts into a longer one. Lookarounds
-  // stand in for `\b`, which only knows Latin letters; marks keep accented letters whole.
+  // Longest first, so a shorter Accent never cuts into a longer one.
+  // Lookarounds stand in for `\b`, which only knows Latin letters; marks keep accented letters whole.
   const alternatives = words
     .toSorted((a, b) => b.length - a.length)
     .map(escapeRegExp)

@@ -2,10 +2,7 @@ import type { MetaDescriptor } from "react-router";
 import { DEFAULT_LANGUAGE, getI18n, LANGUAGES, languageFromPath, OG_LOCALES } from "@/shared/i18n";
 import { absoluteUrl, pagePath, type PageId } from "@/shared/routing";
 
-/**
- * What Page Metadata needs from a Page's loader data. Typed structurally
- * because `shared` can't import `entities` (see docs/adr/0004-feature-sliced-design.md).
- */
+// Structural, because `shared` can't import `entities` (ADR 0004).
 interface PageMetaData {
   about: { name: string; headline: string; summary: string };
 }
@@ -15,11 +12,6 @@ interface PageMetaArgs {
   location: { pathname: string };
 }
 
-/**
- * A Page's `meta`: title, description, canonical, hreflang alternates and
- * Open Graph tags, in the Language of the URL. Every Page's `loader` must
- * return `about`.
- */
 export function pageMeta(pageId: PageId) {
   return ({ loaderData, location }: PageMetaArgs): MetaDescriptor[] => {
     if (!loaderData) {

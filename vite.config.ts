@@ -15,7 +15,6 @@ export default defineConfig(({ mode }) => {
   };
 });
 
-/** Canonical, hreflang and sitemap URLs are absolute, so a real build needs the public origin. */
 function requireSiteUrl(siteUrl: string | undefined): Plugin {
   return {
     name: "require-site-url",

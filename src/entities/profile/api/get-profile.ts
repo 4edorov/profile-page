@@ -38,30 +38,25 @@ const learning = { en: enLearning, ru: ruLearning } satisfies Record<
   (Omit<LearningEntry, "kind"> & { kind: string })[]
 >;
 
-/** What Page Metadata reads from About; every Page's loader returns at least these. */
 export const ABOUT_META_FIELDS = ["name", "headline", "summary"] as const satisfies (keyof About)[];
 
 export function getAbout(language: Language): About {
   return about[language];
 }
 
-/** Only the `fields` of About, so a Page's prerendered data carries nothing it doesn't show. */
 export function pickAbout<Field extends keyof About>(language: Language, fields: readonly Field[]): Pick<About, Field> {
   const all = about[language];
   return Object.fromEntries(fields.map((field) => [field, all[field]])) as Pick<About, Field>;
 }
 
-/** Newest first. */
 export function getExperience(language: Language): ExperienceEntry[] {
   return experience[language].toSorted(newestFirst);
 }
 
-/** In the order they are written. */
 export function getProjects(language: Language): ProjectEntry[] {
   return projects[language];
 }
 
-/** Grouped by kind in `LEARNING_KINDS` order, newest first within each kind. */
 export function getLearning(language: Language): LearningEntry[] {
   return learning[language]
     .map((entry) => ({ ...entry, kind: learningKind(entry.kind, entry.id) }))

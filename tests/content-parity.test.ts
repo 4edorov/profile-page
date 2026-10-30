@@ -16,7 +16,6 @@ function readContent(language: string, file: string): unknown {
   return JSON.parse(readFileSync(join(contentDir, language, file), "utf8"));
 }
 
-/** Options for files that may differ in more than wording: a Contact link can go to that Language's version of a profile. */
 const SHAPE_OPTIONS: Record<string, { urlQueryPerLanguage: boolean }> = {
   "contact.json": { urlQueryPerLanguage: true },
 };

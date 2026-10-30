@@ -8,11 +8,6 @@ const HEADING_LOOKS = {
   small: "text-sm font-semibold",
 } as const;
 
-/**
- * A heading whose look (`level`) is chosen apart from its tag (`as`), so an
- * Entry looks the same whether it sits under a Page title or a Section heading.
- * `className` is for layout only.
- */
 export function Heading({
   level,
   as: Tag,
@@ -42,7 +37,6 @@ const TEXT_SIZES = {
 } as const;
 const TEXT_WEIGHTS = { semibold: "font-semibold", bold: "font-bold" } as const;
 
-/** Text set apart from ordinary paragraphs, which need no component. `className` is for layout only. */
 export function Text({
   tone,
   size,

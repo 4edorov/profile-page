@@ -5,7 +5,6 @@ import { languageFromRequest } from "@/shared/i18n";
 import { pageMeta } from "@/shared/seo";
 import { Heading } from "@/shared/ui/typography";
 
-// Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
   const language = languageFromRequest(request);
   return { about: pickAbout(language, ABOUT_META_FIELDS) };
@@ -13,8 +12,6 @@ export function loader({ request }: LoaderFunctionArgs) {
 
 export const meta = pageMeta("resume");
 
-// The Resume itself, a hand-made PDF per Language, arrives with its viewer.
-// See docs/adr/0005-hand-made-resume.md.
 export default function Resume() {
   const { t } = useTranslation();
   return (

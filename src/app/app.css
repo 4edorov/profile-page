@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-/* Each Theme has four colors, plus the green of the Open to Work light; muted text,
-   borders and hovers are these at lower opacity. Surface is the background of panels
-   that sit on the page, such as the About Page's. */
 @theme {
   --color-*: initial;
   --color-background: #f8fafc;
@@ -28,8 +25,7 @@
     --color-open-to-work: #4ade80;
   }
 
-  /* The page behind the open menu must not scroll. Only below `lg`, where the
-     menu shows: widening the screen hides it without closing it. */
+  /* Only below `lg`: widening the screen hides the menu without closing it. */
   @media (width < 64rem) {
     html:has([popover]:popover-open) {
       overflow: hidden;
@@ -41,7 +37,6 @@
     outline-offset: 2px;
   }
 
-  /* A readable line length, however wide the column. */
   p,
   li {
     max-width: 70ch;

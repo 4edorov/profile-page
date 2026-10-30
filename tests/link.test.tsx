@@ -26,8 +26,8 @@ test("a path to a Page navigates within the Profile Site", async () => {
   renderLinks();
   const link = await screen.findByRole("link", { name: "About" });
   expect(link.getAttribute("href")).toBe("/en/about/");
-  // `false`: the router took the click instead of the browser.
-  expect(fireEvent.click(link)).toBe(false);
+  const browserNavigates = fireEvent.click(link);
+  expect(browserNavigates).toBe(false);
   expect(await screen.findByRole("heading", { name: "About Page" })).toBeDefined();
 });
 

@@ -16,7 +16,6 @@ import { pageMeta } from "@/shared/seo";
 import { Link } from "@/shared/ui/link";
 import { Heading, Text } from "@/shared/ui/typography";
 
-// Runs at build time only: the result is baked into the prerendered HTML.
 export function loader({ request }: LoaderFunctionArgs) {
   const language = languageFromRequest(request);
   return {
@@ -45,8 +44,7 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
           </Text>
           <Text tone="muted" size="lg" as="ul" className="mt-2 flex flex-wrap gap-x-2">
             {about.stack.map((item) => (
-              // The dot is decoration: its alt text is empty, so screen readers skip it.
-              // Browsers without alt text drop the dot, but the gap keeps the items apart.
+              // The dot's alt text is empty so screen readers skip it; browsers without alt text drop it, and the gap still separates items.
               <li key={item} className="not-last:after:ml-2 not-last:after:content-['·'_/_'']">
                 {item}
               </li>
@@ -60,7 +58,6 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
           </Text>
           <MoreLink to={pagePath(language, "about")}>{t("home.more.about")}</MoreLink>
         </div>
-        {/* Purely visual, and hidden below 768px; the Technologies are shown nowhere else. */}
         <div aria-hidden="true" className="hidden items-center md:flex">
           <TechnologyCloud technologies={about.technologies} />
         </div>
@@ -116,7 +113,6 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
   );
 }
 
-/** A Topic's Section: a heading, a list of its Featured Entries and a link to its Topic Page. */
 function TopicSection({
   id,
   heading,

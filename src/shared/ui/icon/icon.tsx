@@ -1,7 +1,3 @@
-/**
- * An outline icon drawn in the current text color, on a 24×24 grid; decorative,
- * so hidden from assistive technology. `children` are its shapes.
- */
 export function Icon({ children }: { children: React.ReactNode }) {
   return (
     <svg

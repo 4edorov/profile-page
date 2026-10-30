@@ -8,7 +8,6 @@ import { findRoute, routeModule } from "./route-modules";
 
 const ABOUT = { name: "Ada Lovelace", headline: "Analyst", summary: "Notes on the Analytical Engine." };
 
-// `SITE_URL` is set in vitest.config.ts.
 function url(pageId: PageId, language: Language): string {
   return `https://example.com/${language}/${pageId === "home" ? "" : pageId}`;
 }
