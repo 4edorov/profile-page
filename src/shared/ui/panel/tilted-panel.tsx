@@ -28,7 +28,7 @@ export function TiltedPanel({
       aria-labelledby={labelledBy}
       // `isolate` keeps the background behind the content but in front of the page.
       className={withLayout(`relative isolate ${INSETS[inset]}`, className)}
-      style={{ "--tilt": `${tilt}deg` } as React.CSSProperties}
+      style={{ "--tilt": `${String(tilt)}deg` } as React.CSSProperties}
     >
       <div
         aria-hidden="true"

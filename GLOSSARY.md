@@ -112,6 +112,10 @@ _Avoid_: Biography, story, background
 The owner's photo, part of the About Topic: one image for every Language, described per Language for screen readers, and shown on the About Page.
 _Avoid_: Photo, avatar, headshot, picture
 
+**Period**:
+The months an Experience or Learning Entry spans: a start month, and an end month or "present" while still in progress. Projects Entries have no Period. Identical in every Language.
+_Avoid_: Date range, duration, dates
+
 ## Appearance
 
 **Theme**:

@@ -146,7 +146,9 @@ export function TechnologyCloud({ technologies }: { technologies: Technology[] }
                 target="_blank"
                 rel="noopener"
                 tabIndex={-1}
-                onMouseDown={(event) => event.preventDefault()}
+                onMouseDown={(event) => {
+                  event.preventDefault();
+                }}
                 className="cursor-pointer"
               >
                 {technology.name}
@@ -185,10 +187,10 @@ function rotate({ x, y, z }: Point, yaw: number, pitch: number): Point {
 function itemStyle({ x, y, z }: Point) {
   const nearness = (z + 1) / 2;
   // Rounded, so the prerendered style is the same string whichever engine computes it.
-  const round = (value: number) => Math.round(value * 1000) / 1000;
+  const cssNumber = (value: number) => String(Math.round(value * 1000) / 1000);
   return {
-    transform: `translate(-50%, -50%) translate(calc(${round(x)} * min(38cqi, 50cqi - 50%)), ${round(y * 38)}cqi) scale(${round(0.7 + 0.3 * nearness)})`,
-    opacity: String(round(0.3 + 0.7 * nearness)),
+    transform: `translate(-50%, -50%) translate(calc(${cssNumber(x)} * min(38cqi, 50cqi - 50%)), ${cssNumber(y * 38)}cqi) scale(${cssNumber(0.7 + 0.3 * nearness)})`,
+    opacity: cssNumber(0.3 + 0.7 * nearness),
     zIndex: String(Math.round(nearness * 100)),
   };
 }

@@ -69,6 +69,9 @@ test.each(PAGE_IDS.flatMap((pageId) => LANGUAGES.map((language) => [pageId, lang
     const loaderData = loader({ request, params: {}, context: {} } as LoaderFunctionArgs);
     const tags = meta({ loaderData, location: { pathname: new URL(request.url).pathname } });
     expect(tags).toContainEqual({ tagName: "link", rel: "canonical", href: url(pageId, language) });
-    expect(tags).toContainEqual({ property: "og:title", content: expect.stringContaining(getAbout(language).name) });
+    expect(tags).toContainEqual({
+      property: "og:title",
+      content: expect.stringContaining(getAbout(language).name) as unknown,
+    });
   },
 );
