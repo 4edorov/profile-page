@@ -35,8 +35,14 @@ type StubRoute = Parameters<typeof createRoutesStub>[0][number];
 
 export function stubRoutes(tree: RouteConfigEntry[] = routes): StubRoute[] {
   return tree.map((route) => {
+    const { id, path, index, children } = route;
     const { default: Component, loader } = routeModule(route);
-    const stub = { id: route.id, path: route.path, Component, loader };
-    return route.index ? { ...stub, index: true } : { ...stub, children: route.children && stubRoutes(route.children) };
+    const stub = {
+      ...(id !== undefined && { id }),
+      ...(path !== undefined && { path }),
+      ...(Component && { Component }),
+      ...(loader && { loader }),
+    };
+    return index ? { ...stub, index: true } : { ...stub, ...(children && { children: stubRoutes(children) }) };
   });
 }
