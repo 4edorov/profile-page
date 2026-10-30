@@ -26,6 +26,8 @@ SITE_URL=https://example.com pnpm build   # writes build/client/
 
 `pnpm install` also installs a Husky pre-commit hook that runs `pnpm check` on the working tree and blocks the commit if it fails. It only checks; run `pnpm format` to fix formatting. `git commit --no-verify` skips it, but `pnpm run deploy` runs `pnpm check` itself, so deploy stays the gate.
 
+`pnpm install` also installs a pre-push hook that rejects a branch changing more than 500 lines (added + removed) since it branched from `origin/main`, with `pnpm-lock.yaml` excluded, so every PR stays reviewable. Split bigger work into sequential PRs; `git push --no-verify` is the owner's override.
+
 ## Layout
 
 Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-feature-sliced-design.md).
