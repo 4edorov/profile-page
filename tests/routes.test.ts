@@ -22,9 +22,10 @@ function matchedRouteId(path: string): string | undefined {
 }
 
 function toRouteObjects(tree: RouteConfigEntry[]): RouteObject[] {
-  return tree.map(({ id, path, index, children }) =>
-    index ? { id, path, index: true } : { id, path, children: children && toRouteObjects(children) },
-  );
+  return tree.map(({ id, path, index, children }) => {
+    const route = { ...(id !== undefined && { id }), ...(path !== undefined && { path }) };
+    return index ? { ...route, index: true } : { ...route, ...(children && { children: toRouteObjects(children) }) };
+  });
 }
 
 test("every prerendered path lands on its own route", () => {
