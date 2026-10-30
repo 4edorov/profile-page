@@ -6,6 +6,7 @@
 - **Both Languages**: write every UI String and Profile Content change in `en` and `ru`, properly translated. The parity checks only catch missing keys and mismatched shapes.
 - **Comments**: none, except a one-line _why_ the code can't say (a non-obvious constraint, workaround or hazard): keep one only if a sensible edit made without it would break something. No _what_ comments, JSDoc or pointers. Tool directives (`eslint-disable`, `@ts-expect-error`, `/// <reference>`, `@vitest-environment`, `# shellcheck`) are exempt; an `eslint-disable` still needs its why.
 - **Adding a Page**: follow "Adding a Page" in `README.md`.
+- **Updating dependencies**: follow "Updating dependencies" in `README.md`.
 - **Deploy**: `pnpm run deploy` publishes to the live site. Leave it to the owner.
 
 ## Agent skills
