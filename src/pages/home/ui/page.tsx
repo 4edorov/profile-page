@@ -9,6 +9,7 @@ import {
   pickAbout,
   Tagline,
   TechnologyCloud,
+  TechnologyMarquee,
 } from "@/entities/profile";
 import { languageFromRequest, useLanguage } from "@/shared/i18n";
 import { pagePath, type PageProps } from "@/shared/routing";
@@ -35,7 +36,7 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
   return (
     <main className="divide-y divide-text/10">
       <section aria-labelledby="about-heading" className="grid min-h-[80svh] gap-12 py-12 md:grid-cols-2">
-        <div className="flex flex-col items-start justify-center">
+        <div className="flex min-w-0 flex-col items-start justify-center">
           <Heading level="hero" as="h1" id="about-heading">
             {about.name}
           </Heading>
@@ -57,8 +58,11 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
             {about.summary}
           </Text>
           <MoreLink to={pagePath(language, "about")}>{t("home.more.about")}</MoreLink>
+          <div className="mt-8 w-full md:hidden">
+            <TechnologyMarquee technologies={about.technologies} />
+          </div>
         </div>
-        <div aria-hidden="true" className="hidden items-center md:flex">
+        <div className="hidden items-center md:flex">
           <TechnologyCloud technologies={about.technologies} />
         </div>
       </section>

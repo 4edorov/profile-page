@@ -93,7 +93,7 @@ Whether the owner is currently looking for work, set by the owner in Profile Con
 _Avoid_: Availability, status, hiring
 
 **Technologies**:
-Every language and technology the owner has worked with, one per item, as part of the About Topic, each optionally linked to its own website. Shown only in the Technology Cloud. Identical in every Language.
+Every language and technology the owner has worked with, one per item, as part of the About Topic, each optionally linked to its own website. Shown in the About Section by the Technology Cloud on wider screens and the Technology Marquee on phone-sized ones, and nowhere else. Identical in every Language.
 _Avoid_: Skills, tech, tags
 
 **Stack**:
@@ -127,5 +127,9 @@ A run of words in the About tagline shown in the Theme's primary color, chosen b
 _Avoid_: Highlight, emphasis
 
 **Technology Cloud**:
-The About Section's turning sphere of the Technologies, which the visitor's pointer steers; the sphere stops while the pointer is on a Technology, which shows in the Theme's primary color, and clicking a linked one opens its website in a new tab. Still for visitors who ask for reduced motion, and not shown on phone-sized screens. Purely visual: screen readers and keyboard navigation skip it, and the Technologies are shown nowhere else.
+The About Section's turning sphere of the Technologies, which the visitor's pointer steers; the sphere stops while the pointer or keyboard focus is on a Technology, which shows in the Theme's primary color, and clicking a linked one opens its website in a new tab. Still for visitors who ask for reduced motion. Shown only on screens wider than phone-sized, where it is also how screen readers and keyboard users reach the Technologies; the Technology Marquee takes its place on phone-sized screens.
 _Avoid_: Tag cloud, sphere, animation block
+
+**Technology Marquee**:
+The About Section's endless row of the Technologies below its link to the About Page, moving leftward on its own in Profile Content order; on phone-sized screens it takes the Technology Cloud's place, for screen readers and keyboard users too. A touch, hover or keyboard focus pauses it, the visitor can swipe it either way, and it moves on again from where it was left shortly after release. Tapping a linked Technology opens its website in a new tab. Still for visitors who ask for reduced motion, but still swipeable.
+_Avoid_: Ticker, carousel, slider, cloud (for the row)

@@ -42,6 +42,7 @@ export function Text({
   size,
   weight,
   as: Tag = "p",
+  label,
   className,
   children,
 }: {
@@ -49,13 +50,14 @@ export function Text({
   size: keyof typeof TEXT_SIZES;
   weight?: keyof typeof TEXT_WEIGHTS;
   as?: "p" | "span" | "ul";
+  label?: string | undefined;
   className?: string;
   children: React.ReactNode;
 }) {
   const look = [TEXT_SIZES[size], weight && TEXT_WEIGHTS[weight], tone && TEXT_TONES[tone]].filter(Boolean).join(" ");
   // Safari drops the list role of a `ul` without bullets unless it is explicit.
   return (
-    <Tag role={Tag === "ul" ? "list" : undefined} className={withLayout(look, className)}>
+    <Tag role={Tag === "ul" ? "list" : undefined} aria-label={label} className={withLayout(look, className)}>
       {children}
     </Tag>
   );
