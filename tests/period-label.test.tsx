@@ -20,6 +20,11 @@ test("a Period shows its months by name", () => {
   expect(screen.getByText("Mar 2019 – Aug 2022")).toBeDefined();
 });
 
+test("a Period that starts and ends in the same month shows as that month alone", () => {
+  renderPeriod({ start: "2023-05", end: "2023-05" });
+  expect(screen.getByText("May 2023")).toBeDefined();
+});
+
 test("a month that has no name shows as written", () => {
   renderPeriod({ start: "2020-13", end: null });
   expect(screen.getByText("2020-13 – present")).toBeDefined();

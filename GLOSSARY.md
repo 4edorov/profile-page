@@ -113,7 +113,7 @@ The owner's photo, part of the About Topic: one image for every Language, descri
 _Avoid_: Photo, avatar, headshot, picture
 
 **Period**:
-The months an Experience or Learning Entry spans: a start month, and an end month or "present" while still in progress. Projects Entries have no Period. Identical in every Language.
+The months an Experience or Learning Entry spans: a start month, and an end month or "present" while still in progress. A Period that starts and ends in the same month shows as that month alone. Projects Entries have no Period. Identical in every Language.
 _Avoid_: Date range, duration, dates
 
 ## Appearance
