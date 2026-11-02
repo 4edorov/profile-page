@@ -38,46 +38,74 @@ async function findAboutSection(language: "en" | "ru") {
   return heading.closest("section") as HTMLElement;
 }
 
-function hiddenByRole(container: HTMLElement, role: string) {
-  const scope = within(container);
-  const visible = scope.queryAllByRole(role);
-  return scope.queryAllByRole(role, { hidden: true }).filter((element) => !visible.includes(element));
-}
-
 test("the About Section shows the Stack as a list, in order", async () => {
   const section = await findAboutSection("en");
-  const items = within(section)
+  const stack = within(section).getByRole("list", { name: "" });
+  const items = within(stack)
     .getAllByRole("listitem")
     .map((item) => item.textContent);
   expect(items).toEqual(getAbout("en").stack);
 });
 
-test("the About Section holds a Technology Cloud of every Technology, in order, which screen readers skip", async () => {
+test("every view of the Technologies is a list named Технологии of every Technology, once and in order", async () => {
   const section = await findAboutSection("ru");
-  const names = hiddenByRole(section, "listitem").map((item) => item.textContent);
-  expect(names).toEqual(getAbout("ru").technologies.map((technology) => technology.name));
+  const views = within(section).getAllByRole("list", { name: "Технологии" });
+  expect(views.length).toBeGreaterThan(0);
+  for (const view of views) {
+    const names = within(view)
+      .getAllByRole("listitem")
+      .map((item) => item.textContent);
+    expect(names).toEqual(getAbout("ru").technologies.map((technology) => technology.name));
+  }
 });
 
-test("a linked Technology opens its website in a new tab, and keyboard navigation skips it", async () => {
+async function findTechnologyViews() {
   const section = await findAboutSection("en");
-  const links = hiddenByRole(section, "link").map((link) => ({
-    name: link.textContent,
-    href: link.getAttribute("href"),
-    target: link.getAttribute("target"),
-    rel: link.getAttribute("rel"),
-    tabIndex: link.tabIndex,
-  }));
+  return within(section).getAllByRole("list", { name: "Technologies" });
+}
+
+function keyboardReachable(element: HTMLElement) {
+  return element.tabIndex >= 0 && element.closest("[inert]") === null;
+}
+
+test("in every view, a linked Technology is a link the keyboard reaches, opening its website in a new tab", async () => {
   const linked = getAbout("en").technologies.filter((technology) => technology.url !== null);
-  expect(links).toEqual(
-    linked.map(({ name, url }) => ({ name, href: url, target: "_blank", rel: "noopener", tabIndex: -1 })),
-  );
+  for (const view of await findTechnologyViews()) {
+    const links = within(view)
+      .getAllByRole("link")
+      .map((link) => ({
+        name: link.textContent,
+        href: link.getAttribute("href"),
+        target: link.getAttribute("target"),
+        rel: link.getAttribute("rel"),
+        reachable: keyboardReachable(link),
+      }));
+    expect(links).toEqual(
+      linked.map(({ name, url }) => ({ name, href: url, target: "_blank", rel: "noopener", reachable: true })),
+    );
+  }
 });
 
-test("clicking a Technology in the Technology Cloud doesn't focus it", async () => {
+test("the About Section holds two views of the Technologies: the Technology Cloud and the Technology Marquee", async () => {
+  expect(await findTechnologyViews()).toHaveLength(2);
+});
+
+test("the keyboard reaches each linked Technology once per view, never in the Technology Marquee's repeats", async () => {
   const section = await findAboutSection("en");
-  const [link] = hiddenByRole(section, "link");
-  const focusAllowed = fireEvent.mouseDown(link as HTMLElement);
-  expect(focusAllowed).toBe(false);
+  const reachable = Array.from(section.querySelectorAll("a"))
+    .filter(keyboardReachable)
+    .map((link) => link.textContent);
+  for (const { name, url } of getAbout("en").technologies) {
+    expect(reachable.filter((text) => text === name)).toHaveLength(url === null ? 0 : 2);
+  }
+});
+
+test("clicking a Technology in any view doesn't focus it", async () => {
+  for (const view of await findTechnologyViews()) {
+    const [link] = within(view).getAllByRole("link");
+    const focusAllowed = fireEvent.mouseDown(link as HTMLElement);
+    expect(focusAllowed).toBe(false);
+  }
 });
 
 function paragraphsUnder(heading: HTMLElement) {
