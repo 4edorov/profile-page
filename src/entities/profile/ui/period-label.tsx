@@ -11,9 +11,10 @@ export function PeriodLabel({ period }: { period: Period }) {
     const name = months[Number(monthNumber) - 1];
     return name === undefined || year === undefined ? value : `${name} ${year}`;
   };
+  const end = period.end ? month(period.end) : t("period.present");
   return (
     <Text tone="muted" size="sm" as="span">
-      {month(period.start)} – {period.end ? month(period.end) : t("period.present")}
+      {period.end === period.start ? month(period.start) : `${month(period.start)} – ${end}`}
     </Text>
   );
 }
