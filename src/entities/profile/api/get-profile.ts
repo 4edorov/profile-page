@@ -41,6 +41,16 @@ for (const entry of entries) {
     throw new Error(`Entry "${entry.id}" is both hidden and featured`);
   }
 }
+for (const entry of Object.values(experience).flat()) {
+  if (entry.assignments.length === 0) {
+    throw new Error(`Experience Entry "${entry.id}" has no Assignments`);
+  }
+  for (const assignment of entry.assignments) {
+    if (assignment.responsibilities.length === 0) {
+      throw new Error(`Assignment "${assignment.name}" of Experience Entry "${entry.id}" has no responsibilities`);
+    }
+  }
+}
 
 export const ABOUT_META_FIELDS = ["name", "headline", "summary"] as const satisfies (keyof About)[];
 

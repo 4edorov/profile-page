@@ -9,8 +9,16 @@
     "location": "Placeholder City, Placeholder Country",
     "start": "2016-07",
     "end": "2019-02",
-    "summary": "Placeholder summary of a hidden job.",
-    "details": ["Placeholder achievement."]
+    "assignments": [
+      {
+        "name": "Hidden product",
+        "description": "Placeholder description of a hidden product.",
+        "responsibilities": ["Placeholder responsibility."],
+        "achievements": ["Placeholder achievement."],
+        "team": ["2 placeholder developers"],
+        "tools": ["Placeholder tool"]
+      }
+    ]
   },
   {
     "id": "previous-job",
@@ -22,8 +30,16 @@
     "location": "Placeholder City, Placeholder Country",
     "start": "2019-03",
     "end": "2022-08",
-    "summary": "Placeholder summary of the previous job.",
-    "details": ["Placeholder achievement.", "Another placeholder achievement."]
+    "assignments": [
+      {
+        "name": "Previous product",
+        "description": "Placeholder description of the previous product.",
+        "responsibilities": ["Placeholder responsibility.", "Another placeholder responsibility."],
+        "achievements": [],
+        "team": [],
+        "tools": []
+      }
+    ]
   },
   {
     "id": "current-job",
@@ -35,7 +51,23 @@
     "location": "Remote",
     "start": "2022-09",
     "end": null,
-    "summary": "Placeholder summary of the current job.",
-    "details": ["Placeholder achievement.", "Another placeholder achievement."]
+    "assignments": [
+      {
+        "name": "Current product",
+        "description": "Placeholder description of the current product.",
+        "responsibilities": ["Placeholder responsibility.", "Another placeholder responsibility."],
+        "achievements": ["Placeholder achievement."],
+        "team": ["3 placeholder developers", "1 placeholder QA engineer"],
+        "tools": ["Placeholder tool", "Placeholder service"]
+      },
+      {
+        "name": "Client project",
+        "description": "Placeholder description of a client project.",
+        "responsibilities": ["Placeholder responsibility."],
+        "achievements": ["Placeholder achievement.", "Another placeholder achievement."],
+        "team": ["2 placeholder developers"],
+        "tools": ["Placeholder tool"]
+      }
+    ]
   }
 ]

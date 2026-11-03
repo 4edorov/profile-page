@@ -25,6 +25,9 @@ export interface Entry {
   id: string;
   featured: boolean;
   hidden: boolean;
+}
+
+interface Described {
   summary: string;
   details: string[];
 }
@@ -34,9 +37,19 @@ export interface ExperienceEntry extends Entry, Period {
   organisation: string;
   url: string | null;
   location: string;
+  assignments: Assignment[];
 }
 
-export interface ProjectEntry extends Entry {
+export interface Assignment {
+  name: string;
+  description: string;
+  responsibilities: string[];
+  achievements: string[];
+  team: string[];
+  tools: string[];
+}
+
+export interface ProjectEntry extends Entry, Described {
   name: string;
   url: string | null;
 }
@@ -45,7 +58,7 @@ export const LEARNING_KINDS = ["education", "course", "certification", "book"] a
 
 export type LearningKind = (typeof LEARNING_KINDS)[number];
 
-export interface LearningEntry extends Entry, Period {
+export interface LearningEntry extends Entry, Described, Period {
   kind: LearningKind;
   title: string;
   provider: string;

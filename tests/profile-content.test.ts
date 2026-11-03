@@ -55,7 +55,12 @@ describe("Hidden Entries", () => {
       end: null,
       summary: "Summary.",
       details: [],
+      assignments: [assignment()],
     };
+  }
+
+  function assignment(responsibilities = ["Responsibility."]) {
+    return { name: "Assignment", description: "Description.", responsibilities, achievements: [], team: [], tools: [] };
   }
 
   async function loadWith(topic: "experience" | "learning", entries: ReturnType<typeof entry>[]) {
@@ -83,6 +88,20 @@ describe("Hidden Entries", () => {
         entry("hidden", { featured: true, hidden: true }),
       ]),
     ).rejects.toThrow('Entry "hidden" is both hidden and featured');
+  });
+
+  test("still need an Assignment when in Experience", async () => {
+    await expect(
+      loadWith("experience", [{ ...entry("hidden", { featured: false, hidden: true }), assignments: [] }]),
+    ).rejects.toThrow('Experience Entry "hidden" has no Assignments');
+  });
+
+  test("still need a responsibility on every Assignment", async () => {
+    await expect(
+      loadWith("experience", [
+        { ...entry("hidden", { featured: false, hidden: true }), assignments: [assignment([])] },
+      ]),
+    ).rejects.toThrow('Assignment "Assignment" of Experience Entry "hidden" has no responsibilities');
   });
 
   test("still need a known Learning kind", async () => {
