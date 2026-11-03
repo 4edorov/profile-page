@@ -1,5 +1,243 @@
 [
   {
+    "id": "0",
+    "featured": false,
+    "hidden": false,
+    "role": "Fullstack Developer",
+    "organisation": "Rikai Labs",
+    "url": null,
+    "location": "China, remote",
+    "start": "2017-04",
+    "end": "2019-09",
+    "assignments": [
+      {
+        "name": "WeChat CMS",
+        "description": "A CMS powering an NLP-driven chatbot in the WeChat app, used to build chats ranging from customer support and FAQ libraries to language learning.",
+        "responsibilities": [
+          "Built new user interfaces",
+          "Implemented CSV data import and export",
+          "Integrated third-party systems: the WeChat API",
+          "Integrated Amplitude analytics",
+          "Introduced Socket.IO",
+          "Developed a WeChat Mini Program chat app",
+          "Implemented the logic for retrieving chatbot answers",
+          "Implemented payments within WeChat"
+        ],
+        "achievements": [
+          "Developed a WeChat Mini Program that opened a new channel for reaching users",
+          "Integrated Amplitude analytics, enabling tracking of user behaviour and product metrics",
+          "Implemented payments within WeChat, adding a new monetisation channel for the product",
+          "Introduced real-time communication over Socket.IO, making the chatbot more responsive"
+        ],
+        "team": ["5 fullstack developers", "PM"],
+        "tools": [
+          "React",
+          "Redux",
+          "Redux-Thunk",
+          "React-Router",
+          "Socket.IO",
+          "Material UI",
+          "Node.js",
+          "Express",
+          "Feathers",
+          "Vue.js",
+          "Quasar",
+          "Element-UI",
+          "D3",
+          "FastText",
+          "WeChat SDK"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1",
+    "featured": false,
+    "hidden": false,
+    "role": "Frontend Developer",
+    "organisation": "Real Home GmbH",
+    "url": null,
+    "location": "Poland, remote",
+    "start": "2019-10",
+    "end": "2020-05",
+    "assignments": [
+      {
+        "name": "CMS",
+        "description": "A CMS and logistics system running an online store for general goods.",
+        "responsibilities": [
+          "Built new user interface features and business logic for the logistics system",
+          "Updated business logic in the legacy Smarty code of the customer platform and fixed bugs",
+          "Made improvements",
+          "Did code reviews"
+        ],
+        "achievements": [
+          "Shipped new user interface features and business logic that extended the store's logistics system",
+          "Updated and stabilised the legacy Smarty logic, reducing bugs on the customer platform"
+        ],
+        "team": [],
+        "tools": ["React", "Redux", "Redux-Saga", "Smarty", "PHP", "MySQL"]
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "featured": false,
+    "hidden": false,
+    "role": "Fullstack Developer",
+    "organisation": "Considr, Inc.",
+    "url": "https://www.vnote.ai/",
+    "location": "Remote",
+    "start": "2019-12",
+    "end": "2021-04",
+    "assignments": [
+      {
+        "name": "Ponder",
+        "description": "A coaching app for personal management, for recording audio notes and doing coaching exercises asynchronously.",
+        "responsibilities": [
+          "Built the user interface",
+          "Developed the client-side business logic",
+          "Developed the REST API",
+          "Implemented client-side audio processing and streaming with the Streams API",
+          "Built an interactive audio player that controls the audio stream and recording",
+          "Added third-party integrations",
+          "Maintained functional tests",
+          "Added animations with Framer Motion",
+          "Created an npm package wrapping a Markdown editing library for cross-platform use",
+          "Made the client app responsive on mobile devices"
+        ],
+        "achievements": [
+          "Created and published an npm package of a cross-platform Markdown editing library, reused across several projects",
+          "Built an interactive audio player with streaming audio processing (Streams API) that became central to the app's user experience",
+          "Introduced animations (Framer Motion) and a responsive layout that improved the interface on mobile devices"
+        ],
+        "team": ["3 fullstack developers", "PM"],
+        "tools": [
+          "React",
+          "Next.js",
+          "SWR",
+          "Redux",
+          "Redux-Thunk",
+          "Material UI",
+          "Framer Motion",
+          "Chai",
+          "AVA",
+          "Node.js",
+          "Express",
+          "MongoDB",
+          "GCP"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "featured": false,
+    "hidden": false,
+    "role": "Fullstack Developer",
+    "organisation": "Tech Fabric LLC",
+    "url": "https://www.techfabric.com/",
+    "location": "USA, remote",
+    "start": "2021-05",
+    "end": "2023-01",
+    "assignments": [
+      {
+        "name": "Meetribbon",
+        "description": "A platform for running exhibitions and e-commerce (B2B/B2C), for building a marketplace for a particular seller or brand.",
+        "responsibilities": [
+          "Developed analytics charts with Mongo Analytics, wrote the queries and aggregations behind them, and kept each user's data secure and isolated",
+          "Added a responsive interface for the analytics charts",
+          "Optimised the Spreedly payment integration",
+          "Added a new way to use a third-party payment gateway within Spreedly",
+          "Added draft orders saved to the database",
+          "Implemented adding options to a customer's order, with the order total recalculated",
+          "Added global server-side error tracking and optimised asynchronous code, greatly improving the app's stability",
+          "Implemented the redesigned, responsive home page of the app"
+        ],
+        "achievements": [
+          "Built an analytics system on Mongo Analytics with a responsive interface, giving access to reports from any device while keeping users' data isolated",
+          "Optimised the Spreedly payment integration and added a new payment gateway scenario, widening the ways to accept payments",
+          "Introduced global error tracking and optimised asynchronous code, greatly improving the app's stability",
+          "Implemented the redesigned, responsive home page, improving how users perceive the product"
+        ],
+        "team": [
+          "4 frontend developers",
+          "3 backend developers",
+          "6 fullstack developers",
+          "2 PMs",
+          "4 QA engineers",
+          "designer"
+        ],
+        "tools": [
+          "React",
+          "Redux",
+          "Bootstrap",
+          "Material UI",
+          "Chai",
+          "Webpack",
+          "AWS",
+          "AWS Lambda",
+          "Node.js",
+          "Express",
+          "LoopBack",
+          "MongoDB",
+          "Mongo Analytics"
+        ]
+      },
+      {
+        "name": "Webbuy",
+        "description": "An e-commerce app for the car market, embedded in dealers' websites.",
+        "responsibilities": [
+          "Implemented authentication for the server API based on Apollo Federation",
+          "Moved user authentication from an AWS Cognito User Pool to an Identity Pool",
+          "Built user interfaces for the internal admin panel",
+          "Optimised user identifiers in the database, using unique ids instead of sequential numbers",
+          "Ran database migrations",
+          "Did code reviews"
+        ],
+        "achievements": [
+          "Implemented server API authentication based on Apollo Federation, securing data access between services",
+          "Moved user authentication from an AWS Cognito User Pool to an Identity Pool, making access management more flexible",
+          "Optimised user identifiers in the database (moving to unique ids), reducing the risk of data collisions"
+        ],
+        "team": ["2 frontend developers", "2 backend developers", "4 fullstack developers", "PM", "1 QA engineer"],
+        "tools": [
+          "Angular",
+          "RxJS",
+          "Material UI",
+          "Apollo Federation",
+          "GraphQL",
+          "Cypress",
+          "Node.js",
+          "Knex",
+          "MySQL",
+          "AWS"
+        ]
+      },
+      {
+        "name": "Home Qual",
+        "description": "Assesses a borrower's credit rating through an interactive questionnaire.",
+        "responsibilities": [
+          "Built the REST API for the client app and the admin panel",
+          "Set up calls to stored procedures",
+          "Set up authentication for the app's API",
+          "Built the API for user authentication and authorisation",
+          "Set up API documentation with Swagger",
+          "Developed the chat and bot integration with SignalR, Azure Bot Service, Bot Framework, Power Virtual Agents and Power Automate, letting users talk to the bot and to an administrator",
+          "Set up CI/CD in Azure for 3 apps across 3 environments, and moved environment keys into Azure services",
+          "Set up the SWR module for loading data with caching"
+        ],
+        "achievements": [
+          "Developed and documented (Swagger) the REST API for the client app and the admin panel, speeding up frontend-backend integration",
+          "Integrated a chatbot (SignalR, Azure Bot Service, Bot Framework, Power Virtual Agents, Power Automate), letting users talk to the bot and to an administrator",
+          "Set up CI/CD in Azure for 3 apps across 3 environments with secure key storage, simplifying the release process",
+          "Introduced data caching with SWR, speeding up the interface"
+        ],
+        "team": ["2 frontend developers", "fullstack developer", "database developer", "PM"],
+        "tools": ["React", "Next.js", "SWR", "DevExpress", ".Net Web API", "Swagger", "MySQL", "SignalR", "Azure"]
+      }
+    ]
+  },
+  {
     "id": "4",
     "featured": true,
     "hidden": false,
