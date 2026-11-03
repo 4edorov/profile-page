@@ -1,4 +1,4 @@
-const UNTRANSLATED_KEYS = new Set(["id", "featured", "kind", "start", "end", "url", "openToWork"]);
+const UNTRANSLATED_KEYS = new Set(["id", "featured", "hidden", "kind", "start", "end", "url", "openToWork"]);
 
 const ANY_LENGTH_KEYS = new Set(["accents"]);
 

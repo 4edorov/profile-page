@@ -1,9 +1,25 @@
 [
   {
+    "id": "first-job",
+    "featured": false,
+    "hidden": true,
+    "role": "Временная должность",
+    "organisation": "Скрытая компания",
+    "url": null,
+    "location": "Временный город, временная страна",
+    "start": "2016-07",
+    "end": "2019-02",
+    "summary": "Временное описание скрытой работы.",
+    "details": ["Временное достижение."]
+  },
+  {
     "id": "previous-job",
     "featured": false,
+    "hidden": false,
     "role": "Временная должность",
     "organisation": "Предыдущая компания",
+    "url": null,
+    "location": "Временный город, временная страна",
     "start": "2019-03",
     "end": "2022-08",
     "summary": "Временное описание предыдущей работы.",
@@ -12,8 +28,11 @@
   {
     "id": "current-job",
     "featured": true,
+    "hidden": false,
     "role": "Временная должность",
     "organisation": "Текущая компания",
+    "url": "https://example.com",
+    "location": "Удалённо",
     "start": "2022-09",
     "end": null,
     "summary": "Временное описание текущей работы.",

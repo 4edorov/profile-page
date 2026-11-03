@@ -1,9 +1,25 @@
 [
   {
+    "id": "first-job",
+    "featured": false,
+    "hidden": true,
+    "role": "Placeholder role",
+    "organisation": "Hidden Company",
+    "url": null,
+    "location": "Placeholder City, Placeholder Country",
+    "start": "2016-07",
+    "end": "2019-02",
+    "summary": "Placeholder summary of a hidden job.",
+    "details": ["Placeholder achievement."]
+  },
+  {
     "id": "previous-job",
     "featured": false,
+    "hidden": false,
     "role": "Placeholder role",
     "organisation": "Previous Company",
+    "url": null,
+    "location": "Placeholder City, Placeholder Country",
     "start": "2019-03",
     "end": "2022-08",
     "summary": "Placeholder summary of the previous job.",
@@ -12,8 +28,11 @@
   {
     "id": "current-job",
     "featured": true,
+    "hidden": false,
     "role": "Placeholder role",
     "organisation": "Current Company",
+    "url": "https://example.com",
+    "location": "Remote",
     "start": "2022-09",
     "end": null,
     "summary": "Placeholder summary of the current job.",
