@@ -181,7 +181,7 @@ test.each([
   expect(await screen.findByRole("heading", { level: 1, name: heading })).toBeDefined();
 });
 
-test("the Experience Page shows every Entry, newest first", async () => {
+test("the Experience Page shows every Entry but Hidden ones, newest first", async () => {
   renderPath("/en/experience");
   await screen.findByRole("heading", { level: 1, name: "Experience" });
   const entries = within(screen.getByRole("main"))

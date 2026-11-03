@@ -24,6 +24,7 @@ export interface Period {
 export interface Entry {
   id: string;
   featured: boolean;
+  hidden: boolean;
   summary: string;
   details: string[];
 }
@@ -31,6 +32,8 @@ export interface Entry {
 export interface ExperienceEntry extends Entry, Period {
   role: string;
   organisation: string;
+  url: string | null;
+  location: string;
 }
 
 export interface ProjectEntry extends Entry {

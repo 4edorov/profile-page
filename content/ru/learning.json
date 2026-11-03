@@ -2,6 +2,7 @@
   {
     "id": "degree",
     "featured": true,
+    "hidden": false,
     "kind": "education",
     "title": "Временная специальность",
     "provider": "Временный университет",
@@ -13,6 +14,7 @@
   {
     "id": "course",
     "featured": false,
+    "hidden": false,
     "kind": "course",
     "title": "Временный курс",
     "provider": "Временная платформа",
@@ -24,6 +26,7 @@
   {
     "id": "certification",
     "featured": false,
+    "hidden": false,
     "kind": "certification",
     "title": "Временный сертификат",
     "provider": "Временный издатель",
@@ -35,6 +38,7 @@
   {
     "id": "book",
     "featured": true,
+    "hidden": false,
     "kind": "book",
     "title": "Временная книга",
     "provider": "Временный автор",

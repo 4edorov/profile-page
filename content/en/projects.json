@@ -2,6 +2,7 @@
   {
     "id": "profile-site",
     "featured": true,
+    "hidden": false,
     "name": "Profile Site",
     "url": "https://github.com/4edorov/profile-page",
     "summary": "This site: a prerendered React Router SPA in two Languages.",
@@ -10,6 +11,7 @@
   {
     "id": "placeholder-project",
     "featured": false,
+    "hidden": false,
     "name": "Placeholder project",
     "url": null,
     "summary": "Placeholder project summary.",

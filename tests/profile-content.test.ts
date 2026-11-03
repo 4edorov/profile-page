@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import {
   getAbout,
   getContact,
@@ -31,6 +31,44 @@ test("Technologies are unique and link only to https URLs", () => {
   expect(new Set(names).size).toBe(names.length);
   const badUrls = technologies.filter(({ url }) => url !== null && !url.startsWith("https://"));
   expect(badUrls).toEqual([]);
+});
+
+describe("Hidden Entries", () => {
+  function job(id: string, flags: { featured: boolean; hidden: boolean }) {
+    return {
+      id,
+      ...flags,
+      role: "Role",
+      organisation: "Organisation",
+      url: null,
+      location: "Remote",
+      start: "2020-01",
+      end: null,
+      summary: "Summary.",
+      details: [],
+    };
+  }
+
+  async function experienceWith(entries: ReturnType<typeof job>[]) {
+    vi.resetModules();
+    vi.doMock("../content/en/experience.json", () => ({ default: entries }));
+    const { getExperience: get } = await import("@/entities/profile");
+    vi.doUnmock("../content/en/experience.json");
+    return () => get("en");
+  }
+
+  test("are left out", async () => {
+    const get = await experienceWith([
+      job("shown", { featured: false, hidden: false }),
+      job("hidden", { featured: false, hidden: true }),
+    ]);
+    expect(get().map((entry) => entry.id)).toEqual(["shown"]);
+  });
+
+  test("cannot be featured", async () => {
+    const get = await experienceWith([job("hidden", { featured: true, hidden: true })]);
+    expect(get).toThrow('Entry "hidden" is both hidden and featured');
+  });
 });
 
 describe.each(LANGUAGES)("Profile Content in %s", (language) => {

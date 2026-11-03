@@ -16,6 +16,7 @@ import {
   LEARNING_KINDS,
   type About,
   type Contact,
+  type Entry,
   type ExperienceEntry,
   type LearningEntry,
   type LearningKind,
@@ -50,21 +51,30 @@ export function pickAbout<Field extends keyof About>(language: Language, fields:
 }
 
 export function getExperience(language: Language): ExperienceEntry[] {
-  return experience[language].toSorted(newestFirst);
+  return shown(experience[language]).toSorted(newestFirst);
 }
 
 export function getProjects(language: Language): ProjectEntry[] {
-  return projects[language];
+  return shown(projects[language]);
 }
 
 export function getLearning(language: Language): LearningEntry[] {
-  return learning[language]
+  return shown(learning[language])
     .map((entry) => ({ ...entry, kind: learningKind(entry.kind, entry.id) }))
     .toSorted((a, b) => LEARNING_KINDS.indexOf(a.kind) - LEARNING_KINDS.indexOf(b.kind) || newestFirst(a, b));
 }
 
 export function getContact(language: Language): Contact {
   return contact[language];
+}
+
+function shown<E extends Entry>(entries: E[]): E[] {
+  for (const entry of entries) {
+    if (entry.hidden && entry.featured) {
+      throw new Error(`Entry "${entry.id}" is both hidden and featured`);
+    }
+  }
+  return entries.filter((entry) => !entry.hidden);
 }
 
 function learningKind(kind: string, id: string): LearningKind {

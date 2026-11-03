@@ -25,12 +25,16 @@ The Page dedicated to one Topic, showing more than that Topic's Section on the H
 _Avoid_: Detail page, subpage
 
 **Entry**:
-One item of Experience, Projects or Learning (a job, a project, a course). Written once per Language with a short summary and fuller detail. Every Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section, and only by their summary.
+One item of Experience, Projects or Learning (a job, a project, a course). Written once per Language with a short summary and fuller detail. Every Entry except a Hidden Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section, and only by their summary.
 _Avoid_: Item, record, card
 
 **Featured Entry**:
-An Entry the owner has chosen to show in its Topic's Section on the Home Page, in the same order as on its Topic Page.
-_Avoid_: Highlight, pinned, top entry
+An Entry the owner has chosen to show in its Topic's Section on the Home Page, in the same order as on its Topic Page. Never a Hidden Entry.
+_Avoid_: Highlight, pinned, top entry, latest entries
+
+**Hidden Entry**:
+An Entry the owner keeps in Profile Content but shows on no Page: neither its Topic's Section nor its Topic Page. Still written in full in every Language, and hidden in all of them alike. Hidden from visitors, not secret.
+_Avoid_: Draft, archived, private
 
 **Resume Page**:
 The Page showing the Resume in its Language. Not a Topic: it has no Section on the Home Page.
@@ -79,6 +83,14 @@ _Avoid_: Translations, messages, copy
 **Profile Content**:
 The owner's data shown on Pages, organised by Topic, written per Language and identical in shape across Languages, apart from how many Accents the tagline has.
 _Avoid_: Content (unqualified), data, CMS content
+
+**Experience**:
+The Topic covering the jobs the owner has held, one Entry per role at an organisation: its role, its organisation (optionally linked to the organisation's website), its Location and its Period. A promotion starts a new Entry.
+_Avoid_: Jobs, work history, career, employment
+
+**Location**:
+Where an Experience Entry's job was done, as the owner words it per Language: a city, a country, or remote.
+_Avoid_: Region, place, address
 
 **Learning**:
 The Topic covering what the owner has studied or is studying: education, courses, certifications and books.
