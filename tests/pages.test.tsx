@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { createRoutesStub, type LoaderFunctionArgs } from "react-router";
 import { afterEach, expect, test } from "vitest";
-import { getAbout } from "@/entities/profile";
+import { getAbout, getExperience } from "@/entities/profile";
 import { PAGE_IDS } from "@/shared/routing";
 import { setTheme } from "@/shared/theme";
 import { findRoute, routeModule, stubRoutes } from "./route-modules";
@@ -150,8 +150,12 @@ test("shows only Featured Entries on the Home Page, with links to their Topic Pa
   const section = (await screen.findByRole("heading", { level: 2, name: "Experience" })).closest("section");
   expect(section).not.toBeNull();
   const scope = within(section as HTMLElement);
-  expect(scope.getByText(/Current Company/)).toBeDefined();
-  expect(scope.queryByText(/Previous Company/)).toBeNull();
+  const entries = scope.getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent);
+  expect(entries).toEqual(
+    getExperience("en")
+      .filter((entry) => entry.featured)
+      .map((entry) => `${entry.role} · ${entry.organisation}`),
+  );
   expect(scope.getByRole("link", { name: "All experience" }).getAttribute("href")).toBe("/en/experience");
 });
 
@@ -187,34 +191,41 @@ test("the Experience Page shows every Entry but Hidden ones, newest first", asyn
   const entries = within(screen.getByRole("main"))
     .getAllByRole("heading", { level: 2 })
     .map((heading) => heading.textContent);
-  expect(entries).toEqual(["Placeholder role · Current Company", "Placeholder role · Previous Company"]);
+  expect(entries).toEqual(getExperience("en").map((entry) => `${entry.role} · ${entry.organisation}`));
 });
 
 test("the Experience Page shows each Assignment's lists under their labels, leaving out empty ones", async () => {
   renderPath("/ru/experience");
   await screen.findByRole("heading", { level: 1, name: "Опыт" });
-  const main = within(screen.getByRole("main"));
-  const assignments = main.getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent);
-  expect(assignments).toEqual(["Текущий продукт", "Клиентский проект", "Предыдущий продукт"]);
-  const previous = within(
-    main.getByRole("heading", { level: 3, name: "Предыдущий продукт" }).parentElement as HTMLElement,
+  const labels = { responsibilities: "Обязанности", achievements: "Достижения", team: "Команда", tools: "Технологии" };
+  const lists = Object.keys(labels) as (keyof typeof labels)[];
+  const assignments = getExperience("ru").flatMap((entry) => entry.assignments);
+  const headings = within(screen.getByRole("main")).getAllByRole("heading", { level: 3 });
+  expect(
+    headings.map((heading) => ({
+      name: heading.textContent,
+      lists: within(heading.parentElement as HTMLElement)
+        .getAllByRole("heading", { level: 4 })
+        .map((list) => list.textContent),
+    })),
+  ).toEqual(
+    assignments.map((assignment) => ({
+      name: assignment.name,
+      lists: lists.filter((list) => assignment[list].length > 0).map((list) => labels[list]),
+    })),
   );
-  expect(previous.getAllByRole("heading", { level: 4 }).map((heading) => heading.textContent)).toEqual(["Обязанности"]);
-  const current = within(main.getByRole("heading", { level: 3, name: "Текущий продукт" }).parentElement as HTMLElement);
-  expect(current.getAllByRole("heading", { level: 4 }).map((heading) => heading.textContent)).toEqual([
-    "Обязанности",
-    "Достижения",
-    "Команда",
-    "Технологии",
-  ]);
 });
 
 test("the Home Page shows a Featured Experience Entry by its Location and Period, without Assignments", async () => {
   renderPath("/en/");
   const section = (await screen.findByRole("heading", { level: 2, name: "Experience" })).closest("section");
   const scope = within(section as HTMLElement);
-  expect(scope.getByText(/^Remote ·/)).toBeDefined();
-  expect(scope.queryByText("Current product")).toBeNull();
+  for (const entry of getExperience("en").filter((featured) => featured.featured)) {
+    expect(scope.getAllByText((text) => text.startsWith(`${entry.location} ·`)).length).toBeGreaterThan(0);
+    for (const assignment of entry.assignments) {
+      expect(scope.queryByText(assignment.name)).toBeNull();
+    }
+  }
 });
 
 test("the Learning Page groups Entries by kind", async () => {

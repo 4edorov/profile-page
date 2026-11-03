@@ -1,72 +1,155 @@
 [
   {
-    "id": "first-job",
-    "featured": false,
-    "hidden": true,
-    "role": "Placeholder role",
-    "organisation": "Hidden Company",
-    "url": null,
-    "location": "Placeholder City, Placeholder Country",
-    "start": "2016-07",
-    "end": "2019-02",
-    "assignments": [
-      {
-        "name": "Hidden product",
-        "description": "Placeholder description of a hidden product.",
-        "responsibilities": ["Placeholder responsibility."],
-        "achievements": ["Placeholder achievement."],
-        "team": ["2 placeholder developers"],
-        "tools": ["Placeholder tool"]
-      }
-    ]
-  },
-  {
-    "id": "previous-job",
-    "featured": false,
-    "hidden": false,
-    "role": "Placeholder role",
-    "organisation": "Previous Company",
-    "url": null,
-    "location": "Placeholder City, Placeholder Country",
-    "start": "2019-03",
-    "end": "2022-08",
-    "assignments": [
-      {
-        "name": "Previous product",
-        "description": "Placeholder description of the previous product.",
-        "responsibilities": ["Placeholder responsibility.", "Another placeholder responsibility."],
-        "achievements": [],
-        "team": [],
-        "tools": []
-      }
-    ]
-  },
-  {
-    "id": "current-job",
+    "id": "4",
     "featured": true,
     "hidden": false,
-    "role": "Placeholder role",
-    "organisation": "Current Company",
-    "url": "https://example.com",
-    "location": "Remote",
-    "start": "2022-09",
-    "end": null,
+    "role": "Fullstack Developer",
+    "organisation": "RKS Cloud LLC",
+    "url": "https://rkscloud.com/",
+    "location": "USA, remote",
+    "start": "2023-02",
+    "end": "2024-12",
     "assignments": [
       {
-        "name": "Current product",
-        "description": "Placeholder description of the current product.",
-        "responsibilities": ["Placeholder responsibility.", "Another placeholder responsibility."],
-        "achievements": ["Placeholder achievement."],
-        "team": ["3 placeholder developers", "1 placeholder QA engineer"],
-        "tools": ["Placeholder tool", "Placeholder service"]
+        "name": "Cloudgov",
+        "description": "A FinOps platform for managing cloud provider spending: import cost data, then track, analyse, plan and optimise costs.",
+        "responsibilities": [
+          "Created tasks and assigned them to frontend developers",
+          "Mentored developers implementing frontend features",
+          "Did code reviews",
+          "Set up CI/CD on AWS for the frontend",
+          "Built the frontend's state management and business logic",
+          "Made the interface responsive and mobile-friendly",
+          "Built a filter system with its state kept in the URL",
+          "Built charts and graphs with Chart.js",
+          "Set up the GraphQL client"
+        ],
+        "achievements": [
+          "Set up a CI/CD pipeline on AWS for the frontend, shortening release time",
+          "Introduced state management and business logic that made the frontend more stable",
+          "Built a filter system synced with the URL, making navigation and sharing reports between users easier",
+          "Mentored the frontend team, raising the quality of code reviews"
+        ],
+        "team": ["5 frontend developers", "5 backend developers", "PM", "designer", "FinOps consultant"],
+        "tools": [
+          "React",
+          "Redux",
+          "Next.js",
+          "Chakra UI",
+          "Chart.js",
+          "Jest",
+          "Apollo Client",
+          "GraphQL",
+          "Spring Boot",
+          "MongoDB",
+          "AWS"
+        ]
       },
       {
-        "name": "Client project",
-        "description": "Placeholder description of a client project.",
-        "responsibilities": ["Placeholder responsibility."],
-        "achievements": ["Placeholder achievement.", "Another placeholder achievement."],
-        "team": ["2 placeholder developers"],
-        "tools": ["Placeholder tool"]
+        "name": "TRZR",
+        "description": "A mobile app (iOS, Android) for a virtual sneaker collection.",
+        "responsibilities": [
+          "Broke the client app's development into stages from the design mock-ups, creating tasks and assigning them to developers",
+          "Mentored developers implementing frontend features",
+          "Did code reviews",
+          "Set up dev and prod environments for development and for releases to the App Store and Google Play",
+          "Set up the process for releasing the app to TestFlight",
+          "Managed certificates and builds with Expo Application Services",
+          "Built navigation with side drawers and a bottom tab bar",
+          "Built the app's state management",
+          "Wired the client app to GraphQL queries",
+          "Optimised the app's loading speed"
+        ],
+        "achievements": [
+          "Set up environments and release processes (TestFlight, Expo Application Services) for predictable releases to the App Store and Google Play",
+          "Optimised the app's loading speed, improving the user experience",
+          "Designed navigation and state management that became the foundation for scaling the app's features",
+          "Organised task assignment and mentoring for a team of 3 frontend developers"
+        ],
+        "team": ["3 frontend developers", "3 backend developers", "PM", "designer"],
+        "tools": [
+          "React Native",
+          "Context API",
+          "Gluestack",
+          "Expo",
+          "Apollo Client",
+          "GraphQL",
+          "Spring Boot",
+          "MongoDB",
+          "AWS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "featured": true,
+    "hidden": false,
+    "role": "Frontend Developer",
+    "organisation": "fuse8",
+    "url": "https://fuse8.ru/",
+    "location": "Remote",
+    "start": "2025-01",
+    "end": "2026-09",
+    "assignments": [
+      {
+        "name": "QOFA dashboard",
+        "description": "An app for football associations: a website plus a personal account. The website shows the information and processes the associations manage from a single account. The service helps organise tournaments and collect statistics on clubs, teams and players.",
+        "responsibilities": [
+          "Designed the site's page architecture using different content rendering methods",
+          "Built a component system",
+          "Built pages to the design",
+          "Made the layout work across platforms",
+          "Integrated pages with the API",
+          "Implemented localisation and set up Crowdin",
+          "Implemented the app's deployment"
+        ],
+        "achievements": [
+          "Designed the page rendering architecture (SSR/SSG), giving fast loading and correct indexing of the site",
+          "Created a reusable component system that sped up building new pages and sections",
+          "Implemented localisation with Crowdin, letting the team ship localised versions of the product quickly",
+          "Set up the app's deployment, simplifying the team's release cycle"
+        ],
+        "team": ["2 frontend developers", "2 backend developers", "PM", "2 designers", "1 analyst", "1 QA engineer"],
+        "tools": [
+          "Next.js (SSR, SSG)",
+          "React",
+          "React Router",
+          "TanStack Query",
+          "Zustand",
+          "Radix UI",
+          "SCSS",
+          "FSD architecture",
+          "Storybook"
+        ]
+      },
+      {
+        "name": "eGov",
+        "description": "An app for entrepreneurs: government services and business information.",
+        "responsibilities": [
+          "Built pages to the design",
+          "Integrated pages with the API",
+          "Designed the architecture of functional areas and implemented client-side business logic",
+          "Optimised the app by debugging components and speeding up loading",
+          "Refactored code and carried out technical tasks",
+          "Did code reviews",
+          "Fixed bugs"
+        ],
+        "achievements": [
+          "Added 3 standalone parts of the user interface",
+          "Developed 5 components for the UI kit",
+          "Optimised the MobX store for SSR",
+          "Created a system for handling client and server errors"
+        ],
+        "team": [
+          "PM",
+          "2 frontend developers",
+          "2 backend developers",
+          "designer",
+          "2 business analysts",
+          "2 QA engineers"
+        ],
+        "tools": ["Next.js", "MobX", "SCSS", "REST API (Axios)", "Strapi", "FSD architecture"]
       }
     ]
   }
