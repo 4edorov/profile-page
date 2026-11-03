@@ -1,14 +1,20 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, test, vi } from "vitest";
-import {
-  getAbout,
-  getContact,
-  getExperience,
-  getLearning,
-  getProjects,
-  LEARNING_KINDS,
-  newestFirst,
-} from "@/entities/profile";
-import { DEFAULT_LANGUAGE, LANGUAGES } from "@/shared/i18n";
+import { getAbout, getContact, getExperience, getLearning, LEARNING_KINDS, newestFirst } from "@/entities/profile";
+import { DEFAULT_LANGUAGE, LANGUAGES, type Language } from "@/shared/i18n";
+
+interface RawEntry {
+  id: string;
+  url?: string | null;
+  start?: string;
+  end?: string | null;
+}
+
+function rawEntries(language: Language, topic: "experience" | "projects" | "learning"): RawEntry[] {
+  const file = join(import.meta.dirname, "..", "content", language, `${topic}.json`);
+  return JSON.parse(readFileSync(file, "utf8")) as RawEntry[];
+}
 
 test("newestFirst puts in-progress first, then latest end, then latest start", () => {
   const periods = [
@@ -34,12 +40,15 @@ test("Technologies are unique and link only to https URLs", () => {
 });
 
 describe("Hidden Entries", () => {
-  function job(id: string, flags: { featured: boolean; hidden: boolean }) {
+  function entry(id: string, flags: { featured: boolean; hidden: boolean; kind?: string }) {
     return {
       id,
+      kind: "course",
       ...flags,
       role: "Role",
       organisation: "Organisation",
+      title: "Title",
+      provider: "Provider",
       url: null,
       location: "Remote",
       start: "2020-01",
@@ -49,25 +58,37 @@ describe("Hidden Entries", () => {
     };
   }
 
-  async function experienceWith(entries: ReturnType<typeof job>[]) {
+  async function loadWith(topic: "experience" | "learning", entries: ReturnType<typeof entry>[]) {
     vi.resetModules();
-    vi.doMock("../content/en/experience.json", () => ({ default: entries }));
-    const { getExperience: get } = await import("@/entities/profile");
-    vi.doUnmock("../content/en/experience.json");
-    return () => get("en");
+    vi.doMock(`../content/en/${topic}.json`, () => ({ default: entries }));
+    try {
+      return await import("@/entities/profile");
+    } finally {
+      vi.doUnmock(`../content/en/${topic}.json`);
+    }
   }
 
   test("are left out", async () => {
-    const get = await experienceWith([
-      job("shown", { featured: false, hidden: false }),
-      job("hidden", { featured: false, hidden: true }),
+    const { getExperience: get } = await loadWith("experience", [
+      entry("shown", { featured: false, hidden: false }),
+      entry("hidden", { featured: false, hidden: true }),
     ]);
-    expect(get().map((entry) => entry.id)).toEqual(["shown"]);
+    expect(get("en").map(({ id }) => id)).toEqual(["shown"]);
   });
 
   test("cannot be featured", async () => {
-    const get = await experienceWith([job("hidden", { featured: true, hidden: true })]);
-    expect(get).toThrow('Entry "hidden" is both hidden and featured');
+    await expect(
+      loadWith("experience", [
+        entry("shown", { featured: true, hidden: false }),
+        entry("hidden", { featured: true, hidden: true }),
+      ]),
+    ).rejects.toThrow('Entry "hidden" is both hidden and featured');
+  });
+
+  test("still need a known Learning kind", async () => {
+    await expect(
+      loadWith("learning", [entry("hidden", { featured: false, hidden: true, kind: "cource" })]),
+    ).rejects.toThrow('Learning Entry "hidden" has unknown kind "cource"');
   });
 });
 
@@ -87,12 +108,19 @@ describe.each(LANGUAGES)("Profile Content in %s", (language) => {
     }
   });
 
-  test("every Period is in YYYY-MM months and does not end before it starts", () => {
+  test("every Period, Hidden Entries' too, is in YYYY-MM months and does not end before it starts", () => {
     const month = /^\d{4}-(0[1-9]|1[0-2])$/;
-    const badPeriods = [...getExperience(language), ...getLearning(language)].filter(
-      ({ start, end }) => !month.test(start) || (end !== null && (!month.test(end) || end < start)),
+    const badPeriods = [...rawEntries(language, "experience"), ...rawEntries(language, "learning")].filter(
+      ({ start, end }) => !month.test(start ?? "") || (end != null && (!month.test(end) || end < (start ?? ""))),
     );
     expect(badPeriods).toEqual([]);
+  });
+
+  test("Experience and Projects Entries, Hidden ones too, link only to https URLs", () => {
+    const badUrls = [...rawEntries(language, "experience"), ...rawEntries(language, "projects")].filter(
+      ({ url }) => url != null && !url.startsWith("https://"),
+    );
+    expect(badUrls).toEqual([]);
   });
 
   test("Contact links go to https URLs or a mailto: address", () => {
@@ -100,11 +128,11 @@ describe.each(LANGUAGES)("Profile Content in %s", (language) => {
     expect(badUrls).toEqual([]);
   });
 
-  test("ids are unique within each Topic", () => {
+  test("ids, Hidden Entries' too, are unique within each Topic", () => {
     for (const entries of [
-      getExperience(language),
-      getProjects(language),
-      getLearning(language),
+      rawEntries(language, "experience"),
+      rawEntries(language, "projects"),
+      rawEntries(language, "learning"),
       getContact(language).links,
     ]) {
       const ids = entries.map((entry) => entry.id);

@@ -33,11 +33,14 @@ const about = {
 const experience = { en: enExperience, ru: ruExperience } satisfies Record<Language, ExperienceEntry[]>;
 const projects = { en: enProjects, ru: ruProjects } satisfies Record<Language, ProjectEntry[]>;
 const contact = { en: enContact, ru: ruContact } satisfies Record<Language, Contact>;
-// JSON imports widen `kind` to `string`, so it is checked when read instead.
-const learning = { en: enLearning, ru: ruLearning } satisfies Record<
-  Language,
-  (Omit<LearningEntry, "kind"> & { kind: string })[]
->;
+const learning = { en: withKinds(enLearning), ru: withKinds(ruLearning) } satisfies Record<Language, LearningEntry[]>;
+
+const entries: Entry[] = [...Object.values(experience), ...Object.values(projects), ...Object.values(learning)].flat();
+for (const entry of entries) {
+  if (entry.hidden && entry.featured) {
+    throw new Error(`Entry "${entry.id}" is both hidden and featured`);
+  }
+}
 
 export const ABOUT_META_FIELDS = ["name", "headline", "summary"] as const satisfies (keyof About)[];
 
@@ -51,16 +54,16 @@ export function pickAbout<Field extends keyof About>(language: Language, fields:
 }
 
 export function getExperience(language: Language): ExperienceEntry[] {
-  return shown(experience[language]).toSorted(newestFirst);
+  return experience[language].filter(shown).toSorted(newestFirst);
 }
 
 export function getProjects(language: Language): ProjectEntry[] {
-  return shown(projects[language]);
+  return projects[language].filter(shown);
 }
 
 export function getLearning(language: Language): LearningEntry[] {
-  return shown(learning[language])
-    .map((entry) => ({ ...entry, kind: learningKind(entry.kind, entry.id) }))
+  return learning[language]
+    .filter(shown)
     .toSorted((a, b) => LEARNING_KINDS.indexOf(a.kind) - LEARNING_KINDS.indexOf(b.kind) || newestFirst(a, b));
 }
 
@@ -68,18 +71,16 @@ export function getContact(language: Language): Contact {
   return contact[language];
 }
 
-function shown<E extends Entry>(entries: E[]): E[] {
-  for (const entry of entries) {
-    if (entry.hidden && entry.featured) {
-      throw new Error(`Entry "${entry.id}" is both hidden and featured`);
-    }
-  }
-  return entries.filter((entry) => !entry.hidden);
+function shown(entry: Entry): boolean {
+  return !entry.hidden;
 }
 
-function learningKind(kind: string, id: string): LearningKind {
-  if (!LEARNING_KINDS.includes(kind as LearningKind)) {
-    throw new Error(`Learning Entry "${id}" has unknown kind "${kind}"`);
-  }
-  return kind as LearningKind;
+// JSON imports widen `kind` to `string`, so it is checked on load instead.
+function withKinds(entries: (Omit<LearningEntry, "kind"> & { kind: string })[]): LearningEntry[] {
+  return entries.map((entry) => {
+    if (!LEARNING_KINDS.includes(entry.kind as LearningKind)) {
+      throw new Error(`Learning Entry "${entry.id}" has unknown kind "${entry.kind}"`);
+    }
+    return { ...entry, kind: entry.kind as LearningKind };
+  });
 }
