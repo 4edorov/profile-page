@@ -16,9 +16,9 @@
         "responsibilities": [
           "Built new user interfaces",
           "Implemented CSV data import and export",
-          "Integrated third-party systems: the WeChat API",
+          "Integrated the WeChat API",
           "Integrated Amplitude analytics",
-          "Introduced Socket.IO",
+          "Introduced Socket.IO for real-time communication",
           "Developed a WeChat Mini Program chat app",
           "Implemented the logic for retrieving chatbot answers",
           "Implemented payments within WeChat"
@@ -33,8 +33,8 @@
         "tools": [
           "React",
           "Redux",
-          "Redux-Thunk",
-          "React-Router",
+          "Redux Thunk",
+          "React Router",
           "Socket.IO",
           "Material UI",
           "Node.js",
@@ -42,7 +42,7 @@
           "Feathers",
           "Vue.js",
           "Quasar",
-          "Element-UI",
+          "Element UI",
           "D3",
           "FastText",
           "WeChat SDK"
@@ -68,7 +68,7 @@
           "Built new user interface features and business logic for the logistics system",
           "Updated business logic in the legacy Smarty code of the customer platform and fixed bugs",
           "Made improvements",
-          "Did code reviews"
+          "Reviewed code"
         ],
         "achievements": [
           "Shipped new user interface features and business logic that extended the store's logistics system",
@@ -92,7 +92,7 @@
     "assignments": [
       {
         "name": "Ponder",
-        "description": "A coaching app for personal management, for recording audio notes and doing coaching exercises asynchronously.",
+        "description": "A self-management coaching app for recording audio notes and doing coaching exercises asynchronously.",
         "responsibilities": [
           "Built the user interface",
           "Developed the client-side business logic",
@@ -116,7 +116,7 @@
           "Next.js",
           "SWR",
           "Redux",
-          "Redux-Thunk",
+          "Redux Thunk",
           "Material UI",
           "Framer Motion",
           "Chai",
@@ -142,15 +142,15 @@
     "assignments": [
       {
         "name": "Meetribbon",
-        "description": "A platform for running exhibitions and e-commerce (B2B/B2C), for building a marketplace for a particular seller or brand.",
+        "description": "A platform for running exhibitions and e-commerce (B2B/B2C) that builds a marketplace for a particular seller or brand.",
         "responsibilities": [
           "Developed analytics charts with Mongo Analytics, wrote the queries and aggregations behind them, and kept each user's data secure and isolated",
           "Added a responsive interface for the analytics charts",
           "Optimised the Spreedly payment integration",
           "Added a new way to use a third-party payment gateway within Spreedly",
-          "Added draft orders saved to the database",
+          "Added draft orders, saved to the database",
           "Implemented adding options to a customer's order, with the order total recalculated",
-          "Added global server-side error tracking and optimised asynchronous code, greatly improving the app's stability",
+          "Added global server-side error tracking and optimised asynchronous code",
           "Implemented the redesigned, responsive home page of the app"
         ],
         "achievements": [
@@ -190,16 +190,16 @@
           "Implemented authentication for the server API based on Apollo Federation",
           "Moved user authentication from an AWS Cognito User Pool to an Identity Pool",
           "Built user interfaces for the internal admin panel",
-          "Optimised user identifiers in the database, using unique ids instead of sequential numbers",
+          "Optimised user identifiers in the database, using unique IDs instead of sequential numbers",
           "Ran database migrations",
-          "Did code reviews"
+          "Reviewed code"
         ],
         "achievements": [
           "Implemented server API authentication based on Apollo Federation, securing data access between services",
           "Moved user authentication from an AWS Cognito User Pool to an Identity Pool, making access management more flexible",
-          "Optimised user identifiers in the database (moving to unique ids), reducing the risk of data collisions"
+          "Optimised user identifiers in the database (moving to unique IDs), reducing the risk of data collisions"
         ],
-        "team": ["2 frontend developers", "2 backend developers", "4 fullstack developers", "PM", "1 QA engineer"],
+        "team": ["2 frontend developers", "2 backend developers", "4 fullstack developers", "PM", "QA engineer"],
         "tools": [
           "Angular",
           "RxJS",
@@ -215,7 +215,7 @@
       },
       {
         "name": "Home Qual",
-        "description": "Assesses a borrower's credit rating through an interactive questionnaire.",
+        "description": "An app that assesses a borrower's credit rating through an interactive questionnaire.",
         "responsibilities": [
           "Built the REST API for the client app and the admin panel",
           "Set up calls to stored procedures",
@@ -224,7 +224,7 @@
           "Set up API documentation with Swagger",
           "Developed the chat and bot integration with SignalR, Azure Bot Service, Bot Framework, Power Virtual Agents and Power Automate, letting users talk to the bot and to an administrator",
           "Set up CI/CD in Azure for 3 apps across 3 environments, and moved environment keys into Azure services",
-          "Set up the SWR module for loading data with caching"
+          "Set up SWR for loading data with caching"
         ],
         "achievements": [
           "Developed and documented (Swagger) the REST API for the client app and the admin panel, speeding up frontend-backend integration",
@@ -233,7 +233,7 @@
           "Introduced data caching with SWR, speeding up the interface"
         ],
         "team": ["2 frontend developers", "fullstack developer", "database developer", "PM"],
-        "tools": ["React", "Next.js", "SWR", "DevExpress", ".Net Web API", "Swagger", "MySQL", "SignalR", "Azure"]
+        "tools": ["React", "Next.js", "SWR", "DevExpress", ".NET Web API", "Swagger", "MySQL", "SignalR", "Azure"]
       }
     ]
   },
@@ -254,7 +254,7 @@
         "responsibilities": [
           "Created tasks and assigned them to frontend developers",
           "Mentored developers implementing frontend features",
-          "Did code reviews",
+          "Reviewed code",
           "Set up CI/CD on AWS for the frontend",
           "Built the frontend's state management and business logic",
           "Made the interface responsive and mobile-friendly",
@@ -289,7 +289,7 @@
         "responsibilities": [
           "Broke the client app's development into stages from the design mock-ups, creating tasks and assigning them to developers",
           "Mentored developers implementing frontend features",
-          "Did code reviews",
+          "Reviewed code",
           "Set up dev and prod environments for development and for releases to the App Store and Google Play",
           "Set up the process for releasing the app to TestFlight",
           "Managed certificates and builds with Expo Application Services",
@@ -332,7 +332,7 @@
     "assignments": [
       {
         "name": "QOFA dashboard",
-        "description": "An app for football associations: a website plus a personal account. The website shows the information and processes the associations manage from a single account. The service helps organise tournaments and collect statistics on clubs, teams and players.",
+        "description": "A website and personal account where football associations run tournaments and collect statistics on clubs, teams and players.",
         "responsibilities": [
           "Designed the site's page architecture using different content rendering methods",
           "Built a component system",
@@ -348,7 +348,7 @@
           "Implemented localisation with Crowdin, letting the team ship localised versions of the product quickly",
           "Set up the app's deployment, simplifying the team's release cycle"
         ],
-        "team": ["2 frontend developers", "2 backend developers", "PM", "2 designers", "1 analyst", "1 QA engineer"],
+        "team": ["2 frontend developers", "2 backend developers", "PM", "2 designers", "analyst", "QA engineer"],
         "tools": [
           "Next.js (SSR, SSG)",
           "React",
@@ -370,19 +370,19 @@
           "Designed the architecture of functional areas and implemented client-side business logic",
           "Optimised the app by debugging components and speeding up loading",
           "Refactored code and carried out technical tasks",
-          "Did code reviews",
+          "Reviewed code",
           "Fixed bugs"
         ],
         "achievements": [
-          "Added 3 standalone parts of the user interface",
+          "Built 3 standalone parts of the user interface",
           "Developed 5 components for the UI kit",
           "Optimised the MobX store for SSR",
           "Created a system for handling client and server errors"
         ],
         "team": [
-          "PM",
           "2 frontend developers",
           "2 backend developers",
+          "PM",
           "designer",
           "2 business analysts",
           "2 QA engineers"
