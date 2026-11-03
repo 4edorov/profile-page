@@ -25,7 +25,7 @@ The Page dedicated to one Topic, showing more than that Topic's Section on the H
 _Avoid_: Detail page, subpage
 
 **Entry**:
-One item of Experience, Projects or Learning (a job, a project, a course). Written once per Language with a short summary and fuller detail. Every Entry except a Hidden Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section, and only by their summary.
+One item of Experience, Projects or Learning (a job, a project, a course), written once per Language. A Projects or Learning Entry has a short summary and fuller detail; an Experience Entry has its Assignments instead. Every Entry except a Hidden Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section: a Projects or Learning one by its summary, an Experience one by its role, organisation, Location and Period alone.
 _Avoid_: Item, record, card
 
 **Featured Entry**:
@@ -85,8 +85,16 @@ The owner's data shown on Pages, organised by Topic, written per Language and id
 _Avoid_: Content (unqualified), data, CMS content
 
 **Experience**:
-The Topic covering the jobs the owner has held, one Entry per role at an organisation: its role, its organisation (optionally linked to the organisation's website), its Location and its Period. A promotion starts a new Entry.
+The Topic covering the jobs the owner has held, one Entry per role at an organisation: its role, its organisation (optionally linked to the organisation's website), its Location, its Period and its Assignments. A promotion starts a new Entry.
 _Avoid_: Jobs, work history, career, employment
+
+**Assignment**:
+A body of work the owner did within one Experience Entry, such as a product or a client project; every Experience Entry has at least one, in the order the owner writes them. It has a name, a one-line description, the owner's responsibilities on it (at least one), their achievements, the make-up of the team it was done with (such as "3 frontend developers"), and its Tools. Written per Language. Has no Period and is never featured or hidden on its own; one that ran across a promotion appears under each Entry it spans. Never a Projects Entry: the Projects Topic doesn't list the owner's work for their employers.
+_Avoid_: Project (within a job), engagement, job project
+
+**Tools**:
+The languages, frameworks and services used on an Assignment, as the owner words them per Language. Separate from the Technologies: a Tool need not be one of them, and the two may overlap.
+_Avoid_: Stack, Technologies, tech stack (for an Assignment's list)
 
 **Location**:
 Where an Experience Entry's job was done, as the owner words it per Language: a city, a country, or remote.

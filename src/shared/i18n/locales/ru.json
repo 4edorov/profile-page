@@ -57,6 +57,14 @@
     "openToWorkLabel": "Открыт к предложениям",
     "opensInNewTab": "(откроется в новой вкладке)"
   },
+  "experience": {
+    "assignment": {
+      "responsibilities": "Обязанности",
+      "achievements": "Достижения",
+      "team": "Команда",
+      "tools": "Технологии"
+    }
+  },
   "learning": {
     "kinds": {
       "education": "Образование",

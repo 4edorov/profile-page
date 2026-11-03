@@ -57,6 +57,14 @@
     "openToWorkLabel": "Open to work",
     "opensInNewTab": "(opens in a new tab)"
   },
+  "experience": {
+    "assignment": {
+      "responsibilities": "Responsibilities",
+      "achievements": "Achievements",
+      "team": "Team",
+      "tools": "Technologies"
+    }
+  },
   "learning": {
     "kinds": {
       "education": "Education",

@@ -77,8 +77,9 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
             <Heading level="entry" as="h3">
               {entry.role} · {entry.organisation}
             </Heading>
-            <PeriodLabel period={entry} />
-            <p className="mt-1">{entry.summary}</p>
+            <Text tone="muted" size="sm">
+              {entry.location} · <PeriodLabel period={entry} />
+            </Text>
           </li>
         ))}
       </TopicSection>

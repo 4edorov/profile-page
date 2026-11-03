@@ -190,6 +190,33 @@ test("the Experience Page shows every Entry but Hidden ones, newest first", asyn
   expect(entries).toEqual(["Placeholder role · Current Company", "Placeholder role · Previous Company"]);
 });
 
+test("the Experience Page shows each Assignment's lists under their labels, leaving out empty ones", async () => {
+  renderPath("/ru/experience");
+  await screen.findByRole("heading", { level: 1, name: "Опыт" });
+  const main = within(screen.getByRole("main"));
+  const assignments = main.getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent);
+  expect(assignments).toEqual(["Текущий продукт", "Клиентский проект", "Предыдущий продукт"]);
+  const previous = within(
+    main.getByRole("heading", { level: 3, name: "Предыдущий продукт" }).parentElement as HTMLElement,
+  );
+  expect(previous.getAllByRole("heading", { level: 4 }).map((heading) => heading.textContent)).toEqual(["Обязанности"]);
+  const current = within(main.getByRole("heading", { level: 3, name: "Текущий продукт" }).parentElement as HTMLElement);
+  expect(current.getAllByRole("heading", { level: 4 }).map((heading) => heading.textContent)).toEqual([
+    "Обязанности",
+    "Достижения",
+    "Команда",
+    "Технологии",
+  ]);
+});
+
+test("the Home Page shows a Featured Experience Entry by its Location and Period, without Assignments", async () => {
+  renderPath("/en/");
+  const section = (await screen.findByRole("heading", { level: 2, name: "Experience" })).closest("section");
+  const scope = within(section as HTMLElement);
+  expect(scope.getByText(/^Remote ·/)).toBeDefined();
+  expect(scope.queryByText("Current product")).toBeNull();
+});
+
 test("the Learning Page groups Entries by kind", async () => {
   renderPath("/ru/learning");
   await screen.findByRole("heading", { level: 1, name: "Обучение" });

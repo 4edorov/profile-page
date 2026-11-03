@@ -16,7 +16,7 @@ export function Heading({
   children,
 }: {
   level: keyof typeof HEADING_LOOKS;
-  as: "h1" | "h2" | "h3";
+  as: "h1" | "h2" | "h3" | "h4";
   id?: string;
   className?: string;
   children: React.ReactNode;
