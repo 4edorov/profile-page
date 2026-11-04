@@ -7,7 +7,7 @@ export function Timeline({ className, children }: { className?: string | undefin
 export function TimelineItem({ aside, children }: { aside: React.ReactNode; children: React.ReactNode }) {
   return (
     <li className="group relative pb-10 pl-8 last:pb-0 md:grid md:grid-cols-[10rem_1fr] md:gap-x-12 md:pl-0">
-      {/* Reaches into the next item, down to the centre of its marker. */}
+      {/* `-bottom-3` must mirror `top-3`, the marker's centre, so the line meets the next marker. */}
       <span aria-hidden="true" className={`${AXIS} top-3 -bottom-3 w-px bg-text/20 group-last:hidden`} />
       <span
         aria-hidden="true"

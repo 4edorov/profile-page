@@ -1,4 +1,5 @@
 import { withLayout } from "@/shared/lib";
+import { Anchor } from "./anchor";
 
 export function ButtonLink({
   to,
@@ -16,8 +17,8 @@ export function ButtonLink({
     className,
   );
   return (
-    <a href={to} className={look} {...(newTab && { target: "_blank", rel: "noopener" })}>
+    <Anchor href={to} newTab={newTab} className={look}>
       {children}
-    </a>
+    </Anchor>
   );
 }

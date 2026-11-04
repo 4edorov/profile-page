@@ -226,19 +226,19 @@ async function findFeaturedExperience(language: "en" | "ru", heading: string) {
 }
 
 test.each([
-  ["en", "Experience"],
-  ["ru", "Опыт"],
+  ["en", "Experience", ["Jan 2025 – Sep 2026", "Feb 2023 – Dec 2024"]],
+  ["ru", "Опыт", ["янв. 2025 – сент. 2026", "февр. 2023 – дек. 2024"]],
 ] as const)(
   "in %s the Experience Section shows each Featured Entry by role, organisation, Location and Period, in order",
-  async (language, heading) => {
+  async (language, heading, periods) => {
     const { items, entries } = await findFeaturedExperience(language, heading);
-    expect(items).toHaveLength(entries.length);
+    expect(items).toHaveLength(periods.length);
     entries.forEach((entry, index) => {
       const item = within(items[index] as HTMLElement);
-      expect(item.getByRole("heading", { level: 3 }).textContent).toBe(entry.role);
+      expect(item.getByRole("heading", { level: 3, name: entry.role })).toBeDefined();
       expect(item.getByText(entry.organisation)).toBeDefined();
       expect(item.getByText(entry.location)).toBeDefined();
-      expect(item.getByText((text) => text.includes(entry.start.slice(0, 4)) && text.includes("–"))).toBeDefined();
+      expect(item.getByText(periods[index] as string)).toBeDefined();
     });
   },
 );
@@ -253,17 +253,17 @@ test.each([
     entries.forEach((entry, index) => {
       const names = within(items[index] as HTMLElement).getAllByRole("heading", { level: 4 });
       expect(names.map((name) => name.textContent)).toEqual(entry.assignments.map((assignment) => assignment.name));
-      entry.assignments.forEach(({ description, tools }, position) => {
+      entry.assignments.forEach(({ description, tools: expectedTools }, position) => {
         const assignment = within(names[position]?.closest("li") as HTMLElement);
         expect(assignment.getByText(description)).toBeDefined();
-        const chips = within(assignment.getByRole("list", { name: toolsLabel })).getAllByRole("listitem");
-        expect(chips.map((chip) => chip.textContent)).toEqual(tools);
+        const tools = within(assignment.getByRole("list", { name: toolsLabel })).getAllByRole("listitem");
+        expect(tools.map((tool) => tool.textContent)).toEqual(expectedTools);
       });
     });
     const scope = within(section);
     for (const assignment of entries.flatMap((entry) => entry.assignments)) {
-      for (const hidden of [...assignment.responsibilities, ...assignment.achievements, ...assignment.team]) {
-        expect(scope.queryByText(hidden)).toBeNull();
+      for (const detail of [...assignment.responsibilities, ...assignment.achievements, ...assignment.team]) {
+        expect(scope.queryByText(detail)).toBeNull();
       }
     }
   },

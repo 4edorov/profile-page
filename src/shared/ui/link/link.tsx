@@ -1,5 +1,6 @@
 import { Link as RouterLink } from "react-router";
 import { withLayout } from "@/shared/lib";
+import { Anchor } from "./anchor";
 
 export function Link({
   to,
@@ -18,8 +19,8 @@ export function Link({
       {children}
     </RouterLink>
   ) : (
-    <a href={to} className={look} {...(newTab && { target: "_blank", rel: "noopener" })}>
+    <Anchor href={to} newTab={newTab} className={look}>
       {children}
-    </a>
+    </Anchor>
   );
 }
