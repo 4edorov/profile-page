@@ -1,50 +1,39 @@
-[
-  {
-    "id": "degree",
-    "featured": true,
-    "hidden": false,
-    "kind": "education",
-    "title": "Placeholder degree",
-    "provider": "Placeholder University",
-    "start": "2010-09",
-    "end": "2015-06",
-    "summary": "Placeholder education summary.",
-    "details": []
-  },
-  {
-    "id": "course",
-    "featured": false,
-    "hidden": false,
-    "kind": "course",
-    "title": "Placeholder course",
-    "provider": "Placeholder platform",
-    "start": "2025-01",
-    "end": null,
-    "summary": "Placeholder course summary.",
-    "details": []
-  },
-  {
-    "id": "certification",
-    "featured": false,
-    "hidden": false,
-    "kind": "certification",
-    "title": "Placeholder certification",
-    "provider": "Placeholder issuer",
-    "start": "2023-04",
-    "end": "2023-05",
-    "summary": "Placeholder certification summary.",
-    "details": []
-  },
-  {
-    "id": "book",
-    "featured": true,
-    "hidden": false,
-    "kind": "book",
-    "title": "Placeholder book",
-    "provider": "Placeholder Author",
-    "start": "2026-09",
-    "end": null,
-    "summary": "Placeholder book summary.",
-    "details": ["Placeholder takeaway."]
-  }
-]
+{
+  "education": [
+    {
+      "id": "degree",
+      "featured": true,
+      "hidden": false,
+      "title": "Placeholder degree",
+      "provider": "Placeholder University",
+      "summary": "Placeholder education summary.",
+      "period": { "start": "2010-09", "end": "2015-06" },
+      "credential": "https://example.com/en/diploma"
+    }
+  ],
+  "course": [
+    {
+      "id": "course",
+      "featured": true,
+      "hidden": false,
+      "title": "Placeholder course",
+      "provider": "Placeholder platform",
+      "summary": null,
+      "period": { "start": "2025-01", "end": null },
+      "credential": null
+    }
+  ],
+  "certification": [],
+  "book": [
+    {
+      "id": "book",
+      "featured": false,
+      "hidden": false,
+      "title": "Placeholder book",
+      "provider": "Placeholder Author",
+      "summary": "Placeholder book summary.",
+      "period": null,
+      "credential": null
+    }
+  ]
+}

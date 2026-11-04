@@ -58,10 +58,19 @@ export const LEARNING_KINDS = ["education", "course", "certification", "book"] a
 
 export type LearningKind = (typeof LEARNING_KINDS)[number];
 
-export interface LearningEntry extends Entry, Described, Period {
-  kind: LearningKind;
+export interface LearningEntry extends Entry {
   title: string;
   provider: string;
+  summary: string | null;
+  period: Period | null;
+  credential: string | null;
+}
+
+export type Learning = Record<LearningKind, LearningEntry[]>;
+
+export interface LearningGroup {
+  kind: LearningKind;
+  entries: LearningEntry[];
 }
 
 export interface Contact {

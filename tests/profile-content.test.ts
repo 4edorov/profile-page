@@ -1,19 +1,35 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test, vi } from "vitest";
-import { getAbout, getContact, getExperience, getLearning, LEARNING_KINDS, newestFirst } from "@/entities/profile";
+import { getAbout, getContact, getExperience, newestFirst } from "@/entities/profile";
 import { DEFAULT_LANGUAGE, LANGUAGES, type Language } from "@/shared/i18n";
 
-interface RawEntry {
-  id: string;
-  url?: string | null;
+interface RawPeriod {
   start?: string;
   end?: string | null;
 }
 
+interface RawEntry extends RawPeriod {
+  id: string;
+  url?: string | null;
+  period?: RawPeriod | null;
+  credential?: string | null;
+}
+
 function rawEntries(language: Language, topic: "experience" | "projects" | "learning"): RawEntry[] {
   const file = join(import.meta.dirname, "..", "content", language, `${topic}.json`);
-  return JSON.parse(readFileSync(file, "utf8")) as RawEntry[];
+  const content = JSON.parse(readFileSync(file, "utf8")) as RawEntry[] | Record<string, RawEntry[]>;
+  return Array.isArray(content) ? content : Object.values(content).flat();
+}
+
+async function loadWith(topic: "experience" | "learning", content: unknown) {
+  vi.resetModules();
+  vi.doMock(`../content/en/${topic}.json`, () => ({ default: content }));
+  try {
+    return await import("@/entities/profile");
+  } finally {
+    vi.doUnmock(`../content/en/${topic}.json`);
+  }
 }
 
 test("newestFirst puts in-progress first, then latest end, then latest start", () => {
@@ -40,37 +56,22 @@ test("Technologies are unique and link only to https URLs", () => {
 });
 
 describe("Hidden Entries", () => {
-  function entry(id: string, flags: { featured: boolean; hidden: boolean; kind?: string }) {
+  function entry(id: string, flags: { featured: boolean; hidden: boolean }) {
     return {
       id,
-      kind: "course",
       ...flags,
       role: "Role",
       organisation: "Organisation",
-      title: "Title",
-      provider: "Provider",
       url: null,
       location: "Remote",
       start: "2020-01",
       end: null,
-      summary: "Summary.",
-      details: [],
       assignments: [assignment()],
     };
   }
 
   function assignment(responsibilities = ["Responsibility."]) {
     return { name: "Assignment", description: "Description.", responsibilities, achievements: [], team: [], tools: [] };
-  }
-
-  async function loadWith(topic: "experience" | "learning", entries: ReturnType<typeof entry>[]) {
-    vi.resetModules();
-    vi.doMock(`../content/en/${topic}.json`, () => ({ default: entries }));
-    try {
-      return await import("@/entities/profile");
-    } finally {
-      vi.doUnmock(`../content/en/${topic}.json`);
-    }
   }
 
   test("are left out", async () => {
@@ -103,11 +104,51 @@ describe("Hidden Entries", () => {
       ]),
     ).rejects.toThrow('Assignment "Assignment" of Experience Entry "hidden" has no responsibilities');
   });
+});
 
-  test("still need a known Learning kind", async () => {
+describe("Learning", () => {
+  function learningEntry(id: string, hidden = false) {
+    return {
+      id,
+      featured: false,
+      hidden,
+      title: "Title",
+      provider: "Provider",
+      summary: null,
+      period: null,
+      credential: null,
+    };
+  }
+
+  test("is grouped by Learning Kind in order, each in the owner's order, leaving out kinds with no shown Entries", async () => {
+    const { getLearning } = await loadWith("learning", {
+      book: [learningEntry("second-book"), learningEntry("first-book")],
+      certification: [learningEntry("hidden", true)],
+      course: [],
+      education: [learningEntry("degree")],
+    });
+    expect(getLearning("en").map(({ kind, entries }) => [kind, entries.map(({ id }) => id)])).toEqual([
+      ["education", ["degree"]],
+      ["book", ["second-book", "first-book"]],
+    ]);
+  });
+
+  test.each([
+    ["an unknown", { education: [], course: [], certification: [], book: [], books: [] }],
+    ["a missing", { education: [], course: [], certification: [] }],
+  ])("rejects %s Learning Kind", async (_, content) => {
+    await expect(loadWith("learning", content)).rejects.toThrow("Learning has the kinds");
+  });
+
+  test("rejects an id used in two Learning Kinds", async () => {
     await expect(
-      loadWith("learning", [entry("hidden", { featured: false, hidden: true, kind: "cource" })]),
-    ).rejects.toThrow('Learning Entry "hidden" has unknown kind "cource"');
+      loadWith("learning", {
+        education: [],
+        course: [learningEntry("react")],
+        certification: [],
+        book: [learningEntry("react", true)],
+      }),
+    ).rejects.toThrow('Learning Entry id "react" is used more than once');
   });
 });
 
@@ -117,28 +158,24 @@ describe.each(LANGUAGES)("Profile Content in %s", (language) => {
     expect(experience).toEqual(experience.toSorted(newestFirst));
   });
 
-  test("Learning is grouped by kind in order, newest first within each kind", () => {
-    const learning = getLearning(language);
-    const kinds = learning.map((entry) => LEARNING_KINDS.indexOf(entry.kind));
-    expect(kinds).toEqual(kinds.toSorted((a, b) => a - b));
-    for (const kind of LEARNING_KINDS) {
-      const group = learning.filter((entry) => entry.kind === kind);
-      expect(group).toEqual(group.toSorted(newestFirst));
-    }
-  });
-
   test("every Period, Hidden Entries' too, is in YYYY-MM months and does not end before it starts", () => {
     const month = /^\d{4}-(0[1-9]|1[0-2])$/;
-    const badPeriods = [...rawEntries(language, "experience"), ...rawEntries(language, "learning")].filter(
+    const periods = [
+      ...rawEntries(language, "experience"),
+      ...rawEntries(language, "learning").flatMap(({ period }) => (period ? [period] : [])),
+    ];
+    const badPeriods = periods.filter(
       ({ start, end }) => !month.test(start ?? "") || (end != null && (!month.test(end) || end < (start ?? ""))),
     );
     expect(badPeriods).toEqual([]);
   });
 
-  test("Experience and Projects Entries, Hidden ones too, link only to https URLs", () => {
-    const badUrls = [...rawEntries(language, "experience"), ...rawEntries(language, "projects")].filter(
-      ({ url }) => url != null && !url.startsWith("https://"),
-    );
+  test("Experience and Projects Entries and Credentials, Hidden ones' too, link only to https URLs", () => {
+    const urls = [
+      ...[...rawEntries(language, "experience"), ...rawEntries(language, "projects")].map(({ url }) => url),
+      ...rawEntries(language, "learning").map(({ credential }) => credential),
+    ];
+    const badUrls = urls.filter((url) => url != null && !url.startsWith("https://"));
     expect(badUrls).toEqual([]);
   });
 

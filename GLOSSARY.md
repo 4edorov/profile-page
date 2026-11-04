@@ -25,7 +25,7 @@ The Page dedicated to one Topic, showing more than that Topic's Section on the H
 _Avoid_: Detail page, subpage
 
 **Entry**:
-One item of Experience, Projects or Learning (a job, a project, a course), written once per Language. A Projects or Learning Entry has a short summary and fuller detail; an Experience Entry has its Assignments instead. Every Entry except a Hidden Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section: a Projects or Learning one by its summary, an Experience one by its role, organisation, Location, Period and every one of its Assignments by name, description and Tools alone.
+One item of Experience, Projects or Learning (a job, a project, a course), written once per Language. A Projects Entry has a short summary and fuller detail; a Learning Entry has its Learning Kind, its provider and optionally a summary, a Period and a Credential, but no detail; an Experience Entry has its Assignments instead. Every Entry except a Hidden Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section: a Projects one by its summary, a Learning one as on its Topic Page, an Experience one by its role, organisation, Location, Period and every one of its Assignments by name, description and Tools alone.
 _Avoid_: Item, record, card
 
 **Featured Entry**:
@@ -101,8 +101,16 @@ Where an Experience Entry's job was done, as the owner words it per Language: a 
 _Avoid_: Region, place, address
 
 **Learning**:
-The Topic covering what the owner has studied or is studying: education, courses, certifications and books.
+The Topic covering what the owner has studied or is studying: education, courses, certifications and books. Each Learning Entry has a title and a provider: whoever offered it, such as an institution, a platform, an issuer or an author. Its Topic Page groups its Entries by Learning Kind, in Learning Kind order, each group in the order the owner writes them; a Learning Kind with no shown Entries has no group.
 _Avoid_: Education (for the whole Topic), studies
+
+**Learning Kind**:
+One of Education, Course, Certification and Book, in that order. Every Learning Entry is of exactly one.
+_Avoid_: Category, type, group
+
+**Credential**:
+The link to the certificate or diploma a Learning Entry earned, if it has one, written per Language and opening in a new tab. Any Learning Kind may have one; a Certification is itself a Learning Entry, not a Credential.
+_Avoid_: Certificate link, proof, certificate (for the link)
 
 **Contact**:
 The Topic listing the ways to reach the owner, each one a link (email among them), and saying whether the owner is Open to Work.
@@ -133,7 +141,7 @@ The owner's photo, part of the About Topic: one image for every Language, descri
 _Avoid_: Photo, avatar, headshot, picture
 
 **Period**:
-The months an Experience or Learning Entry spans: a start month, and an end month or "present" while still in progress. A Period that starts and ends in the same month shows as that month alone. Projects Entries have no Period. Identical in every Language.
+The months an Experience or Learning Entry spans: a start month, and an end month or "present" while still in progress. Every Experience Entry has one; a Learning Entry may have none, and then shows none. A Period that starts and ends in the same month shows as that month alone. Projects Entries have no Period. Identical in every Language.
 _Avoid_: Date range, duration, dates
 
 ## Appearance

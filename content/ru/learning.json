@@ -1,50 +1,39 @@
-[
-  {
-    "id": "degree",
-    "featured": true,
-    "hidden": false,
-    "kind": "education",
-    "title": "Временная специальность",
-    "provider": "Временный университет",
-    "start": "2010-09",
-    "end": "2015-06",
-    "summary": "Временное описание образования.",
-    "details": []
-  },
-  {
-    "id": "course",
-    "featured": false,
-    "hidden": false,
-    "kind": "course",
-    "title": "Временный курс",
-    "provider": "Временная платформа",
-    "start": "2025-01",
-    "end": null,
-    "summary": "Временное описание курса.",
-    "details": []
-  },
-  {
-    "id": "certification",
-    "featured": false,
-    "hidden": false,
-    "kind": "certification",
-    "title": "Временный сертификат",
-    "provider": "Временный издатель",
-    "start": "2023-04",
-    "end": "2023-05",
-    "summary": "Временное описание сертификата.",
-    "details": []
-  },
-  {
-    "id": "book",
-    "featured": true,
-    "hidden": false,
-    "kind": "book",
-    "title": "Временная книга",
-    "provider": "Временный автор",
-    "start": "2026-09",
-    "end": null,
-    "summary": "Временное описание книги.",
-    "details": ["Временный вывод."]
-  }
-]
+{
+  "education": [
+    {
+      "id": "degree",
+      "featured": true,
+      "hidden": false,
+      "title": "Временная специальность",
+      "provider": "Временный университет",
+      "summary": "Временное описание образования.",
+      "period": { "start": "2010-09", "end": "2015-06" },
+      "credential": "https://example.com/ru/diploma"
+    }
+  ],
+  "course": [
+    {
+      "id": "course",
+      "featured": true,
+      "hidden": false,
+      "title": "Временный курс",
+      "provider": "Временная платформа",
+      "summary": null,
+      "period": { "start": "2025-01", "end": null },
+      "credential": null
+    }
+  ],
+  "certification": [],
+  "book": [
+    {
+      "id": "book",
+      "featured": false,
+      "hidden": false,
+      "title": "Временная книга",
+      "provider": "Временный автор",
+      "summary": "Временное описание книги.",
+      "period": null,
+      "credential": null
+    }
+  ]
+}

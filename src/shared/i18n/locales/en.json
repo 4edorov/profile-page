@@ -73,7 +73,8 @@
       "course": "Courses",
       "certification": "Certifications",
       "book": "Books"
-    }
+    },
+    "credential": "Certificate"
   },
   "projects": {
     "visit": "Visit {{name}}"
