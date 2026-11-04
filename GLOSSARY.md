@@ -25,7 +25,7 @@ The Page dedicated to one Topic, showing more than that Topic's Section on the H
 _Avoid_: Detail page, subpage
 
 **Entry**:
-One item of Experience, Projects or Learning (a job, a project, a course), written once per Language. A Projects or Learning Entry has a short summary and fuller detail; an Experience Entry has its Assignments instead. Every Entry except a Hidden Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section: a Projects or Learning one by its summary, an Experience one by its role, organisation, Location and Period alone.
+One item of Experience, Projects or Learning (a job, a project, a course), written once per Language. A Projects or Learning Entry has a short summary and fuller detail; an Experience Entry has its Assignments instead. Every Entry except a Hidden Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section: a Projects or Learning one by its summary, an Experience one by its role, organisation, Location, Period and every one of its Assignments by name, description and Tools alone.
 _Avoid_: Item, record, card
 
 **Featured Entry**:
@@ -89,7 +89,7 @@ The Topic covering the jobs the owner has held, one Entry per role at an organis
 _Avoid_: Jobs, work history, career, employment
 
 **Assignment**:
-A body of work the owner did within one Experience Entry, such as a product or a client project; every Experience Entry has at least one, in the order the owner writes them. It has a name, a one-line description, the owner's responsibilities on it (at least one), their achievements, the make-up of the team it was done with (such as "3 frontend developers"), and its Tools. Written per Language. Has no Period and is never featured or hidden on its own; one that ran across a promotion appears under each Entry it spans. Never a Projects Entry: the Projects Topic doesn't list the owner's work for their employers.
+A body of work the owner did within one Experience Entry, such as a product or a client project; every Experience Entry has at least one, in the order the owner writes them. It has a name, a one-line description, the owner's responsibilities on it (at least one), their achievements, the make-up of the team it was done with (such as "3 frontend developers"), and its Tools. Its responsibilities, achievements and team show only on the Experience Topic Page. Written per Language. Has no Period and is never featured or hidden on its own; one that ran across a promotion appears under each Entry it spans. Never a Projects Entry: the Projects Topic doesn't list the owner's work for their employers.
 _Avoid_: Project (within a job), engagement, job project
 
 **Tools**:
@@ -149,6 +149,14 @@ _Avoid_: Highlight, emphasis
 **Technology Cloud**:
 The About Section's turning sphere of the Technologies, which the visitor's pointer steers; the sphere stops while the pointer or keyboard focus is on a Technology, which shows in the Theme's primary color, and clicking a linked one opens its website in a new tab. Still for visitors who ask for reduced motion. Shown only on screens wider than phone-sized, where it is also how screen readers and keyboard users reach the Technologies; the Technology Marquee takes its place on phone-sized screens.
 _Avoid_: Tag cloud, sphere, animation block
+
+**Timeline**:
+The line joining the Experience Entries in the Experience Section and on its Topic Page, in their usual order, each Entry at its own evenly spaced marker with its Period beside it; on phone-sized screens the Period sits above the Entry instead. Shows order, not elapsed time: overlapping or distant Periods are spaced alike.
+_Avoid_: History, journey, career path
+
+**Assignment Details**:
+What an Assignment's details button opens on the Experience Topic Page, over the rest of the Page: that Assignment's responsibilities, achievements and team, under its name and organisation, leaving out any that are empty. Closes on request and returns the visitor to where they were.
+_Avoid_: Modal, popup, dialog (in prose)
 
 **Technology Marquee**:
 The About Section's endless row of the Technologies below its link to the About Page, moving leftward on its own in Profile Content order; on phone-sized screens it takes the Technology Cloud's place, for screen readers and keyboard users too. A touch, hover or keyboard focus pauses it, the visitor can swipe it either way, and it moves on again from where it was left shortly after release. Tapping a linked Technology opens its website in a new tab. Still for visitors who ask for reduced motion, but still swipeable.
