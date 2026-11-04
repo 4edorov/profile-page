@@ -8,25 +8,22 @@ import type { ExperienceEntry } from "../model/types";
 import { AssignmentDetails } from "./assignment-details";
 import { PeriodLabel } from "./period-label";
 
-const ASSIGNMENT_HEADINGS = { h2: "h3", h3: "h4" } as const;
-
 export function ExperienceTimeline({
   entries,
-  heading = "h3",
-  details = false,
+  topicPage = false,
   className,
 }: {
   entries: ExperienceEntry[];
-  heading?: keyof typeof ASSIGNMENT_HEADINGS;
-  details?: boolean;
+  topicPage?: boolean;
   className?: string;
 }) {
   const { t } = useTranslation();
+  const [entryHeading, assignmentHeading] = topicPage ? (["h2", "h3"] as const) : (["h3", "h4"] as const);
   return (
     <Timeline className={className}>
       {entries.map((entry) => (
         <TimelineItem key={entry.id} aside={<PeriodLabel period={entry} />}>
-          <Heading level="entry" as={heading}>
+          <Heading level="entry" as={entryHeading}>
             {entry.role}
           </Heading>
           <p className="flex flex-wrap gap-x-2">
@@ -48,7 +45,7 @@ export function ExperienceTimeline({
           <ul className="mt-4 space-y-5">
             {entry.assignments.map((assignment) => (
               <li key={assignment.name}>
-                <Heading level="small" as={ASSIGNMENT_HEADINGS[heading]}>
+                <Heading level="small" as={assignmentHeading}>
                   {assignment.name}
                 </Heading>
                 <p className="mt-1">{assignment.description}</p>
@@ -59,7 +56,7 @@ export function ExperienceTimeline({
                     </li>
                   ))}
                 </Text>
-                {details && (
+                {topicPage && (
                   <div className="mt-2">
                     <AssignmentDetails assignment={assignment} organisation={entry.organisation} />
                   </div>

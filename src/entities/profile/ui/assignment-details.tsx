@@ -2,11 +2,17 @@ import { useId } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog } from "@/shared/ui/dialog";
 import { Heading } from "@/shared/ui/typography";
-import type { Assignment } from "../model/types";
+import type { Assignment, ExperienceEntry } from "../model/types";
 
 const DETAIL_LISTS = ["responsibilities", "achievements", "team"] as const satisfies (keyof Assignment)[];
 
-export function AssignmentDetails({ assignment, organisation }: { assignment: Assignment; organisation: string }) {
+export function AssignmentDetails({
+  assignment,
+  organisation,
+}: {
+  assignment: Assignment;
+  organisation: ExperienceEntry["organisation"];
+}) {
   const { t } = useTranslation();
   const id = useId();
   return (

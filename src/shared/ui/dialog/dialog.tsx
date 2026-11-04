@@ -1,6 +1,7 @@
 import { useId, useRef } from "react";
 import { IconButton } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
+import { LINK_LOOK } from "@/shared/ui/link";
 import { Heading } from "@/shared/ui/typography";
 
 const GUTTERS = "px-4 md:px-6";
@@ -17,22 +18,25 @@ export function Dialog({
   children: React.ReactNode;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const opener = useRef<HTMLButtonElement>(null);
+  const pressedBackdrop = useRef(false);
   const titleId = useId();
   return (
     <>
-      <button
-        type="button"
-        onClick={() => dialog.current?.showModal()}
-        className="text-sm text-primary underline underline-offset-4"
-      >
+      <button ref={opener} type="button" onClick={() => dialog.current?.showModal()} className={`${LINK_LOOK} text-sm`}>
         {trigger}
       </button>
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- Esc already closes it from the keyboard; this only adds closing on a backdrop click. */}
       <dialog
         ref={dialog}
         aria-labelledby={titleId}
+        // Safari doesn't focus a clicked button, so the native focus restore would land on body.
+        onClose={() => opener.current?.focus()}
+        onPointerDown={(event) => {
+          pressedBackdrop.current = event.target === event.currentTarget;
+        }}
         onClick={(event) => {
-          if (event.target === event.currentTarget) {
+          if (pressedBackdrop.current && event.target === event.currentTarget) {
             event.currentTarget.close();
           }
         }}

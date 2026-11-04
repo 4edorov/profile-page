@@ -2,6 +2,8 @@ import { Link as RouterLink } from "react-router";
 import { withLayout } from "@/shared/lib";
 import { Anchor } from "./anchor";
 
+export const LINK_LOOK = "text-primary underline underline-offset-4";
+
 export function Link({
   to,
   newTab = false,
@@ -13,7 +15,7 @@ export function Link({
   className?: string;
   children: React.ReactNode;
 }) {
-  const look = withLayout("text-primary underline underline-offset-4", className);
+  const look = withLayout(LINK_LOOK, className);
   return to.startsWith("/") ? (
     <RouterLink to={to} className={look}>
       {children}

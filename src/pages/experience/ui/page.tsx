@@ -21,7 +21,7 @@ export default function Experience({ loaderData }: PageProps<typeof loader>) {
       <Heading level="page" as="h1">
         {t("pages.experience")}
       </Heading>
-      <ExperienceTimeline entries={experience} heading="h2" details className="mt-8" />
+      <ExperienceTimeline entries={experience} topicPage className="mt-8" />
     </main>
   );
 }

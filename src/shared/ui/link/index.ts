@@ -1,2 +1,2 @@
 export { ButtonLink } from "./button-link";
-export { Link } from "./link";
+export { LINK_LOOK, Link } from "./link";
