@@ -411,13 +411,13 @@ test("the Experience Page renders every Assignment Details before any is opened,
   }
 });
 
-test("the Learning Page groups Entries by kind", async () => {
+test("the Learning Page groups Entries by Learning Kind, without empty ones", async () => {
   renderPath("/ru/learning");
   await screen.findByRole("heading", { level: 1, name: "Обучение" });
   const groups = within(screen.getByRole("main"))
     .getAllByRole("heading", { level: 2 })
     .map((heading) => heading.textContent);
-  expect(groups).toEqual(["Образование", "Курсы", "Сертификаты", "Книги"]);
+  expect(groups).toEqual(["Образование", "Курсы", "Книги"]);
 });
 
 test("switching Language keeps the Page", async () => {

@@ -6,7 +6,7 @@ import {
   getExperience,
   getLearning,
   getProjects,
-  PeriodLabel,
+  LearningEntry,
   pickAbout,
   Tagline,
   TechnologyCloud,
@@ -24,7 +24,9 @@ export function loader({ request }: LoaderFunctionArgs) {
     about: pickAbout(language, [...ABOUT_META_FIELDS, "stack", "technologies", "tagline"]),
     experience: getExperience(language).filter((entry) => entry.featured),
     projects: getProjects(language).filter((entry) => entry.featured),
-    learning: getLearning(language).filter((entry) => entry.featured),
+    learning: getLearning(language)
+      .flatMap((group) => group.entries)
+      .filter((entry) => entry.featured),
   };
 }
 
@@ -101,11 +103,7 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
         <EntryList>
           {learning.map((entry) => (
             <li key={entry.id}>
-              <Heading level="entry" as="h3">
-                {entry.title} · {entry.provider}
-              </Heading>
-              <PeriodLabel period={entry} />
-              <p className="mt-1">{entry.summary}</p>
+              <LearningEntry entry={entry} />
             </li>
           ))}
         </EntryList>

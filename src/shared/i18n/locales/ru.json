@@ -73,7 +73,8 @@
       "course": "Курсы",
       "certification": "Сертификаты",
       "book": "Книги"
-    }
+    },
+    "credential": "Сертификат"
   },
   "projects": {
     "visit": "Открыть {{name}}"

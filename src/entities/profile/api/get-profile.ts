@@ -18,8 +18,8 @@ import {
   type Contact,
   type Entry,
   type ExperienceEntry,
-  type LearningEntry,
-  type LearningKind,
+  type Learning,
+  type LearningGroup,
   type ProjectEntry,
   type Technology,
 } from "../model/types";
@@ -33,9 +33,13 @@ const about = {
 const experience = { en: enExperience, ru: ruExperience } satisfies Record<Language, ExperienceEntry[]>;
 const projects = { en: enProjects, ru: ruProjects } satisfies Record<Language, ProjectEntry[]>;
 const contact = { en: enContact, ru: ruContact } satisfies Record<Language, Contact>;
-const learning = { en: withKinds(enLearning), ru: withKinds(ruLearning) } satisfies Record<Language, LearningEntry[]>;
+const learning = { en: checkLearning(enLearning), ru: checkLearning(ruLearning) } satisfies Record<Language, Learning>;
 
-const entries: Entry[] = [...Object.values(experience), ...Object.values(projects), ...Object.values(learning)].flat();
+const entries: Entry[] = [
+  ...Object.values(experience).flat(),
+  ...Object.values(projects).flat(),
+  ...Object.values(learning).flatMap((byKind) => Object.values(byKind).flat()),
+];
 for (const entry of entries) {
   if (entry.hidden && entry.featured) {
     throw new Error(`Entry "${entry.id}" is both hidden and featured`);
@@ -71,10 +75,10 @@ export function getProjects(language: Language): ProjectEntry[] {
   return projects[language].filter(shown);
 }
 
-export function getLearning(language: Language): LearningEntry[] {
-  return learning[language]
-    .filter(shown)
-    .toSorted((a, b) => LEARNING_KINDS.indexOf(a.kind) - LEARNING_KINDS.indexOf(b.kind) || newestFirst(a, b));
+export function getLearning(language: Language): LearningGroup[] {
+  return LEARNING_KINDS.map((kind) => ({ kind, entries: learning[language][kind].filter(shown) })).filter(
+    (group) => group.entries.length > 0,
+  );
 }
 
 export function getContact(language: Language): Contact {
@@ -85,12 +89,18 @@ function shown(entry: Entry): boolean {
   return !entry.hidden;
 }
 
-// JSON imports widen `kind` to `string`, so it is checked on load instead.
-function withKinds(entries: (Omit<LearningEntry, "kind"> & { kind: string })[]): LearningEntry[] {
-  return entries.map((entry) => {
-    if (!LEARNING_KINDS.includes(entry.kind as LearningKind)) {
-      throw new Error(`Learning Entry "${entry.id}" has unknown kind "${entry.kind}"`);
+// Types can't catch an extra key in imported JSON, so the Learning Kinds are checked on load.
+function checkLearning(byKind: Learning): Learning {
+  const kinds = Object.keys(byKind);
+  if (kinds.length !== LEARNING_KINDS.length || !LEARNING_KINDS.every((kind) => kinds.includes(kind))) {
+    throw new Error(`Learning has the kinds "${kinds.join(", ")}", not "${LEARNING_KINDS.join(", ")}"`);
+  }
+  const ids = new Set<string>();
+  for (const entry of Object.values(byKind).flat()) {
+    if (ids.has(entry.id)) {
+      throw new Error(`Learning Entry id "${entry.id}" is used more than once`);
     }
-    return { ...entry, kind: entry.kind as LearningKind };
-  });
+    ids.add(entry.id);
+  }
+  return byKind;
 }
