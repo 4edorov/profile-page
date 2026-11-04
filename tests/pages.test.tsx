@@ -2,9 +2,10 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { createRoutesStub, type LoaderFunctionArgs } from "react-router";
 import { afterEach, expect, test } from "vitest";
-import { getAbout, getExperience } from "@/entities/profile";
+import { type Assignment, getAbout, getExperience } from "@/entities/profile";
 import { PAGE_IDS } from "@/shared/routing";
 import { setTheme } from "@/shared/theme";
+import "./dialog-shim";
 import { findRoute, routeModule, stubRoutes } from "./route-modules";
 
 afterEach(() => {
@@ -185,57 +186,73 @@ test.each([
   expect(await screen.findByRole("heading", { level: 1, name: heading })).toBeDefined();
 });
 
-test("the Experience Page shows every Entry but Hidden ones, newest first", async () => {
-  renderPath("/en/experience");
-  await screen.findByRole("heading", { level: 1, name: "Experience" });
-  const entries = within(screen.getByRole("main"))
-    .getAllByRole("heading", { level: 2 })
-    .map((heading) => heading.textContent);
-  expect(entries).toEqual(getExperience("en").map((entry) => `${entry.role} · ${entry.organisation}`));
-});
+const PERIODS = {
+  en: [
+    "Jan 2025 – Sep 2026",
+    "Feb 2023 – Dec 2024",
+    "May 2021 – Jan 2023",
+    "Dec 2019 – Apr 2021",
+    "Oct 2019 – May 2020",
+    "Apr 2017 – Sep 2019",
+  ],
+  ru: [
+    "янв. 2025 – сент. 2026",
+    "февр. 2023 – дек. 2024",
+    "май 2021 – янв. 2023",
+    "дек. 2019 – апр. 2021",
+    "окт. 2019 – май 2020",
+    "апр. 2017 – сент. 2019",
+  ],
+} as const;
 
-test("the Experience Page shows each Assignment's lists under their labels, leaving out empty ones", async () => {
-  renderPath("/ru/experience");
-  await screen.findByRole("heading", { level: 1, name: "Опыт" });
-  const labels = { responsibilities: "Обязанности", achievements: "Достижения", team: "Команда", tools: "Технологии" };
-  const lists = Object.keys(labels) as (keyof typeof labels)[];
-  const assignments = getExperience("ru").flatMap((entry) => entry.assignments);
-  const headings = within(screen.getByRole("main")).getAllByRole("heading", { level: 3 });
-  expect(
-    headings.map((heading) => ({
-      name: heading.textContent,
-      lists: within(heading.parentElement as HTMLElement)
-        .getAllByRole("heading", { level: 4 })
-        .map((list) => list.textContent),
-    })),
-  ).toEqual(
-    assignments.map((assignment) => ({
-      name: assignment.name,
-      lists: lists.filter((list) => assignment[list].length > 0).map((list) => labels[list]),
-    })),
-  );
-});
+const EXPERIENCE_HEADINGS = [
+  ["en", "Experience"],
+  ["ru", "Опыт"],
+] as const;
 
-async function findFeaturedExperience(language: "en" | "ru", heading: string) {
-  renderPath(`/${language}/`);
-  const section = (await screen.findByRole("heading", { level: 2, name: heading })).closest("section") as HTMLElement;
-  const items = within(section)
-    .getAllByRole("heading", { level: 3 })
+const EXPERIENCE_ON = {
+  Section: { path: "", titleLevel: 2, container: "section", featuredOnly: true },
+  Page: { path: "experience", titleLevel: 1, container: "main", featuredOnly: false },
+} as const;
+
+const EXPERIENCE_CASES = [
+  ["Section", "en", "Experience", PERIODS.en.slice(0, 2)],
+  ["Section", "ru", "Опыт", PERIODS.ru.slice(0, 2)],
+  ["Page", "en", "Experience", PERIODS.en],
+  ["Page", "ru", "Опыт", PERIODS.ru],
+] as const;
+
+async function findExperience(on: keyof typeof EXPERIENCE_ON, language: "en" | "ru", heading: string) {
+  const { path, titleLevel, container, featuredOnly } = EXPERIENCE_ON[on];
+  renderPath(`/${language}/${path}`);
+  const title = await screen.findByRole("heading", { level: titleLevel, name: heading });
+  const scope = title.closest(container) as HTMLElement;
+  const level = titleLevel + 1;
+  const items = within(scope)
+    .getAllByRole("heading", { level })
     .map((entry) => entry.closest("li") as HTMLElement);
-  return { section, items, entries: getExperience(language).filter((entry) => entry.featured) };
+  const entries = getExperience(language).filter((entry) => !featuredOnly || entry.featured);
+  return { scope, items, level, entries };
 }
 
-test.each([
-  ["en", "Experience", ["Jan 2025 – Sep 2026", "Feb 2023 – Dec 2024"]],
-  ["ru", "Опыт", ["янв. 2025 – сент. 2026", "февр. 2023 – дек. 2024"]],
-] as const)(
-  "in %s the Experience Section shows each Featured Entry by role, organisation, Location and Period, in order",
-  async (language, heading, periods) => {
-    const { items, entries } = await findFeaturedExperience(language, heading);
+function assignmentItems(entryItem: HTMLElement, level: number) {
+  return within(entryItem)
+    .getAllByRole("heading", { level: level + 1 })
+    .map((name) => name.closest("li") as HTMLElement);
+}
+
+function detailsOf(assignment: Assignment) {
+  return [...assignment.responsibilities, ...assignment.achievements, ...assignment.team];
+}
+
+test.each(EXPERIENCE_CASES)(
+  "the Experience %s in %s shows its Entries on the Timeline by role, organisation, Location and Period, in order",
+  async (on, language, heading, periods) => {
+    const { items, level, entries } = await findExperience(on, language, heading);
     expect(items).toHaveLength(periods.length);
     entries.forEach((entry, index) => {
       const item = within(items[index] as HTMLElement);
-      expect(item.getByRole("heading", { level: 3, name: entry.role })).toBeDefined();
+      expect(item.getByRole("heading", { level, name: entry.role })).toBeDefined();
       expect(item.getByText(entry.organisation)).toBeDefined();
       expect(item.getByText(entry.location)).toBeDefined();
       expect(item.getByText(periods[index] as string)).toBeDefined();
@@ -243,39 +260,40 @@ test.each([
   },
 );
 
-test.each([
-  ["en", "Experience", "Technologies"],
-  ["ru", "Опыт", "Технологии"],
-] as const)(
-  "in %s the Experience Section shows each Assignment by name, description and every Tool, and nothing more",
-  async (language, heading, toolsLabel) => {
-    const { section, items, entries } = await findFeaturedExperience(language, heading);
+const TOOLS_LABELS = { en: "Technologies", ru: "Технологии" } as const;
+
+test.each(EXPERIENCE_CASES)(
+  "the Experience %s in %s shows each Assignment by name, description and every Tool, with no inline lists",
+  async (on, language, heading) => {
+    const { scope, items, level, entries } = await findExperience(on, language, heading);
     entries.forEach((entry, index) => {
-      const names = within(items[index] as HTMLElement).getAllByRole("heading", { level: 4 });
-      expect(names.map((name) => name.textContent)).toEqual(entry.assignments.map((assignment) => assignment.name));
+      const assignments = assignmentItems(items[index] as HTMLElement, level);
+      expect(assignments.map((item) => within(item).getByRole("heading").textContent)).toEqual(
+        entry.assignments.map((assignment) => assignment.name),
+      );
       entry.assignments.forEach(({ description, tools: expectedTools }, position) => {
-        const assignment = within(names[position]?.closest("li") as HTMLElement);
+        const assignment = within(assignments[position] as HTMLElement);
         expect(assignment.getByText(description)).toBeDefined();
-        const tools = within(assignment.getByRole("list", { name: toolsLabel })).getAllByRole("listitem");
+        const tools = within(assignment.getByRole("list", { name: TOOLS_LABELS[language] })).getAllByRole("listitem");
         expect(tools.map((tool) => tool.textContent)).toEqual(expectedTools);
       });
     });
-    const scope = within(section);
-    for (const assignment of entries.flatMap((entry) => entry.assignments)) {
-      for (const detail of [...assignment.responsibilities, ...assignment.achievements, ...assignment.team]) {
-        expect(scope.queryByText(detail)).toBeNull();
-      }
+    for (const detail of entries.flatMap((entry) => entry.assignments).flatMap(detailsOf)) {
+      const inline = within(scope)
+        .queryAllByText(detail)
+        .filter((element) => element.closest("dialog") === null);
+      expect(inline).toEqual([]);
     }
   },
 );
 
-test.each([
-  ["en", "Experience", "(opens in a new tab)"],
-  ["ru", "Опыт", "(откроется в новой вкладке)"],
-] as const)(
-  "in %s a Featured Entry links its organisation, with an icon, to its website in a new tab, and saying so",
-  async (language, heading, newTab) => {
-    const { items, entries } = await findFeaturedExperience(language, heading);
+const NEW_TAB = { en: "(opens in a new tab)", ru: "(откроется в новой вкладке)" } as const;
+
+test.each(EXPERIENCE_CASES)(
+  "on the Experience %s in %s, only an Entry with a URL links its organisation, with an icon, in a new tab, saying so",
+  async (on, language, heading) => {
+    const { items, entries } = await findExperience(on, language, heading);
+    const newTab = NEW_TAB[language];
     const links = items
       .flatMap((item) => within(item).queryAllByRole("link"))
       .map((link) => ({
@@ -298,6 +316,100 @@ test.each([
     );
   },
 );
+
+const DETAILS = { en: "Details", ru: "Подробнее" } as const;
+
+test.each(EXPERIENCE_HEADINGS)(
+  "the Experience Page in %s has a details button per Assignment, named after it",
+  async (language, heading) => {
+    const { scope, items, level, entries } = await findExperience("Page", language, heading);
+    expect(within(scope).getAllByRole("button")).toHaveLength(entries.flatMap((entry) => entry.assignments).length);
+    entries.forEach((entry, index) => {
+      const assignments = assignmentItems(items[index] as HTMLElement, level);
+      entry.assignments.forEach(({ name }, position) => {
+        const button = within(assignments[position] as HTMLElement).getByRole("button", {
+          name: (accessible) => accessible.includes(DETAILS[language]) && accessible.includes(name),
+        });
+        expect(button.textContent.startsWith(DETAILS[language])).toBe(true);
+      });
+    });
+  },
+);
+
+test.each(EXPERIENCE_HEADINGS)("the Experience Section in %s has no details buttons", async (language, heading) => {
+  const { scope } = await findExperience("Section", language, heading);
+  expect(within(scope).queryAllByRole("button")).toEqual([]);
+});
+
+const DETAIL_LABELS = {
+  en: { responsibilities: "Responsibilities", achievements: "Achievements", team: "Team", close: "Close" },
+  ru: { responsibilities: "Обязанности", achievements: "Достижения", team: "Команда", close: "Закрыть" },
+} as const;
+const DETAIL_LISTS = ["responsibilities", "achievements", "team"] as const;
+
+test.each(EXPERIENCE_HEADINGS)(
+  "in %s a details button opens the Assignment Details, listing its non-empty lists under their labels, until closed",
+  async (language, heading) => {
+    const { items, entries } = await findExperience("Page", language, heading);
+    const labels = DETAIL_LABELS[language];
+    for (const [index, { organisation, assignments }] of entries.entries()) {
+      const buttons = within(items[index] as HTMLElement).getAllByRole("button");
+      for (const [position, assignment] of assignments.entries()) {
+        fireEvent.click(buttons[position] as HTMLElement);
+        const dialog = within(
+          screen.getByRole("dialog", {
+            name: (accessible) => accessible.includes(assignment.name) && accessible.includes(organisation),
+          }),
+        );
+        const shown = DETAIL_LISTS.filter((list) => assignment[list].length > 0);
+        expect(dialog.getAllByRole("heading", { level: 3 }).map((label) => label.textContent)).toEqual(
+          shown.map((list) => labels[list]),
+        );
+        for (const list of shown) {
+          const items = within(dialog.getByRole("list", { name: labels[list] })).getAllByRole("listitem");
+          expect(items.map((item) => item.textContent)).toEqual(assignment[list]);
+        }
+        expect(dialog.queryByRole("list", { name: TOOLS_LABELS[language] })).toBeNull();
+        fireEvent.click(dialog.getByRole("button", { name: labels.close }));
+        expect(screen.queryByRole("dialog")).toBeNull();
+      }
+    }
+  },
+);
+
+async function openFirstAssignmentDetails() {
+  const { scope } = await findExperience("Page", "en", "Experience");
+  const button = within(scope).getAllByRole("button")[0] as HTMLElement;
+  fireEvent.click(button);
+  return { button, dialog: screen.getByRole("dialog") };
+}
+
+test("closing an Assignment Details returns focus to the details button that opened it", async () => {
+  const { button, dialog } = await openFirstAssignmentDetails();
+  expect(document.activeElement).not.toBe(button);
+  fireEvent.click(within(dialog).getByRole("button", { name: "Close" }));
+  expect(document.activeElement).toBe(button);
+});
+
+test("an Assignment Details closes on a click on its backdrop, but not when the press started inside it", async () => {
+  const { button, dialog } = await openFirstAssignmentDetails();
+  fireEvent.pointerDown(within(dialog).getAllByRole("listitem")[0] as HTMLElement);
+  fireEvent.click(dialog);
+  expect(screen.getByRole("dialog")).toBe(dialog);
+  fireEvent.pointerDown(dialog);
+  fireEvent.click(dialog);
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(document.activeElement).toBe(button);
+});
+
+test("the Experience Page renders every Assignment Details before any is opened, hidden until then", async () => {
+  const { scope, entries } = await findExperience("Page", "en", "Experience");
+  expect(screen.queryAllByRole("dialog")).toEqual([]);
+  for (const detail of entries.flatMap((entry) => entry.assignments).flatMap(detailsOf)) {
+    const shown = within(scope).getAllByText(detail);
+    expect(shown.every((element) => element.closest("dialog")?.open === false)).toBe(true);
+  }
+});
 
 test("the Learning Page groups Entries by kind", async () => {
   renderPath("/ru/learning");

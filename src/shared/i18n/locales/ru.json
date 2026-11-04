@@ -48,6 +48,7 @@
   },
   "technologies": "Технологии",
   "opensInNewTab": "(откроется в новой вкладке)",
+  "close": "Закрыть",
   "about": {
     "introductionHeading": "Обо мне",
     "bioHeading": "Биография"
@@ -62,7 +63,8 @@
       "responsibilities": "Обязанности",
       "achievements": "Достижения",
       "team": "Команда",
-      "tools": "Технологии"
+      "tools": "Технологии",
+      "details": "Подробнее"
     }
   },
   "learning": {
