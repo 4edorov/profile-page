@@ -48,6 +48,7 @@
   },
   "technologies": "Technologies",
   "opensInNewTab": "(opens in a new tab)",
+  "close": "Close",
   "about": {
     "introductionHeading": "About Me",
     "bioHeading": "Bio"
@@ -62,7 +63,8 @@
       "responsibilities": "Responsibilities",
       "achievements": "Achievements",
       "team": "Team",
-      "tools": "Technologies"
+      "tools": "Technologies",
+      "details": "Details"
     }
   },
   "learning": {

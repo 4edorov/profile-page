@@ -5,6 +5,7 @@ import { afterEach, expect, test } from "vitest";
 import { getAbout, getExperience } from "@/entities/profile";
 import { PAGE_IDS } from "@/shared/routing";
 import { setTheme } from "@/shared/theme";
+import "./dialog-shim";
 import { findRoute, routeModule, stubRoutes } from "./route-modules";
 
 afterEach(() => {
@@ -185,57 +186,34 @@ test.each([
   expect(await screen.findByRole("heading", { level: 1, name: heading })).toBeDefined();
 });
 
-test("the Experience Page shows every Entry but Hidden ones, newest first", async () => {
-  renderPath("/en/experience");
-  await screen.findByRole("heading", { level: 1, name: "Experience" });
-  const entries = within(screen.getByRole("main"))
-    .getAllByRole("heading", { level: 2 })
-    .map((heading) => heading.textContent);
-  expect(entries).toEqual(getExperience("en").map((entry) => `${entry.role} · ${entry.organisation}`));
-});
+const EXPERIENCE_VIEWS = [
+  ["Section", "en", "Experience"],
+  ["Section", "ru", "Опыт"],
+  ["Page", "en", "Experience"],
+  ["Page", "ru", "Опыт"],
+] as const;
 
-test("the Experience Page shows each Assignment's lists under their labels, leaving out empty ones", async () => {
-  renderPath("/ru/experience");
-  await screen.findByRole("heading", { level: 1, name: "Опыт" });
-  const labels = { responsibilities: "Обязанности", achievements: "Достижения", team: "Команда", tools: "Технологии" };
-  const lists = Object.keys(labels) as (keyof typeof labels)[];
-  const assignments = getExperience("ru").flatMap((entry) => entry.assignments);
-  const headings = within(screen.getByRole("main")).getAllByRole("heading", { level: 3 });
-  expect(
-    headings.map((heading) => ({
-      name: heading.textContent,
-      lists: within(heading.parentElement as HTMLElement)
-        .getAllByRole("heading", { level: 4 })
-        .map((list) => list.textContent),
-    })),
-  ).toEqual(
-    assignments.map((assignment) => ({
-      name: assignment.name,
-      lists: lists.filter((list) => assignment[list].length > 0).map((list) => labels[list]),
-    })),
-  );
-});
-
-async function findFeaturedExperience(language: "en" | "ru", heading: string) {
-  renderPath(`/${language}/`);
-  const section = (await screen.findByRole("heading", { level: 2, name: heading })).closest("section") as HTMLElement;
-  const items = within(section)
-    .getAllByRole("heading", { level: 3 })
+async function findExperience(view: "Section" | "Page", language: "en" | "ru", heading: string) {
+  const onPage = view === "Page";
+  renderPath(onPage ? `/${language}/experience` : `/${language}/`);
+  const title = await screen.findByRole("heading", { level: onPage ? 1 : 2, name: heading });
+  const scope = (onPage ? screen.getByRole("main") : title.closest("section")) as HTMLElement;
+  const level = onPage ? 2 : 3;
+  const items = within(scope)
+    .getAllByRole("heading", { level })
     .map((entry) => entry.closest("li") as HTMLElement);
-  return { section, items, entries: getExperience(language).filter((entry) => entry.featured) };
+  const all = getExperience(language);
+  return { scope, items, level, entries: onPage ? all : all.filter((entry) => entry.featured) };
 }
 
-test.each([
-  ["en", "Experience"],
-  ["ru", "Опыт"],
-] as const)(
-  "in %s the Experience Section shows each Featured Entry by role, organisation, Location and Period, in order",
-  async (language, heading) => {
-    const { items, entries } = await findFeaturedExperience(language, heading);
+test.each(EXPERIENCE_VIEWS)(
+  "the Experience %s in %s shows its Entries on the Timeline by role, organisation, Location and Period, in order",
+  async (view, language, heading) => {
+    const { items, level, entries } = await findExperience(view, language, heading);
     expect(items).toHaveLength(entries.length);
     entries.forEach((entry, index) => {
       const item = within(items[index] as HTMLElement);
-      expect(item.getByRole("heading", { level: 3 }).textContent).toBe(entry.role);
+      expect(item.getByRole("heading", { level }).textContent).toBe(entry.role);
       expect(item.getByText(entry.organisation)).toBeDefined();
       expect(item.getByText(entry.location)).toBeDefined();
       expect(item.getByText((text) => text.includes(entry.start.slice(0, 4)) && text.includes("–"))).toBeDefined();
@@ -243,39 +221,40 @@ test.each([
   },
 );
 
-test.each([
-  ["en", "Experience", "Technologies"],
-  ["ru", "Опыт", "Технологии"],
-] as const)(
-  "in %s the Experience Section shows each Assignment by name, description and every Tool, and nothing more",
-  async (language, heading, toolsLabel) => {
-    const { section, items, entries } = await findFeaturedExperience(language, heading);
+const TOOLS_LABELS = { en: "Technologies", ru: "Технологии" } as const;
+
+test.each(EXPERIENCE_VIEWS)(
+  "the Experience %s in %s shows each Assignment by name, description and every Tool, with no inline lists",
+  async (view, language, heading) => {
+    const { scope, items, level, entries } = await findExperience(view, language, heading);
     entries.forEach((entry, index) => {
-      const names = within(items[index] as HTMLElement).getAllByRole("heading", { level: 4 });
+      const names = within(items[index] as HTMLElement).getAllByRole("heading", { level: level + 1 });
       expect(names.map((name) => name.textContent)).toEqual(entry.assignments.map((assignment) => assignment.name));
       entry.assignments.forEach(({ description, tools }, position) => {
         const assignment = within(names[position]?.closest("li") as HTMLElement);
         expect(assignment.getByText(description)).toBeDefined();
-        const chips = within(assignment.getByRole("list", { name: toolsLabel })).getAllByRole("listitem");
+        const chips = within(assignment.getByRole("list", { name: TOOLS_LABELS[language] })).getAllByRole("listitem");
         expect(chips.map((chip) => chip.textContent)).toEqual(tools);
       });
     });
-    const scope = within(section);
     for (const assignment of entries.flatMap((entry) => entry.assignments)) {
-      for (const hidden of [...assignment.responsibilities, ...assignment.achievements, ...assignment.team]) {
-        expect(scope.queryByText(hidden)).toBeNull();
+      for (const detail of [...assignment.responsibilities, ...assignment.achievements, ...assignment.team]) {
+        const inline = within(scope)
+          .queryAllByText(detail)
+          .filter((element) => element.closest("dialog") === null);
+        expect(inline).toEqual([]);
       }
     }
   },
 );
 
-test.each([
-  ["en", "Experience", "(opens in a new tab)"],
-  ["ru", "Опыт", "(откроется в новой вкладке)"],
-] as const)(
-  "in %s a Featured Entry links its organisation, with an icon, to its website in a new tab, and saying so",
-  async (language, heading, newTab) => {
-    const { items, entries } = await findFeaturedExperience(language, heading);
+const NEW_TAB = { en: "(opens in a new tab)", ru: "(откроется в новой вкладке)" } as const;
+
+test.each(EXPERIENCE_VIEWS)(
+  "on the Experience %s in %s, only an Entry with a URL links its organisation, with an icon, in a new tab, saying so",
+  async (view, language, heading) => {
+    const { items, entries } = await findExperience(view, language, heading);
+    const newTab = NEW_TAB[language];
     const links = items
       .flatMap((item) => within(item).queryAllByRole("link"))
       .map((link) => ({
@@ -298,6 +277,81 @@ test.each([
     );
   },
 );
+
+const DETAILS = { en: "Details", ru: "Подробнее" } as const;
+
+test.each(EXPERIENCE_VIEWS)(
+  "the Experience %s in %s has a details button per Assignment on the Page only, named after it",
+  async (view, language, heading) => {
+    const { scope, items, level, entries } = await findExperience(view, language, heading);
+    const assignments = entries.flatMap((entry) => entry.assignments);
+    const buttons = within(scope).queryAllByRole("button");
+    expect(buttons).toHaveLength(view === "Page" ? assignments.length : 0);
+    if (view === "Section") {
+      return;
+    }
+    entries.forEach((entry, index) => {
+      const names = within(items[index] as HTMLElement).getAllByRole("heading", { level: level + 1 });
+      entry.assignments.forEach(({ name }, position) => {
+        const assignment = within(names[position]?.closest("li") as HTMLElement);
+        const button = assignment.getByRole("button", {
+          name: (accessible) => accessible.includes(DETAILS[language]) && accessible.includes(name),
+        });
+        expect(button.textContent.startsWith(DETAILS[language])).toBe(true);
+      });
+    });
+  },
+);
+
+const DETAIL_LABELS = {
+  en: { responsibilities: "Responsibilities", achievements: "Achievements", team: "Team", close: "Close" },
+  ru: { responsibilities: "Обязанности", achievements: "Достижения", team: "Команда", close: "Закрыть" },
+} as const;
+const DETAIL_LISTS = ["responsibilities", "achievements", "team"] as const;
+
+test.each([
+  ["en", "Experience"],
+  ["ru", "Опыт"],
+] as const)(
+  "in %s a details button opens the Assignment Details, listing its non-empty lists under their labels, until closed",
+  async (language, heading) => {
+    const { items, entries } = await findExperience("Page", language, heading);
+    const labels = DETAIL_LABELS[language];
+    for (const [index, { organisation, assignments }] of entries.entries()) {
+      const buttons = within(items[index] as HTMLElement).getAllByRole("button");
+      for (const [position, assignment] of assignments.entries()) {
+        fireEvent.click(buttons[position] as HTMLElement);
+        const dialog = within(
+          screen.getByRole("dialog", {
+            name: (accessible) => accessible.includes(assignment.name) && accessible.includes(organisation),
+          }),
+        );
+        const shown = DETAIL_LISTS.filter((list) => assignment[list].length > 0);
+        expect(dialog.getAllByRole("heading", { level: 3 }).map((label) => label.textContent)).toEqual(
+          shown.map((list) => labels[list]),
+        );
+        for (const list of shown) {
+          const items = within(dialog.getByRole("list", { name: labels[list] })).getAllByRole("listitem");
+          expect(items.map((item) => item.textContent)).toEqual(assignment[list]);
+        }
+        expect(dialog.queryByRole("list", { name: TOOLS_LABELS[language] })).toBeNull();
+        fireEvent.click(dialog.getByRole("button", { name: labels.close }));
+        expect(screen.queryByRole("dialog")).toBeNull();
+      }
+    }
+  },
+);
+
+test("the Experience Page renders every Assignment Details inside its closed dialog, before any is opened", async () => {
+  const { scope, entries } = await findExperience("Page", "en", "Experience");
+  expect(screen.queryAllByRole("dialog")).toEqual([]);
+  for (const assignment of entries.flatMap((entry) => entry.assignments)) {
+    for (const detail of [...assignment.responsibilities, ...assignment.achievements, ...assignment.team]) {
+      const shown = within(scope).getAllByText(detail);
+      expect(shown.every((element) => element.closest("dialog")?.open === false)).toBe(true);
+    }
+  }
+});
 
 test("the Learning Page groups Entries by kind", async () => {
   renderPath("/ru/learning");
