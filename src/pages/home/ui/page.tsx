@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import type { LoaderFunctionArgs } from "react-router";
 import {
   ABOUT_META_FIELDS,
+  ExperienceTimeline,
   getExperience,
   getLearning,
   getProjects,
@@ -72,16 +73,7 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
         heading={t("pages.experience")}
         more={{ to: pagePath(language, "experience"), label: t("home.more.experience") }}
       >
-        {experience.map((entry) => (
-          <li key={entry.id}>
-            <Heading level="entry" as="h3">
-              {entry.role} · {entry.organisation}
-            </Heading>
-            <Text tone="muted" size="sm">
-              {entry.location} · <PeriodLabel period={entry} />
-            </Text>
-          </li>
-        ))}
+        <ExperienceTimeline entries={experience} className="mt-6" />
       </TopicSection>
 
       <TopicSection
@@ -89,14 +81,16 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
         heading={t("pages.projects")}
         more={{ to: pagePath(language, "projects"), label: t("home.more.projects") }}
       >
-        {projects.map((entry) => (
-          <li key={entry.id}>
-            <Heading level="entry" as="h3">
-              {entry.name}
-            </Heading>
-            <p className="mt-1">{entry.summary}</p>
-          </li>
-        ))}
+        <EntryList>
+          {projects.map((entry) => (
+            <li key={entry.id}>
+              <Heading level="entry" as="h3">
+                {entry.name}
+              </Heading>
+              <p className="mt-1">{entry.summary}</p>
+            </li>
+          ))}
+        </EntryList>
       </TopicSection>
 
       <TopicSection
@@ -104,15 +98,17 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
         heading={t("pages.learning")}
         more={{ to: pagePath(language, "learning"), label: t("home.more.learning") }}
       >
-        {learning.map((entry) => (
-          <li key={entry.id}>
-            <Heading level="entry" as="h3">
-              {entry.title} · {entry.provider}
-            </Heading>
-            <PeriodLabel period={entry} />
-            <p className="mt-1">{entry.summary}</p>
-          </li>
-        ))}
+        <EntryList>
+          {learning.map((entry) => (
+            <li key={entry.id}>
+              <Heading level="entry" as="h3">
+                {entry.title} · {entry.provider}
+              </Heading>
+              <PeriodLabel period={entry} />
+              <p className="mt-1">{entry.summary}</p>
+            </li>
+          ))}
+        </EntryList>
       </TopicSection>
     </main>
   );
@@ -134,10 +130,14 @@ function TopicSection({
       <Heading level="section" as="h2" id={`${id}-heading`}>
         {heading}
       </Heading>
-      <ul className="mt-3 space-y-4">{children}</ul>
+      {children}
       <MoreLink to={more.to}>{more.label}</MoreLink>
     </section>
   );
+}
+
+function EntryList({ children }: { children: React.ReactNode }) {
+  return <ul className="mt-3 space-y-4">{children}</ul>;
 }
 
 function MoreLink({ to, children }: { to: string; children: React.ReactNode }) {

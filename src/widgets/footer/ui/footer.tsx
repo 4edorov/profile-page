@@ -39,7 +39,7 @@ export function Footer({ contact: { openToWork, links } }: { contact: Contact })
                 <ButtonLink to={link.url} newTab={newTab}>
                   {Icon && <Icon />}
                   {link.label}
-                  {newTab && <span className="sr-only"> {t("footer.opensInNewTab")}</span>}
+                  {newTab && <span className="sr-only"> {t("opensInNewTab")}</span>}
                 </ButtonLink>
               </li>
             );

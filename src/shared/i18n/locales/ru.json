@@ -47,6 +47,7 @@
     }
   },
   "technologies": "Технологии",
+  "opensInNewTab": "(откроется в новой вкладке)",
   "about": {
     "introductionHeading": "Обо мне",
     "bioHeading": "Биография"
@@ -54,8 +55,7 @@
   "footer": {
     "contactHeading": "Контакты",
     "invitation": "Давайте познакомимся",
-    "openToWorkLabel": "Открыт к предложениям",
-    "opensInNewTab": "(откроется в новой вкладке)"
+    "openToWorkLabel": "Открыт к предложениям"
   },
   "experience": {
     "assignment": {

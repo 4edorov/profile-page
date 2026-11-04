@@ -47,6 +47,7 @@
     }
   },
   "technologies": "Technologies",
+  "opensInNewTab": "(opens in a new tab)",
   "about": {
     "introductionHeading": "About Me",
     "bioHeading": "Bio"
@@ -54,8 +55,7 @@
   "footer": {
     "contactHeading": "Contact",
     "invitation": "Let's connect",
-    "openToWorkLabel": "Open to work",
-    "opensInNewTab": "(opens in a new tab)"
+    "openToWorkLabel": "Open to work"
   },
   "experience": {
     "assignment": {
