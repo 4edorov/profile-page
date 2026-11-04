@@ -186,11 +186,30 @@ test.each([
   expect(await screen.findByRole("heading", { level: 1, name: heading })).toBeDefined();
 });
 
+const PERIODS = {
+  en: [
+    "Jan 2025 – Sep 2026",
+    "Feb 2023 – Dec 2024",
+    "May 2021 – Jan 2023",
+    "Dec 2019 – Apr 2021",
+    "Oct 2019 – May 2020",
+    "Apr 2017 – Sep 2019",
+  ],
+  ru: [
+    "янв. 2025 – сент. 2026",
+    "февр. 2023 – дек. 2024",
+    "май 2021 – янв. 2023",
+    "дек. 2019 – апр. 2021",
+    "окт. 2019 – май 2020",
+    "апр. 2017 – сент. 2019",
+  ],
+} as const;
+
 const EXPERIENCE_VIEWS = [
-  ["Section", "en", "Experience"],
-  ["Section", "ru", "Опыт"],
-  ["Page", "en", "Experience"],
-  ["Page", "ru", "Опыт"],
+  ["Section", "en", "Experience", PERIODS.en.slice(0, 2)],
+  ["Section", "ru", "Опыт", PERIODS.ru.slice(0, 2)],
+  ["Page", "en", "Experience", PERIODS.en],
+  ["Page", "ru", "Опыт", PERIODS.ru],
 ] as const;
 
 async function findExperience(view: "Section" | "Page", language: "en" | "ru", heading: string) {
@@ -208,15 +227,15 @@ async function findExperience(view: "Section" | "Page", language: "en" | "ru", h
 
 test.each(EXPERIENCE_VIEWS)(
   "the Experience %s in %s shows its Entries on the Timeline by role, organisation, Location and Period, in order",
-  async (view, language, heading) => {
+  async (view, language, heading, periods) => {
     const { items, level, entries } = await findExperience(view, language, heading);
-    expect(items).toHaveLength(entries.length);
+    expect(items).toHaveLength(periods.length);
     entries.forEach((entry, index) => {
       const item = within(items[index] as HTMLElement);
-      expect(item.getByRole("heading", { level }).textContent).toBe(entry.role);
+      expect(item.getByRole("heading", { level, name: entry.role })).toBeDefined();
       expect(item.getByText(entry.organisation)).toBeDefined();
       expect(item.getByText(entry.location)).toBeDefined();
-      expect(item.getByText((text) => text.includes(entry.start.slice(0, 4)) && text.includes("–"))).toBeDefined();
+      expect(item.getByText(periods[index] as string)).toBeDefined();
     });
   },
 );
@@ -230,11 +249,11 @@ test.each(EXPERIENCE_VIEWS)(
     entries.forEach((entry, index) => {
       const names = within(items[index] as HTMLElement).getAllByRole("heading", { level: level + 1 });
       expect(names.map((name) => name.textContent)).toEqual(entry.assignments.map((assignment) => assignment.name));
-      entry.assignments.forEach(({ description, tools }, position) => {
+      entry.assignments.forEach(({ description, tools: expectedTools }, position) => {
         const assignment = within(names[position]?.closest("li") as HTMLElement);
         expect(assignment.getByText(description)).toBeDefined();
-        const chips = within(assignment.getByRole("list", { name: TOOLS_LABELS[language] })).getAllByRole("listitem");
-        expect(chips.map((chip) => chip.textContent)).toEqual(tools);
+        const tools = within(assignment.getByRole("list", { name: TOOLS_LABELS[language] })).getAllByRole("listitem");
+        expect(tools.map((tool) => tool.textContent)).toEqual(expectedTools);
       });
     });
     for (const assignment of entries.flatMap((entry) => entry.assignments)) {

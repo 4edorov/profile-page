@@ -150,6 +150,10 @@ _Avoid_: Highlight, emphasis
 The About Section's turning sphere of the Technologies, which the visitor's pointer steers; the sphere stops while the pointer or keyboard focus is on a Technology, which shows in the Theme's primary color, and clicking a linked one opens its website in a new tab. Still for visitors who ask for reduced motion. Shown only on screens wider than phone-sized, where it is also how screen readers and keyboard users reach the Technologies; the Technology Marquee takes its place on phone-sized screens.
 _Avoid_: Tag cloud, sphere, animation block
 
+**Technology Marquee**:
+The About Section's endless row of the Technologies below its link to the About Page, moving leftward on its own in Profile Content order; on phone-sized screens it takes the Technology Cloud's place, for screen readers and keyboard users too. A touch, hover or keyboard focus pauses it, the visitor can swipe it either way, and it moves on again from where it was left shortly after release. Tapping a linked Technology opens its website in a new tab. Still for visitors who ask for reduced motion, but still swipeable.
+_Avoid_: Ticker, carousel, slider, cloud (for the row)
+
 **Timeline**:
 The line joining the Experience Entries in the Experience Section and on its Topic Page, in their usual order, each Entry at its own evenly spaced marker with its Period beside it; on phone-sized screens the Period sits above the Entry instead. Shows order, not elapsed time: overlapping or distant Periods are spaced alike.
 _Avoid_: History, journey, career path
@@ -157,7 +161,3 @@ _Avoid_: History, journey, career path
 **Assignment Details**:
 What an Assignment's details button opens on the Experience Topic Page, over the rest of the Page: that Assignment's responsibilities, achievements and team, under its name and organisation, leaving out any that are empty. Closes on request and returns the visitor to where they were.
 _Avoid_: Modal, popup, dialog (in prose)
-
-**Technology Marquee**:
-The About Section's endless row of the Technologies below its link to the About Page, moving leftward on its own in Profile Content order; on phone-sized screens it takes the Technology Cloud's place, for screen readers and keyboard users too. A touch, hover or keyboard focus pauses it, the visitor can swipe it either way, and it moves on again from where it was left shortly after release. Tapping a linked Technology opens its website in a new tab. Still for visitors who ask for reduced motion, but still swipeable.
-_Avoid_: Ticker, carousel, slider, cloud (for the row)
