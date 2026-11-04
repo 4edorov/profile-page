@@ -154,7 +154,7 @@ test("shows only Featured Entries on the Home Page, with links to their Topic Pa
   expect(entries).toEqual(
     getExperience("en")
       .filter((entry) => entry.featured)
-      .map((entry) => `${entry.role} · ${entry.organisation}`),
+      .map((entry) => entry.role),
   );
   expect(scope.getByRole("link", { name: "All experience" }).getAttribute("href")).toBe("/en/experience");
 });
@@ -216,17 +216,88 @@ test("the Experience Page shows each Assignment's lists under their labels, leav
   );
 });
 
-test("the Home Page shows a Featured Experience Entry by its Location and Period, without Assignments", async () => {
-  renderPath("/en/");
-  const section = (await screen.findByRole("heading", { level: 2, name: "Experience" })).closest("section");
-  const scope = within(section as HTMLElement);
-  for (const entry of getExperience("en").filter((featured) => featured.featured)) {
-    expect(scope.getAllByText((text) => text.startsWith(`${entry.location} ·`)).length).toBeGreaterThan(0);
-    for (const assignment of entry.assignments) {
-      expect(scope.queryByText(assignment.name)).toBeNull();
+async function findFeaturedExperience(language: "en" | "ru", heading: string) {
+  renderPath(`/${language}/`);
+  const section = (await screen.findByRole("heading", { level: 2, name: heading })).closest("section") as HTMLElement;
+  const items = within(section)
+    .getAllByRole("heading", { level: 3 })
+    .map((entry) => entry.closest("li") as HTMLElement);
+  return { section, items, entries: getExperience(language).filter((entry) => entry.featured) };
+}
+
+test.each([
+  ["en", "Experience", ["Jan 2025 – Sep 2026", "Feb 2023 – Dec 2024"]],
+  ["ru", "Опыт", ["янв. 2025 – сент. 2026", "февр. 2023 – дек. 2024"]],
+] as const)(
+  "in %s the Experience Section shows each Featured Entry by role, organisation, Location and Period, in order",
+  async (language, heading, periods) => {
+    const { items, entries } = await findFeaturedExperience(language, heading);
+    expect(items).toHaveLength(periods.length);
+    entries.forEach((entry, index) => {
+      const item = within(items[index] as HTMLElement);
+      expect(item.getByRole("heading", { level: 3, name: entry.role })).toBeDefined();
+      expect(item.getByText(entry.organisation)).toBeDefined();
+      expect(item.getByText(entry.location)).toBeDefined();
+      expect(item.getByText(periods[index] as string)).toBeDefined();
+    });
+  },
+);
+
+test.each([
+  ["en", "Experience", "Technologies"],
+  ["ru", "Опыт", "Технологии"],
+] as const)(
+  "in %s the Experience Section shows each Assignment by name, description and every Tool, and nothing more",
+  async (language, heading, toolsLabel) => {
+    const { section, items, entries } = await findFeaturedExperience(language, heading);
+    entries.forEach((entry, index) => {
+      const names = within(items[index] as HTMLElement).getAllByRole("heading", { level: 4 });
+      expect(names.map((name) => name.textContent)).toEqual(entry.assignments.map((assignment) => assignment.name));
+      entry.assignments.forEach(({ description, tools: expectedTools }, position) => {
+        const assignment = within(names[position]?.closest("li") as HTMLElement);
+        expect(assignment.getByText(description)).toBeDefined();
+        const tools = within(assignment.getByRole("list", { name: toolsLabel })).getAllByRole("listitem");
+        expect(tools.map((tool) => tool.textContent)).toEqual(expectedTools);
+      });
+    });
+    const scope = within(section);
+    for (const assignment of entries.flatMap((entry) => entry.assignments)) {
+      for (const detail of [...assignment.responsibilities, ...assignment.achievements, ...assignment.team]) {
+        expect(scope.queryByText(detail)).toBeNull();
+      }
     }
-  }
-});
+  },
+);
+
+test.each([
+  ["en", "Experience", "(opens in a new tab)"],
+  ["ru", "Опыт", "(откроется в новой вкладке)"],
+] as const)(
+  "in %s a Featured Entry links its organisation, with an icon, to its website in a new tab, and saying so",
+  async (language, heading, newTab) => {
+    const { items, entries } = await findFeaturedExperience(language, heading);
+    const links = items
+      .flatMap((item) => within(item).queryAllByRole("link"))
+      .map((link) => ({
+        name: link.textContent,
+        href: link.getAttribute("href"),
+        target: link.getAttribute("target"),
+        rel: link.getAttribute("rel"),
+        icon: link.querySelector("svg") !== null,
+      }));
+    expect(links).toEqual(
+      entries
+        .filter((entry) => entry.url !== null)
+        .map(({ organisation, url }) => ({
+          name: `${organisation} ${newTab}`,
+          href: url,
+          target: "_blank",
+          rel: "noopener",
+          icon: true,
+        })),
+    );
+  },
+);
 
 test("the Learning Page groups Entries by kind", async () => {
   renderPath("/ru/learning");

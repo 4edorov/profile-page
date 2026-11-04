@@ -33,13 +33,11 @@ export function Footer({ contact: { openToWork, links } }: { contact: Contact })
         <ul className="mt-6 flex flex-wrap gap-3">
           {links.map((link) => {
             const Icon = ICONS[link.id];
-            const newTab = link.url.startsWith("https://");
             return (
               <li key={link.id}>
-                <ButtonLink to={link.url} newTab={newTab}>
+                <ButtonLink to={link.url} newTab={link.url.startsWith("https://")}>
                   {Icon && <Icon />}
                   {link.label}
-                  {newTab && <span className="sr-only"> {t("footer.opensInNewTab")}</span>}
                 </ButtonLink>
               </li>
             );
