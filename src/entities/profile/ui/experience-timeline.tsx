@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { Chip } from "@/shared/ui/chip";
-import { Icon } from "@/shared/ui/icon";
 import { Link } from "@/shared/ui/link";
 import { Timeline, TimelineItem } from "@/shared/ui/timeline";
 import { Heading, Text } from "@/shared/ui/typography";
 import type { ExperienceEntry } from "../model/types";
 import { AssignmentDetails } from "./assignment-details";
+import { ExternalLinkIcon } from "./icons";
 import { PeriodLabel } from "./period-label";
 
 export function ExperienceTimeline({
@@ -32,11 +32,7 @@ export function ExperienceTimeline({
             ) : (
               <Link to={entry.url} newTab className="inline-flex items-center gap-1">
                 {entry.organisation}
-                <Icon>
-                  <path d="M15 3h6v6" />
-                  <path d="M10 14 21 3" />
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                </Icon>
+                <ExternalLinkIcon />
               </Link>
             )}
             <span aria-hidden="true">·</span>

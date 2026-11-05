@@ -74,7 +74,8 @@
       "certification": "Certifications",
       "book": "Books"
     },
-    "credential": "Certificate"
+    "credential": "Certificate: {{title}}",
+    "rating": "Goodreads rating {{score}} out of 5"
   },
   "projects": {
     "visit": "Visit {{name}}"
