@@ -87,10 +87,7 @@ export interface Learning {
   book: Book[];
 }
 
-export interface LearningGroup {
-  kind: LearningKind;
-  entries: LearningEntry[];
-}
+export type LearningGroup = { [Kind in LearningKind]: { kind: Kind; entries: Learning[Kind] } }[LearningKind];
 
 export interface Contact {
   openToWork: boolean;

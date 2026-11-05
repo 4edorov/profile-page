@@ -77,10 +77,16 @@ export function getProjects(language: Language): ProjectEntry[] {
   return projects[language].filter(shown);
 }
 
-export function getLearning(language: Language): LearningGroup[] {
-  return LEARNING_KINDS.map((kind) => ({ kind, entries: learning[language][kind].filter(shown) })).filter(
-    (group) => group.entries.length > 0,
-  );
+export function getLearning(language: Language, { featuredOnly = false } = {}): LearningGroup[] {
+  const keep = (entry: Entry) => shown(entry) && (!featuredOnly || entry.featured);
+  const byKind = learning[language];
+  const groups: { [Kind in LearningKind]: Extract<LearningGroup, { kind: Kind }> } = {
+    education: { kind: "education", entries: byKind.education.filter(keep) },
+    course: { kind: "course", entries: byKind.course.filter(keep) },
+    certification: { kind: "certification", entries: byKind.certification.filter(keep) },
+    book: { kind: "book", entries: byKind.book.filter(keep) },
+  };
+  return LEARNING_KINDS.map((kind) => groups[kind]).filter((group) => group.entries.length > 0);
 }
 
 export function getContact(language: Language): Contact {

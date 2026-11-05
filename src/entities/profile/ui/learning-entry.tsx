@@ -9,12 +9,12 @@ export function LearningEntry({
   kind,
   entry,
   as = "h3",
-  periodAside = false,
+  showPeriod = true,
 }: {
   kind: LearningKind;
   entry: LearningEntryData;
   as?: "h3" | "h4";
-  periodAside?: boolean;
+  showPeriod?: boolean;
 }) {
   const { t } = useTranslation();
   return (
@@ -35,7 +35,7 @@ export function LearningEntry({
           )}
         </div>
       </div>
-      {entry.period && !periodAside && <PeriodLabel period={entry.period} />}
+      {entry.period && showPeriod && <PeriodLabel period={entry.period} />}
       {entry.rating !== null && <RatingLine rating={entry.rating} />}
       {entry.summary !== null && <p className="mt-1">{entry.summary}</p>}
     </>

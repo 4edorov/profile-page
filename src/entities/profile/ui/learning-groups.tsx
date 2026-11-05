@@ -5,27 +5,32 @@ import type { LearningGroup } from "../model/types";
 import { LearningEntry } from "./learning-entry";
 import { PeriodLabel } from "./period-label";
 
+const LAYOUTS = {
+  topicPage: { groupHeading: "h2", groupLook: "section", entryHeading: "h3", spacing: "py-8" },
+  section: { groupHeading: "h3", groupLook: "entry", entryHeading: "h4", spacing: "mt-6" },
+} as const;
+
 export function LearningGroups({ groups, topicPage = false }: { groups: LearningGroup[]; topicPage?: boolean }) {
   const { t } = useTranslation();
-  const [groupHeading, entryHeading] = topicPage ? (["h2", "h3"] as const) : (["h3", "h4"] as const);
-  return groups.map(({ kind, entries }) => (
-    <section key={kind} aria-labelledby={`${kind}-heading`} className={topicPage ? "py-8" : "mt-6"}>
-      <Heading level={topicPage ? "section" : "entry"} as={groupHeading} id={`${kind}-heading`}>
-        {t(`learning.kinds.${kind}`)}
+  const { groupHeading, groupLook, entryHeading, spacing } = LAYOUTS[topicPage ? "topicPage" : "section"];
+  return groups.map((group) => (
+    <section key={group.kind} aria-labelledby={`${group.kind}-heading`} className={spacing}>
+      <Heading level={groupLook} as={groupHeading} id={`${group.kind}-heading`}>
+        {t(`learning.kinds.${group.kind}`)}
       </Heading>
-      {kind === "certification" ? (
+      {group.kind === "certification" ? (
         <Timeline className="mt-4">
-          {entries.map((entry) => (
-            <TimelineItem key={entry.id} aside={entry.period && <PeriodLabel period={entry.period} />}>
-              <LearningEntry kind={kind} entry={entry} as={entryHeading} periodAside />
+          {group.entries.map((entry) => (
+            <TimelineItem key={entry.id} aside={<PeriodLabel period={entry.period} />}>
+              <LearningEntry kind={group.kind} entry={entry} as={entryHeading} showPeriod={false} />
             </TimelineItem>
           ))}
         </Timeline>
       ) : (
         <ul className="mt-3 space-y-6">
-          {entries.map((entry) => (
+          {group.entries.map((entry) => (
             <li key={entry.id}>
-              <LearningEntry kind={kind} entry={entry} as={entryHeading} />
+              <LearningEntry kind={group.kind} entry={entry} as={entryHeading} />
             </li>
           ))}
         </ul>
