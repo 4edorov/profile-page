@@ -61,7 +61,7 @@
     },
     {
       "id": "fcc-responsive-web-design",
-      "featured": false,
+      "featured": true,
       "hidden": false,
       "title": "Responsive Web Design V8 Developer Certification",
       "provider": "freeCodeCamp",
@@ -75,7 +75,7 @@
     },
     {
       "id": "fcc-js-algorithms",
-      "featured": false,
+      "featured": true,
       "hidden": false,
       "title": "JS Algorithms and Data Structures V7 Developer Certification",
       "provider": "freeCodeCamp",
@@ -89,7 +89,7 @@
     },
     {
       "id": "fcc-front-end",
-      "featured": false,
+      "featured": true,
       "hidden": false,
       "title": "Front-End Developer Certification",
       "provider": "freeCodeCamp",
