@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { createRoutesStub, type LoaderFunctionArgs } from "react-router";
 import { afterEach, expect, test } from "vitest";
-import { type Assignment, getAbout, getExperience } from "@/entities/profile";
+import { type Assignment, getAbout, getExperience, getLearning } from "@/entities/profile";
 import { PAGE_IDS } from "@/shared/routing";
 import { setTheme } from "@/shared/theme";
 import "./dialog-shim";
@@ -419,6 +419,72 @@ test("the Learning Page groups Entries by Learning Kind, without empty ones", as
     .map((heading) => heading.textContent);
   expect(groups).toEqual(["Образование", "Сертификаты", "Книги"]);
 });
+
+const CERTIFICATION_PERIODS = {
+  en: [
+    "Oct 2026 – present",
+    "Sep 2026 – Oct 2026",
+    "Sep 2024 – Nov 2024",
+    "Jul 2018 – Sep 2018",
+    "May 2018 – Jun 2018",
+    "Oct 2017 – Dec 2017",
+  ],
+  ru: [
+    "окт. 2026 – по настоящее время",
+    "сент. 2026 – окт. 2026",
+    "сент. 2024 – нояб. 2024",
+    "июль 2018 – сент. 2018",
+    "май 2018 – июнь 2018",
+    "окт. 2017 – дек. 2017",
+  ],
+} as const;
+
+const LEARNING_ON = {
+  Section: { path: "", titleLevel: 2, container: "section", featuredOnly: true },
+  Page: { path: "learning", titleLevel: 1, container: "main", featuredOnly: false },
+} as const;
+
+const LEARNING_CASES = [
+  ["Section", "en", "Learning", ["Certifications"], CERTIFICATION_PERIODS.en.slice(0, 3)],
+  ["Section", "ru", "Обучение", ["Сертификаты"], CERTIFICATION_PERIODS.ru.slice(0, 3)],
+  ["Page", "en", "Learning", ["Education", "Certifications", "Books"], CERTIFICATION_PERIODS.en],
+  ["Page", "ru", "Обучение", ["Образование", "Сертификаты", "Книги"], CERTIFICATION_PERIODS.ru],
+] as const;
+
+test.each(LEARNING_CASES)(
+  "the Learning %s in %s groups its Entries by Learning Kind, Certifications on the Timeline with their Periods",
+  async (on, language, heading, groupNames, periods) => {
+    const { path, titleLevel, container, featuredOnly } = LEARNING_ON[on];
+    renderPath(`/${language}/${path}`);
+    const title = await screen.findByRole("heading", { level: titleLevel, name: heading });
+    const scope = title.closest(container) as HTMLElement;
+    const groupLevel = titleLevel + 1;
+    const entryLevel = titleLevel + 2;
+    const groups = within(scope).getAllByRole("heading", { level: groupLevel });
+    expect(groups.map((group) => group.textContent)).toEqual(groupNames);
+    const levels = Array.from(scope.querySelectorAll("h1, h2, h3, h4, h5, h6"), (h) => Number(h.tagName[1]));
+    expect(new Set(levels)).toEqual(new Set([titleLevel, groupLevel, entryLevel]));
+
+    const expected = getLearning(language)
+      .map(({ kind, entries }) => ({ kind, entries: entries.filter((entry) => !featuredOnly || entry.featured) }))
+      .filter(({ entries }) => entries.length > 0);
+    groups.forEach((group, position) => {
+      const { kind, entries } = expected[position] as (typeof expected)[number];
+      const list = within(group.closest("section") as HTMLElement).getByRole("list");
+      expect(list.tagName).toBe(kind === "certification" ? "OL" : "UL");
+      const items = within(list).getAllByRole("listitem");
+      expect(items.map((item) => within(item).getByRole("heading", { level: entryLevel }).textContent)).toEqual(
+        entries.map((entry) => `${entry.title} · ${entry.provider}`),
+      );
+      if (kind === "certification") {
+        expect(items).toHaveLength(periods.length);
+        items.forEach((item, index) => {
+          expect(within(item).getByText(periods[index] as string)).toBeDefined();
+        });
+      }
+    });
+  },
+);
 
 test("switching Language keeps the Page", async () => {
   renderPath("/ru/experience");

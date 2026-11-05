@@ -11,6 +11,7 @@ export { newestFirst } from "./lib/order";
 export { LEARNING_KINDS, type Assignment, type Contact, type Period } from "./model/types";
 export { ExperienceTimeline } from "./ui/experience-timeline";
 export { LearningEntry } from "./ui/learning-entry";
+export { LearningGroups } from "./ui/learning-groups";
 export { PeriodLabel } from "./ui/period-label";
 export { Tagline } from "./ui/tagline";
 export { TechnologyCloud } from "./ui/technology-cloud";
