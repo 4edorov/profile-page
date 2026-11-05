@@ -1,4 +1,6 @@
-export function Icon({ children }: { children: React.ReactNode }) {
+const ICON_SIZES = { md: "size-5", sm: "size-4" } as const;
+
+export function Icon({ size = "md", children }: { size?: keyof typeof ICON_SIZES; children: React.ReactNode }) {
   return (
     <svg
       aria-hidden="true"
@@ -8,7 +10,7 @@ export function Icon({ children }: { children: React.ReactNode }) {
       strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-5 shrink-0"
+      className={`${ICON_SIZES[size]} shrink-0`}
     >
       {children}
     </svg>

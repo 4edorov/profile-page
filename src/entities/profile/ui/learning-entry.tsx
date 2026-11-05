@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "@/shared/ui/link";
-import { Heading } from "@/shared/ui/typography";
+import { Heading, Text } from "@/shared/ui/typography";
 import type { LearningEntry as LearningEntryData, LearningKind, Rating } from "../model/types";
 import { ExternalLinkIcon, LearningKindIcon, StarIcon } from "./icons";
 import { PeriodLabel } from "./period-label";
@@ -25,7 +25,7 @@ export function LearningEntry({
         </span>
         <div>
           <Heading level="entry" as={as} className="inline">
-            {entry.title} · {entry.provider}
+            {entry.title}
           </Heading>
           {entry.credential !== null && (
             <Link to={entry.credential} newTab className="ml-2 inline-flex align-text-bottom">
@@ -33,6 +33,7 @@ export function LearningEntry({
               <ExternalLinkIcon />
             </Link>
           )}
+          <Text tone="muted">{entry.provider}</Text>
         </div>
       </div>
       {entry.period && showPeriod && <PeriodLabel period={entry.period} />}
@@ -49,7 +50,7 @@ function RatingLine({ rating }: { rating: Rating }) {
     maximumFractionDigits: 1,
   }).format(rating.score);
   return (
-    <p className="mt-1 flex items-center gap-1.5">
+    <Text size="sm" className="mt-1 flex items-center gap-1.5">
       <StarIcon />
       <span aria-hidden="true">{formattedScore}</span>
       <span aria-hidden="true">·</span>
@@ -57,6 +58,6 @@ function RatingLine({ rating }: { rating: Rating }) {
         <span className="sr-only">{t("learning.rating", { score: formattedScore })}</span>
         <span aria-hidden="true">Goodreads</span>
       </Link>
-    </p>
+    </Text>
   );
 }

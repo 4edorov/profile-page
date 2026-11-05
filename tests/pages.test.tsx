@@ -423,8 +423,9 @@ test("the Learning Page groups Entries by Learning Kind, without empty ones", as
   expect(groups).toEqual(["Образование", "Сертификаты", "Книги"]);
 });
 
-const CERTIFICATION_PERIODS: Record<"en" | "ru", Record<string, string>> = {
+const TIMELINE_PERIODS: Record<"en" | "ru", Record<string, string>> = {
   en: {
+    "economics-degree": "Sep 2003 – May 2008",
     "fcc-relational-databases": "Oct 2026 – present",
     "fcc-back-end-apis": "Sep 2026 – Oct 2026",
     "fcc-quality-assurance": "Sep 2024 – Nov 2024",
@@ -433,6 +434,7 @@ const CERTIFICATION_PERIODS: Record<"en" | "ru", Record<string, string>> = {
     "fcc-front-end": "Oct 2017 – Dec 2017",
   },
   ru: {
+    "economics-degree": "сент. 2003 – май 2008",
     "fcc-relational-databases": "окт. 2026 – по настоящее время",
     "fcc-back-end-apis": "сент. 2026 – окт. 2026",
     "fcc-quality-assurance": "сент. 2024 – нояб. 2024",
@@ -450,7 +452,7 @@ const LEARNING_CASES = [
 ] as const;
 
 test.each(LEARNING_CASES)(
-  "the Learning %s in %s groups its Entries by Learning Kind, Certifications on the Timeline with their Periods",
+  "the Learning %s in %s groups its Entries by Learning Kind, Certifications and, on the Page, Education on the Timeline with their Periods",
   async (on, language, heading, kinds, names) => {
     const { scope, level, featuredOnly } = await findTopic(on, "learning", language, heading);
     const groups = within(scope).getAllByRole("heading", { level });
@@ -463,15 +465,19 @@ test.each(LEARNING_CASES)(
       const entries = (getLearning(language).find((shown) => shown.kind === kind)?.entries ?? []).filter(
         (entry) => !featuredOnly || entry.featured,
       );
+      const onTimeline = kind === "certification" || (on === "Page" && kind === "education");
       const list = within(group.closest("section") as HTMLElement).getByRole("list");
-      expect(list.tagName).toBe(kind === "certification" ? "OL" : "UL");
+      expect(list.tagName).toBe(onTimeline ? "OL" : "UL");
       const items = within(list).getAllByRole("listitem");
       expect(items.map((item) => within(item).getByRole("heading", { level: level + 1 }).textContent)).toEqual(
-        entries.map((entry) => `${entry.title} · ${entry.provider}`),
+        entries.map((entry) => entry.title),
       );
-      if (kind === "certification") {
+      entries.forEach(({ provider }, index) => {
+        expect(within(items[index] as HTMLElement).getByText(provider)).toBeDefined();
+      });
+      if (onTimeline) {
         entries.forEach(({ id }, index) => {
-          const period = CERTIFICATION_PERIODS[language][id];
+          const period = TIMELINE_PERIODS[language][id];
           expect(period).toBeDefined();
           expect(within(items[index] as HTMLElement).getByText(period as string)).toBeDefined();
         });

@@ -33,7 +33,8 @@ function renderEntry(overrides: Partial<typeof entry>, language: Language = "en"
 
 test("a Learning Entry shows its title, provider, Period, summary and Credential", () => {
   renderEntry({});
-  expect(screen.getByRole("heading", { name: "Testing · Academy" })).toBeDefined();
+  expect(screen.getByRole("heading", { name: "Testing" })).toBeDefined();
+  expect(screen.getByText("Academy").tagName).toBe("P");
   expect(screen.getByText("Jan 2025 – present")).toBeDefined();
   expect(screen.getByText("What the course covered.")).toBeDefined();
   const credential = screen.getByRole("link", { name: /^Certificate: Testing/ });
@@ -45,7 +46,15 @@ test("a Learning Entry shows its title, provider, Period, summary and Credential
 
 test("a Learning Entry without a Period, summary or Credential shows only its title and provider", () => {
   const container = renderEntry({ period: null, summary: null, credential: null });
-  expect(container.textContent).toBe("Testing · Academy");
+  expect(container.textContent).toBe("TestingAcademy");
+});
+
+test("a Learning Entry's Credential follows its title and comes before its provider", () => {
+  renderEntry({});
+  const credential = screen.getByRole("link", { name: /^Certificate: Testing/ });
+  const following = Node.DOCUMENT_POSITION_FOLLOWING;
+  expect(screen.getByRole("heading").compareDocumentPosition(credential) & following).toBe(following);
+  expect(credential.compareDocumentPosition(screen.getByText("Academy")) & following).toBe(following);
 });
 
 test.each([
