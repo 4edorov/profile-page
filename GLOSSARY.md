@@ -113,7 +113,7 @@ A Book's average score on Goodreads, out of 5 to one decimal, linking to that Bo
 _Avoid_: Score, stars, review
 
 **Credential**:
-The link to the certificate or diploma a Learning Entry earned, if it has one, written per Language, shown as a link icon after the Entry's title and provider and opening in a new tab. Any Learning Kind may have one; a Certification is itself a Learning Entry, not a Credential.
+The link to the certificate or diploma a Learning Entry earned, if it has one, written per Language, shown as a link icon right after the Entry's title, before its provider, and opening in a new tab. Any Learning Kind may have one; a Certification is itself a Learning Entry, not a Credential.
 _Avoid_: Certificate link, proof, certificate (for the link)
 
 **Contact**:
@@ -167,7 +167,7 @@ The About Section's endless row of the Technologies below its link to the About 
 _Avoid_: Ticker, carousel, slider, cloud (for the row)
 
 **Timeline**:
-The line joining the Experience Entries in the Experience Section and on its Topic Page, or the Certifications in the Learning Section and on its Topic Page, in their usual order, each Entry at its own evenly spaced marker with its Period beside it; on phone-sized screens the Period sits above the Entry instead. Shows order, not elapsed time: overlapping or distant Periods are spaced alike.
+The line joining the Experience Entries in the Experience Section and on its Topic Page, or the Certifications in the Learning Section and on its Topic Page, or the Education Entries on the Learning Topic Page alone, in their usual order, each Entry at its own evenly spaced marker with its Period beside it, if it has one; on phone-sized screens the Period sits above the Entry instead. Shows order, not elapsed time: overlapping or distant Periods are spaced alike.
 _Avoid_: History, journey, career path
 
 **Assignment Details**:

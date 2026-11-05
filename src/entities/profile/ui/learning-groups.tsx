@@ -18,10 +18,10 @@ export function LearningGroups({ groups, topicPage = false }: { groups: Learning
       <Heading level={groupLook} as={groupHeading} id={`${group.kind}-heading`}>
         {t(`learning.kinds.${group.kind}`)}
       </Heading>
-      {group.kind === "certification" ? (
+      {group.kind === "certification" || (topicPage && group.kind === "education") ? (
         <Timeline className="mt-4">
           {group.entries.map((entry) => (
-            <TimelineItem key={entry.id} aside={<PeriodLabel period={entry.period} />}>
+            <TimelineItem key={entry.id} aside={entry.period && <PeriodLabel period={entry.period} />}>
               <LearningEntry kind={group.kind} entry={entry} as={entryHeading} showPeriod={false} />
             </TimelineItem>
           ))}
