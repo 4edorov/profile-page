@@ -5,7 +5,17 @@ import type { LearningEntry as LearningEntryData, LearningKind, Rating } from ".
 import { ExternalLinkIcon, LearningKindIcon, StarIcon } from "./icons";
 import { PeriodLabel } from "./period-label";
 
-export function LearningEntry({ kind, entry }: { kind: LearningKind; entry: LearningEntryData }) {
+export function LearningEntry({
+  kind,
+  entry,
+  as = "h3",
+  showPeriod = true,
+}: {
+  kind: LearningKind;
+  entry: LearningEntryData;
+  as?: "h3" | "h4";
+  showPeriod?: boolean;
+}) {
   const { t } = useTranslation();
   return (
     <>
@@ -14,7 +24,7 @@ export function LearningEntry({ kind, entry }: { kind: LearningKind; entry: Lear
           <LearningKindIcon kind={kind} />
         </span>
         <div>
-          <Heading level="entry" as="h3" className="inline">
+          <Heading level="entry" as={as} className="inline">
             {entry.title} · {entry.provider}
           </Heading>
           {entry.credential !== null && (
@@ -25,7 +35,7 @@ export function LearningEntry({ kind, entry }: { kind: LearningKind; entry: Lear
           )}
         </div>
       </div>
-      {entry.period && <PeriodLabel period={entry.period} />}
+      {entry.period && showPeriod && <PeriodLabel period={entry.period} />}
       {entry.rating !== null && <RatingLine rating={entry.rating} />}
       {entry.summary !== null && <p className="mt-1">{entry.summary}</p>}
     </>

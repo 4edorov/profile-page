@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { createRoutesStub, type LoaderFunctionArgs } from "react-router";
 import { afterEach, expect, test } from "vitest";
-import { type Assignment, getAbout, getExperience } from "@/entities/profile";
+import { type Assignment, getAbout, getExperience, getLearning } from "@/entities/profile";
 import { PAGE_IDS } from "@/shared/routing";
 import { setTheme } from "@/shared/theme";
 import "./dialog-shim";
@@ -210,10 +210,17 @@ const EXPERIENCE_HEADINGS = [
   ["ru", "Опыт"],
 ] as const;
 
-const EXPERIENCE_ON = {
-  Section: { path: "", titleLevel: 2, container: "section", featuredOnly: true },
-  Page: { path: "experience", titleLevel: 1, container: "main", featuredOnly: false },
+const TOPIC_ON = {
+  Section: { titleLevel: 2, container: "section", featuredOnly: true },
+  Page: { titleLevel: 1, container: "main", featuredOnly: false },
 } as const;
+
+async function findTopic(on: keyof typeof TOPIC_ON, topic: string, language: "en" | "ru", heading: string) {
+  const { titleLevel, container, featuredOnly } = TOPIC_ON[on];
+  renderPath(`/${language}/${on === "Page" ? topic : ""}`);
+  const title = await screen.findByRole("heading", { level: titleLevel, name: heading });
+  return { scope: title.closest(container) as HTMLElement, level: titleLevel + 1, featuredOnly };
+}
 
 const EXPERIENCE_CASES = [
   ["Section", "en", "Experience", PERIODS.en.slice(0, 2)],
@@ -222,12 +229,8 @@ const EXPERIENCE_CASES = [
   ["Page", "ru", "Опыт", PERIODS.ru],
 ] as const;
 
-async function findExperience(on: keyof typeof EXPERIENCE_ON, language: "en" | "ru", heading: string) {
-  const { path, titleLevel, container, featuredOnly } = EXPERIENCE_ON[on];
-  renderPath(`/${language}/${path}`);
-  const title = await screen.findByRole("heading", { level: titleLevel, name: heading });
-  const scope = title.closest(container) as HTMLElement;
-  const level = titleLevel + 1;
+async function findExperience(on: keyof typeof TOPIC_ON, language: "en" | "ru", heading: string) {
+  const { scope, level, featuredOnly } = await findTopic(on, "experience", language, heading);
   const items = within(scope)
     .getAllByRole("heading", { level })
     .map((entry) => entry.closest("li") as HTMLElement);
@@ -419,6 +422,63 @@ test("the Learning Page groups Entries by Learning Kind, without empty ones", as
     .map((heading) => heading.textContent);
   expect(groups).toEqual(["Образование", "Сертификаты", "Книги"]);
 });
+
+const CERTIFICATION_PERIODS: Record<"en" | "ru", Record<string, string>> = {
+  en: {
+    "fcc-relational-databases": "Oct 2026 – present",
+    "fcc-back-end-apis": "Sep 2026 – Oct 2026",
+    "fcc-quality-assurance": "Sep 2024 – Nov 2024",
+    "fcc-responsive-web-design": "Jul 2018 – Sep 2018",
+    "fcc-js-algorithms": "May 2018 – Jun 2018",
+    "fcc-front-end": "Oct 2017 – Dec 2017",
+  },
+  ru: {
+    "fcc-relational-databases": "окт. 2026 – по настоящее время",
+    "fcc-back-end-apis": "сент. 2026 – окт. 2026",
+    "fcc-quality-assurance": "сент. 2024 – нояб. 2024",
+    "fcc-responsive-web-design": "июль 2018 – сент. 2018",
+    "fcc-js-algorithms": "май 2018 – июнь 2018",
+    "fcc-front-end": "окт. 2017 – дек. 2017",
+  },
+};
+
+const LEARNING_CASES = [
+  ["Section", "en", "Learning", ["certification"], ["Certifications"]],
+  ["Section", "ru", "Обучение", ["certification"], ["Сертификаты"]],
+  ["Page", "en", "Learning", ["education", "certification", "book"], ["Education", "Certifications", "Books"]],
+  ["Page", "ru", "Обучение", ["education", "certification", "book"], ["Образование", "Сертификаты", "Книги"]],
+] as const;
+
+test.each(LEARNING_CASES)(
+  "the Learning %s in %s groups its Entries by Learning Kind, Certifications on the Timeline with their Periods",
+  async (on, language, heading, kinds, names) => {
+    const { scope, level, featuredOnly } = await findTopic(on, "learning", language, heading);
+    const groups = within(scope).getAllByRole("heading", { level });
+    expect(groups.map((group) => group.textContent)).toEqual(names);
+    const levels = Array.from(scope.querySelectorAll("h1, h2, h3, h4, h5, h6"), (h) => Number(h.tagName[1]));
+    expect(new Set(levels)).toEqual(new Set([level - 1, level, level + 1]));
+
+    groups.forEach((group, position) => {
+      const kind = kinds[position];
+      const entries = (getLearning(language).find((shown) => shown.kind === kind)?.entries ?? []).filter(
+        (entry) => !featuredOnly || entry.featured,
+      );
+      const list = within(group.closest("section") as HTMLElement).getByRole("list");
+      expect(list.tagName).toBe(kind === "certification" ? "OL" : "UL");
+      const items = within(list).getAllByRole("listitem");
+      expect(items.map((item) => within(item).getByRole("heading", { level: level + 1 }).textContent)).toEqual(
+        entries.map((entry) => `${entry.title} · ${entry.provider}`),
+      );
+      if (kind === "certification") {
+        entries.forEach(({ id }, index) => {
+          const period = CERTIFICATION_PERIODS[language][id];
+          expect(period).toBeDefined();
+          expect(within(items[index] as HTMLElement).getByText(period as string)).toBeDefined();
+        });
+      }
+    });
+  },
+);
 
 test("switching Language keeps the Page", async () => {
   renderPath("/ru/experience");
