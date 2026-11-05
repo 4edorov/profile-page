@@ -1,37 +1,208 @@
 {
   "education": [
     {
-      "id": "degree",
+      "id": "economics-degree",
       "featured": true,
       "hidden": false,
-      "title": "Placeholder degree",
-      "provider": "Placeholder University",
-      "summary": "Placeholder education summary.",
-      "period": { "start": "2010-09", "end": "2015-06" },
-      "credential": "https://example.com/en/diploma"
-    }
-  ],
-  "course": [
-    {
-      "id": "course",
-      "featured": true,
-      "hidden": false,
-      "title": "Placeholder course",
-      "provider": "Placeholder platform",
+      "title": "Master of Economics",
+      "provider": "Kostroma State Technological University",
       "summary": null,
-      "period": { "start": "2025-01", "end": null },
+      "period": {
+        "start": "2003-09",
+        "end": "2008-05"
+      },
       "credential": null
     }
   ],
-  "certification": [],
-  "book": [
+  "course": [],
+  "certification": [
     {
-      "id": "book",
+      "id": "fcc-relational-databases",
+      "featured": true,
+      "hidden": false,
+      "title": "Relational Databases Developer Certification",
+      "provider": "freeCodeCamp",
+      "summary": null,
+      "period": {
+        "start": "2026-10",
+        "end": null
+      },
+      "credential": null
+    },
+    {
+      "id": "fcc-back-end-apis",
+      "featured": true,
+      "hidden": false,
+      "title": "Back-End Development and APIs Developer Certification",
+      "provider": "freeCodeCamp",
+      "summary": null,
+      "period": {
+        "start": "2026-09",
+        "end": "2026-10"
+      },
+      "credential": "https://www.freecodecamp.org/certification/4edorov/back-end-development-and-apis-v9"
+    },
+    {
+      "id": "fcc-quality-assurance",
+      "featured": true,
+      "hidden": false,
+      "title": "Quality Assurance Developer Certification",
+      "provider": "freeCodeCamp",
+      "summary": null,
+      "period": {
+        "start": "2024-09",
+        "end": "2024-11"
+      },
+      "credential": "https://www.freecodecamp.org/certification/4edorov/quality-assurance-v7"
+    },
+    {
+      "id": "fcc-js-algorithms",
       "featured": false,
       "hidden": false,
-      "title": "Placeholder book",
-      "provider": "Placeholder Author",
-      "summary": "Placeholder book summary.",
+      "title": "JS Algorithms and Data Structures V7 Developer Certification",
+      "provider": "freeCodeCamp",
+      "summary": null,
+      "period": {
+        "start": "2018-05",
+        "end": "2018-06"
+      },
+      "credential": "https://www.freecodecamp.org/certification/4edorov/javascript-algorithms-and-data-structures"
+    },
+    {
+      "id": "fcc-responsive-web-design",
+      "featured": false,
+      "hidden": false,
+      "title": "Responsive Web Design V8 Developer Certification",
+      "provider": "freeCodeCamp",
+      "summary": null,
+      "period": {
+        "start": "2018-07",
+        "end": "2018-09"
+      },
+      "credential": "https://www.freecodecamp.org/certification/4edorov/responsive-web-design"
+    },
+    {
+      "id": "fcc-front-end",
+      "featured": false,
+      "hidden": false,
+      "title": "Front-End Developer Certification",
+      "provider": "freeCodeCamp",
+      "summary": null,
+      "period": {
+        "start": "2017-10",
+        "end": "2017-12"
+      },
+      "credential": "https://www.freecodecamp.org/certification/4edorov/legacy-front-end"
+    }
+  ],
+  "book": [
+    {
+      "id": "js-definitive-guide",
+      "featured": false,
+      "hidden": false,
+      "title": "JavaScript: The Definitive Guide",
+      "provider": "David Flanagan",
+      "summary": null,
+      "period": null,
+      "credential": null
+    },
+    {
+      "id": "eloquent-js",
+      "featured": false,
+      "hidden": false,
+      "title": "Eloquent JavaScript",
+      "provider": "Marijn Haverbeke",
+      "summary": null,
+      "period": null,
+      "credential": null
+    },
+    {
+      "id": "learning-web-app-dev",
+      "featured": false,
+      "hidden": false,
+      "title": "Learning Web App Development",
+      "provider": "Semmy Purewal",
+      "summary": null,
+      "period": null,
+      "credential": null
+    },
+    {
+      "id": "mythical-man-month",
+      "featured": false,
+      "hidden": false,
+      "title": "The Mythical Man-Month: Essays on Software Engineering",
+      "provider": "Frederick Brooks",
+      "summary": null,
+      "period": null,
+      "credential": null
+    },
+    {
+      "id": "learning-php-mysql-js-css",
+      "featured": false,
+      "hidden": false,
+      "title": "Learning PHP, MySQL, JavaScript, and CSS",
+      "provider": "Robin Nixon",
+      "summary": null,
+      "period": null,
+      "credential": null
+    },
+    {
+      "id": "learning-patterns",
+      "featured": false,
+      "hidden": false,
+      "title": "Learning Patterns",
+      "provider": "Lydia Hallie and Addy Osmani",
+      "summary": null,
+      "period": null,
+      "credential": null
+    },
+    {
+      "id": "head-first-design-patterns",
+      "featured": false,
+      "hidden": false,
+      "title": "Head First Design Patterns",
+      "provider": "Eric Freeman and Elisabeth Robson",
+      "summary": null,
+      "period": null,
+      "credential": null
+    },
+    {
+      "id": "ddia",
+      "featured": false,
+      "hidden": false,
+      "title": "Designing Data-Intensive Applications",
+      "provider": "Martin Kleppmann",
+      "summary": null,
+      "period": null,
+      "credential": null
+    },
+    {
+      "id": "pragmatic-programmer",
+      "featured": false,
+      "hidden": false,
+      "title": "The Pragmatic Programmer",
+      "provider": "Andrew Hunt and David Thomas",
+      "summary": null,
+      "period": null,
+      "credential": null
+    },
+    {
+      "id": "clean-architecture",
+      "featured": false,
+      "hidden": false,
+      "title": "Clean Architecture",
+      "provider": "Robert C. Martin",
+      "summary": null,
+      "period": null,
+      "credential": null
+    },
+    {
+      "id": "tidy-first",
+      "featured": false,
+      "hidden": false,
+      "title": "Tidy First? A Personal Exercise in Empirical Software Design",
+      "provider": "Kent Beck",
+      "summary": null,
       "period": null,
       "credential": null
     }
