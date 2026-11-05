@@ -14,6 +14,9 @@ interface RawEntry extends RawPeriod {
   url?: string | null;
   period?: RawPeriod | null;
   credential?: string | null;
+  title?: string;
+  provider?: string;
+  summary?: string | null;
 }
 
 function rawEntries(language: Language, topic: "experience" | "projects" | "learning"): RawEntry[] {
@@ -194,5 +197,12 @@ describe.each(LANGUAGES)("Profile Content in %s", (language) => {
       const ids = entries.map((entry) => entry.id);
       expect(new Set(ids).size).toBe(ids.length);
     }
+  });
+
+  test("no Learning Entry, Hidden ones included, has an empty title, provider or summary", () => {
+    const empty = rawEntries(language, "learning").filter(
+      ({ title, provider, summary }) => !title?.trim() || !provider?.trim() || summary?.trim() === "",
+    );
+    expect(empty.map(({ id }) => id)).toEqual([]);
   });
 });

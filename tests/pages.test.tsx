@@ -417,7 +417,7 @@ test("the Learning Page groups Entries by Learning Kind, without empty ones", as
   const groups = within(screen.getByRole("main"))
     .getAllByRole("heading", { level: 2 })
     .map((heading) => heading.textContent);
-  expect(groups).toEqual(["Образование", "Курсы", "Книги"]);
+  expect(groups).toEqual(["Образование", "Сертификаты", "Книги"]);
 });
 
 test("switching Language keeps the Page", async () => {

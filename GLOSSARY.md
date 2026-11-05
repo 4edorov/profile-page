@@ -105,7 +105,7 @@ The Topic covering what the owner has studied or is studying: education, courses
 _Avoid_: Education (for the whole Topic), studies
 
 **Learning Kind**:
-One of Education, Course, Certification and Book, in that order. Every Learning Entry is of exactly one.
+One of Education, Course, Certification and Book, in that order. Every Learning Entry is of exactly one. A program that ends in the certification it is named after is a Certification, not a Course.
 _Avoid_: Category, type, group
 
 **Credential**:
