@@ -24,15 +24,18 @@ export function LearningEntry({
           <LearningKindIcon kind={kind} />
         </span>
         <div>
-          <Heading level="entry" as={as} className="inline">
-            {entry.title}
-          </Heading>
-          {entry.credential !== null && (
-            <Link to={entry.credential} newTab className="ml-2 inline-flex align-text-bottom">
-              <span className="sr-only">{t("learning.credential", { title: entry.title })}</span>
-              <ExternalLinkIcon />
-            </Link>
-          )}
+          {/* nowrap here with normal on the title forbids only the break before the Credential icon */}
+          <div className="whitespace-nowrap">
+            <Heading level="entry" as={as} className="inline whitespace-normal">
+              {entry.title}
+            </Heading>
+            {entry.credential !== null && (
+              <Link to={entry.credential} newTab className="ml-2 inline-flex align-text-bottom">
+                <span className="sr-only">{t("learning.credential", { title: entry.title })}</span>
+                <ExternalLinkIcon />
+              </Link>
+            )}
+          </div>
           <Text tone="muted">{entry.provider}</Text>
         </div>
       </div>

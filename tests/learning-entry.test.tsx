@@ -57,6 +57,15 @@ test("a Learning Entry's Credential follows its title and comes before its provi
   expect(credential.compareDocumentPosition(screen.getByText("Academy")) & following).toBe(following);
 });
 
+test("a Learning Entry's Credential is joined to the last word of its title so it never wraps alone", () => {
+  renderEntry({});
+  const credential = screen.getByRole("link", { name: /^Certificate: Testing/ });
+  const heading = screen.getByRole("heading", { name: "Testing" });
+  expect(credential.parentElement).toBe(heading.parentElement);
+  expect(heading.parentElement?.className).toContain("whitespace-nowrap");
+  expect(heading.className).toContain("whitespace-normal");
+});
+
 test.each([
   ["en", 4.3, "4.3", "Goodreads rating 4.3 out of 5"],
   ["ru", 4.3, "4,3", "Рейтинг Goodreads: 4,3 из 5"],
