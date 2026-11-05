@@ -64,9 +64,28 @@ export interface LearningEntry extends Entry {
   summary: string | null;
   period: Period | null;
   credential: string | null;
+  rating: Rating | null;
 }
 
-export type Learning = Record<LearningKind, LearningEntry[]>;
+export interface Rating {
+  score: number;
+  url: string;
+}
+
+export interface Certification extends LearningEntry {
+  period: Period;
+}
+
+export interface Book extends LearningEntry {
+  rating: Rating;
+}
+
+export interface Learning {
+  education: LearningEntry[];
+  course: LearningEntry[];
+  certification: Certification[];
+  book: Book[];
+}
 
 export interface LearningGroup {
   kind: LearningKind;

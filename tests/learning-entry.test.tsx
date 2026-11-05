@@ -17,6 +17,7 @@ const entry: ComponentProps<typeof LearningEntry>["entry"] = {
   summary: "What the course covered.",
   period: { start: "2025-01", end: null },
   credential: "https://example.com/certificate",
+  rating: null,
 };
 
 function renderEntry(overrides: Partial<typeof entry>) {

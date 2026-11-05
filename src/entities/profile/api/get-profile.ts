@@ -19,7 +19,9 @@ import {
   type Entry,
   type ExperienceEntry,
   type Learning,
+  type LearningEntry,
   type LearningGroup,
+  type LearningKind,
   type ProjectEntry,
   type Technology,
 } from "../model/types";
@@ -38,7 +40,7 @@ const learning = { en: checkLearning(enLearning), ru: checkLearning(ruLearning) 
 const entries: Entry[] = [
   ...Object.values(experience).flat(),
   ...Object.values(projects).flat(),
-  ...Object.values(learning).flatMap((byKind) => Object.values(byKind).flat()),
+  ...Object.values(learning).flatMap((byKind) => LEARNING_KINDS.flatMap((kind): LearningEntry[] => byKind[kind])),
 ];
 for (const entry of entries) {
   if (entry.hidden && entry.featured) {
@@ -89,8 +91,8 @@ function shown(entry: Entry): boolean {
   return !entry.hidden;
 }
 
-// Types can't catch an extra key in imported JSON, so the Learning Kinds are checked on load.
-function checkLearning(byKind: Learning): Learning {
+// Types can't catch an extra key in imported JSON, so the Learning Kinds and Ratings are checked on load.
+function checkLearning(byKind: Record<LearningKind, LearningEntry[]>): Learning {
   const kinds = Object.keys(byKind);
   if (kinds.length !== LEARNING_KINDS.length || !LEARNING_KINDS.every((kind) => kinds.includes(kind))) {
     throw new Error(`Learning has the kinds "${kinds.join(", ")}", not "${LEARNING_KINDS.join(", ")}"`);
@@ -102,5 +104,18 @@ function checkLearning(byKind: Learning): Learning {
     }
     ids.add(entry.id);
   }
-  return byKind;
+  for (const kind of LEARNING_KINDS) {
+    for (const entry of byKind[kind]) {
+      if (kind === "book" && entry.rating === null) {
+        throw new Error(`Book "${entry.id}" has no Rating`);
+      }
+      if (kind !== "book" && entry.rating !== null) {
+        throw new Error(`Learning Entry "${entry.id}" has a Rating but is not a Book`);
+      }
+      if (kind === "certification" && entry.period === null) {
+        throw new Error(`Certification "${entry.id}" has no Period`);
+      }
+    }
+  }
+  return byKind as Learning;
 }

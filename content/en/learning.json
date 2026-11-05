@@ -2,7 +2,7 @@
   "education": [
     {
       "id": "economics-degree",
-      "featured": true,
+      "featured": false,
       "hidden": false,
       "title": "Master of Economics",
       "provider": "Kostroma State Technological University",
@@ -11,7 +11,8 @@
         "start": "2003-09",
         "end": "2008-05"
       },
-      "credential": null
+      "credential": null,
+      "rating": null
     }
   ],
   "course": [],
@@ -27,7 +28,8 @@
         "start": "2026-10",
         "end": null
       },
-      "credential": null
+      "credential": null,
+      "rating": null
     },
     {
       "id": "fcc-back-end-apis",
@@ -40,7 +42,8 @@
         "start": "2026-09",
         "end": "2026-10"
       },
-      "credential": "https://www.freecodecamp.org/certification/4edorov/back-end-development-and-apis-v9"
+      "credential": "https://www.freecodecamp.org/certification/4edorov/back-end-development-and-apis-v9",
+      "rating": null
     },
     {
       "id": "fcc-quality-assurance",
@@ -53,20 +56,8 @@
         "start": "2024-09",
         "end": "2024-11"
       },
-      "credential": "https://www.freecodecamp.org/certification/4edorov/quality-assurance-v7"
-    },
-    {
-      "id": "fcc-js-algorithms",
-      "featured": false,
-      "hidden": false,
-      "title": "JS Algorithms and Data Structures V7 Developer Certification",
-      "provider": "freeCodeCamp",
-      "summary": null,
-      "period": {
-        "start": "2018-05",
-        "end": "2018-06"
-      },
-      "credential": "https://www.freecodecamp.org/certification/4edorov/javascript-algorithms-and-data-structures"
+      "credential": "https://www.freecodecamp.org/certification/4edorov/quality-assurance-v7",
+      "rating": null
     },
     {
       "id": "fcc-responsive-web-design",
@@ -79,7 +70,22 @@
         "start": "2018-07",
         "end": "2018-09"
       },
-      "credential": "https://www.freecodecamp.org/certification/4edorov/responsive-web-design"
+      "credential": "https://www.freecodecamp.org/certification/4edorov/responsive-web-design",
+      "rating": null
+    },
+    {
+      "id": "fcc-js-algorithms",
+      "featured": false,
+      "hidden": false,
+      "title": "JS Algorithms and Data Structures V7 Developer Certification",
+      "provider": "freeCodeCamp",
+      "summary": null,
+      "period": {
+        "start": "2018-05",
+        "end": "2018-06"
+      },
+      "credential": "https://www.freecodecamp.org/certification/4edorov/javascript-algorithms-and-data-structures",
+      "rating": null
     },
     {
       "id": "fcc-front-end",
@@ -92,7 +98,8 @@
         "start": "2017-10",
         "end": "2017-12"
       },
-      "credential": "https://www.freecodecamp.org/certification/4edorov/legacy-front-end"
+      "credential": "https://www.freecodecamp.org/certification/4edorov/legacy-front-end",
+      "rating": null
     }
   ],
   "book": [
@@ -104,7 +111,11 @@
       "provider": "David Flanagan",
       "summary": null,
       "period": null,
-      "credential": null
+      "credential": null,
+      "rating": {
+        "score": 4.1,
+        "url": "https://www.goodreads.com/book/show/148050.JavaScript"
+      }
     },
     {
       "id": "eloquent-js",
@@ -114,7 +125,11 @@
       "provider": "Marijn Haverbeke",
       "summary": null,
       "period": null,
-      "credential": null
+      "credential": null,
+      "rating": {
+        "score": 4.1,
+        "url": "https://www.goodreads.com/book/show/8910666-eloquent-javascript"
+      }
     },
     {
       "id": "learning-web-app-dev",
@@ -124,7 +139,11 @@
       "provider": "Semmy Purewal",
       "summary": null,
       "period": null,
-      "credential": null
+      "credential": null,
+      "rating": {
+        "score": 3.9,
+        "url": "https://www.goodreads.com/book/show/18167211-learning-web-app-development"
+      }
     },
     {
       "id": "mythical-man-month",
@@ -134,7 +153,11 @@
       "provider": "Frederick Brooks",
       "summary": null,
       "period": null,
-      "credential": null
+      "credential": null,
+      "rating": {
+        "score": 4.0,
+        "url": "https://www.goodreads.com/book/show/13629.The_Mythical_Man_Month"
+      }
     },
     {
       "id": "learning-php-mysql-js-css",
@@ -144,7 +167,11 @@
       "provider": "Robin Nixon",
       "summary": null,
       "period": null,
-      "credential": null
+      "credential": null,
+      "rating": {
+        "score": 3.9,
+        "url": "https://www.goodreads.com/book/show/15806891-learning-php-mysql-javascript-and-css"
+      }
     },
     {
       "id": "learning-patterns",
@@ -154,7 +181,11 @@
       "provider": "Lydia Hallie and Addy Osmani",
       "summary": null,
       "period": null,
-      "credential": null
+      "credential": null,
+      "rating": {
+        "score": 3.9,
+        "url": "https://www.goodreads.com/book/show/59862682-learning-patterns"
+      }
     },
     {
       "id": "head-first-design-patterns",
@@ -164,7 +195,11 @@
       "provider": "Eric Freeman and Elisabeth Robson",
       "summary": null,
       "period": null,
-      "credential": null
+      "credential": null,
+      "rating": {
+        "score": 4.3,
+        "url": "https://www.goodreads.com/book/show/58128.Head_First_Design_Patterns"
+      }
     },
     {
       "id": "ddia",
@@ -174,7 +209,11 @@
       "provider": "Martin Kleppmann",
       "summary": null,
       "period": null,
-      "credential": null
+      "credential": null,
+      "rating": {
+        "score": 4.7,
+        "url": "https://www.goodreads.com/book/show/23463279-designing-data-intensive-applications"
+      }
     },
     {
       "id": "pragmatic-programmer",
@@ -184,7 +223,11 @@
       "provider": "Andrew Hunt and David Thomas",
       "summary": null,
       "period": null,
-      "credential": null
+      "credential": null,
+      "rating": {
+        "score": 4.3,
+        "url": "https://www.goodreads.com/book/show/4099.The_Pragmatic_Programmer"
+      }
     },
     {
       "id": "clean-architecture",
@@ -194,7 +237,11 @@
       "provider": "Robert C. Martin",
       "summary": null,
       "period": null,
-      "credential": null
+      "credential": null,
+      "rating": {
+        "score": 4.2,
+        "url": "https://www.goodreads.com/book/show/18043011-clean-architecture"
+      }
     },
     {
       "id": "tidy-first",
@@ -204,7 +251,11 @@
       "provider": "Kent Beck",
       "summary": null,
       "period": null,
-      "credential": null
+      "credential": null,
+      "rating": {
+        "score": 3.9,
+        "url": "https://www.goodreads.com/book/show/171691901-tidy-first"
+      }
     }
   ]
 }

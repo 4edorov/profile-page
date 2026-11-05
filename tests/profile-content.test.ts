@@ -14,6 +14,7 @@ interface RawEntry extends RawPeriod {
   url?: string | null;
   period?: RawPeriod | null;
   credential?: string | null;
+  rating?: { score: number; url: string } | null;
   title?: string;
   provider?: string;
   summary?: string | null;
@@ -120,13 +121,22 @@ describe("Learning", () => {
       summary: null,
       period: null,
       credential: null,
+      rating: null,
     };
+  }
+
+  function book(id: string, hidden = false) {
+    return { ...learningEntry(id, hidden), rating: { score: 4.2, url: "https://www.goodreads.com/book/show/1" } };
+  }
+
+  function certification(id: string, hidden = false) {
+    return { ...learningEntry(id, hidden), period: { start: "2024-01", end: "2024-03" } };
   }
 
   test("is grouped by Learning Kind in order, each in the owner's order, leaving out kinds with no shown Entries", async () => {
     const { getLearning } = await loadWith("learning", {
-      book: [learningEntry("second-book"), learningEntry("first-book")],
-      certification: [learningEntry("hidden", true)],
+      book: [book("second-book"), book("first-book")],
+      certification: [certification("hidden", true)],
       course: [],
       education: [learningEntry("degree")],
     });
@@ -149,9 +159,27 @@ describe("Learning", () => {
         education: [],
         course: [learningEntry("react")],
         certification: [],
-        book: [learningEntry("react", true)],
+        book: [book("react", true)],
       }),
     ).rejects.toThrow('Learning Entry id "react" is used more than once');
+  });
+
+  test.each([
+    ["a Book, Hidden too, without a Rating", { book: [learningEntry("hidden", true)] }, 'Book "hidden" has no Rating'],
+    [
+      "a Rating on an Entry that is not a Book",
+      { course: [{ ...learningEntry("course"), rating: book("x").rating }] },
+      'Learning Entry "course" has a Rating but is not a Book',
+    ],
+    [
+      "a Certification, Hidden too, without a Period",
+      { certification: [learningEntry("hidden", true)] },
+      'Certification "hidden" has no Period',
+    ],
+  ])("rejects %s", async (_, kinds, message) => {
+    await expect(
+      loadWith("learning", { education: [], course: [], certification: [], book: [], ...kinds }),
+    ).rejects.toThrow(message);
   });
 });
 
@@ -173,10 +201,10 @@ describe.each(LANGUAGES)("Profile Content in %s", (language) => {
     expect(badPeriods).toEqual([]);
   });
 
-  test("Experience and Projects Entries and Credentials, Hidden ones' too, link only to https URLs", () => {
+  test("Experience and Projects Entries, Credentials and Ratings, Hidden ones' too, link only to https URLs", () => {
     const urls = [
       ...[...rawEntries(language, "experience"), ...rawEntries(language, "projects")].map(({ url }) => url),
-      ...rawEntries(language, "learning").map(({ credential }) => credential),
+      ...rawEntries(language, "learning").flatMap(({ credential, rating }) => [credential, rating?.url]),
     ];
     const badUrls = urls.filter((url) => url != null && !url.startsWith("https://"));
     expect(badUrls).toEqual([]);
@@ -197,6 +225,18 @@ describe.each(LANGUAGES)("Profile Content in %s", (language) => {
       const ids = entries.map((entry) => entry.id);
       expect(new Set(ids).size).toBe(ids.length);
     }
+  });
+
+  test("every Rating, Hidden Books' too, is a Goodreads score from 1 to 5 to one decimal", () => {
+    const badRatings = rawEntries(language, "learning").filter(
+      ({ rating }) =>
+        rating != null &&
+        (rating.score < 1 ||
+          rating.score > 5 ||
+          rating.score !== Math.round(rating.score * 10) / 10 ||
+          !rating.url.startsWith("https://www.goodreads.com/book/show/")),
+    );
+    expect(badRatings.map(({ id }) => id)).toEqual([]);
   });
 
   test("no Learning Entry, Hidden ones included, has an empty title, provider or summary", () => {
