@@ -27,11 +27,6 @@ export interface Entry {
   hidden: boolean;
 }
 
-interface Described {
-  summary: string;
-  details: string[];
-}
-
 export interface ExperienceEntry extends Entry, Period {
   role: string;
   organisation: string;
@@ -49,9 +44,29 @@ export interface Assignment {
   tools: string[];
 }
 
-export interface ProjectEntry extends Entry, Described {
+export const PROJECT_KINDS = ["product", "study"] as const;
+
+export type ProjectKind = (typeof PROJECT_KINDS)[number];
+
+export interface ProjectEntry extends Entry {
   name: string;
+  summary: string;
+  tools: string[];
   url: string | null;
+  sourceUrl: string | null;
+  screenshots: Screenshot[];
+}
+
+export interface Screenshot {
+  src: string;
+  alt: string;
+}
+
+export type Projects = Record<ProjectKind, ProjectEntry[]>;
+
+export interface ProjectGroup {
+  kind: ProjectKind;
+  entries: ProjectEntry[];
 }
 
 export const LEARNING_KINDS = ["education", "course", "certification", "book"] as const;

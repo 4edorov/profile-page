@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { createRoutesStub, type LoaderFunctionArgs } from "react-router";
 import { afterEach, expect, test } from "vitest";
-import { type Assignment, getAbout, getExperience, getLearning } from "@/entities/profile";
+import { type Assignment, getAbout, getExperience, getLearning, getProjects } from "@/entities/profile";
 import { PAGE_IDS } from "@/shared/routing";
 import { setTheme } from "@/shared/theme";
 import "./dialog-shim";
@@ -422,6 +422,39 @@ test("the Learning Page groups Entries by Learning Kind, without empty ones", as
     .map((heading) => heading.textContent);
   expect(groups).toEqual(["Образование", "Сертификаты", "Книги"]);
 });
+
+test.each([
+  ["en", "Projects", ["Products", "Study Projects"], "Visit", "Source"],
+  ["ru", "Проекты", ["Продукты", "Учебные проекты"], "Открыть", "Исходный код"],
+] as const)(
+  "the Projects Page in %s groups Entries by Project Kind, each with its links, summary and Tools",
+  async (language, heading, names, visit, source) => {
+    renderPath(`/${language}/projects`);
+    await screen.findByRole("heading", { level: 1, name: heading });
+    const groups = within(screen.getByRole("main")).getAllByRole("heading", { level: 2 });
+    expect(groups.map((group) => group.textContent)).toEqual(names);
+
+    const shown = getProjects(language);
+    groups.forEach((group, position) => {
+      const items = within(group.closest("section") as HTMLElement).getAllByRole("listitem");
+      const entries = shown[position]?.entries ?? [];
+      expect(items.map((item) => within(item).getByRole("heading", { level: 3 }).textContent)).toEqual(
+        entries.map((entry) => entry.name),
+      );
+      entries.forEach((entry, index) => {
+        const item = within(items[index] as HTMLElement);
+        expect(item.getByText(entry.summary)).toBeDefined();
+        const liveSite = item.queryByRole("link", { name: new RegExp(`^${visit} ${entry.name}`) });
+        expect(liveSite?.getAttribute("href") ?? null).toBe(entry.url);
+        const sourceLink = item.queryByRole("link", { name: new RegExp(`^${source}`) });
+        expect(sourceLink?.getAttribute("href") ?? null).toBe(entry.sourceUrl);
+        if (entry.tools.length > 0) {
+          expect(item.getByText(entry.tools.join(", "))).toBeDefined();
+        }
+      });
+    });
+  },
+);
 
 const TIMELINE_PERIODS: Record<"en" | "ru", Record<string, string>> = {
   en: {

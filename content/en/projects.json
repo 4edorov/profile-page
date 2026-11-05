@@ -1,20 +1,33 @@
-[
-  {
-    "id": "profile-site",
-    "featured": true,
-    "hidden": false,
-    "name": "Profile Site",
-    "url": "https://github.com/4edorov/profile-page",
-    "summary": "This site: a prerendered React Router SPA in two Languages.",
-    "details": ["Placeholder project detail."]
-  },
-  {
-    "id": "placeholder-project",
-    "featured": false,
-    "hidden": false,
-    "name": "Placeholder project",
-    "url": null,
-    "summary": "Placeholder project summary.",
-    "details": ["Placeholder project detail."]
-  }
-]
+{
+  "product": [
+    {
+      "id": "profile-site",
+      "featured": true,
+      "hidden": false,
+      "name": "Profile Site",
+      "summary": "This site: a prerendered React Router SPA in two Languages.",
+      "tools": ["React", "React Router", "TypeScript", "Tailwind CSS"],
+      "url": "https://example.com",
+      "sourceUrl": "https://github.com/4edorov/profile-page",
+      "screenshots": [
+        {
+          "src": "projects/profile-site/placeholder.webp",
+          "alt": "Placeholder screenshot of the Profile Site."
+        }
+      ]
+    }
+  ],
+  "study": [
+    {
+      "id": "placeholder-study-project",
+      "featured": false,
+      "hidden": false,
+      "name": "Placeholder study project",
+      "summary": "Placeholder study project summary.",
+      "tools": ["JavaScript"],
+      "url": null,
+      "sourceUrl": null,
+      "screenshots": []
+    }
+  ]
+}

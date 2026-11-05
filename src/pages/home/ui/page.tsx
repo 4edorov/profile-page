@@ -23,7 +23,7 @@ export function loader({ request }: LoaderFunctionArgs) {
   return {
     about: pickAbout(language, [...ABOUT_META_FIELDS, "stack", "technologies", "tagline"]),
     experience: getExperience(language).filter((entry) => entry.featured),
-    projects: getProjects(language).filter((entry) => entry.featured),
+    projects: getProjects(language, { featuredOnly: true }).flatMap((group) => group.entries),
     learning: getLearning(language, { featuredOnly: true }),
   };
 }
