@@ -78,6 +78,11 @@
     "rating": "Goodreads rating {{score}} out of 5"
   },
   "projects": {
+    "kinds": {
+      "product": "Products",
+      "study": "Study Projects"
+    },
+    "source": "Source",
     "visit": "Visit {{name}}"
   },
   "resume": {

@@ -25,11 +25,11 @@ The Page dedicated to one Topic, showing more than that Topic's Section on the H
 _Avoid_: Detail page, subpage
 
 **Entry**:
-One item of Experience, Projects or Learning (a job, a project, a course), written once per Language. A Projects Entry has a short summary and fuller detail; a Learning Entry has its Learning Kind, its provider and optionally a summary, a Period and a Credential, and a Book its Rating, but no detail; an Experience Entry has its Assignments instead. Every Entry except a Hidden Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section: a Projects one by its summary, a Learning one as on its Topic Page, an Experience one by its role, organisation, Location, Period and every one of its Assignments by name, description and Tools alone.
+One item of Experience, Projects or Learning (a job, a project, a course), written once per Language. A Projects Entry has its Project Kind, a name, a summary and its Tools, and optionally a Live Site, a Source and Screenshots, but no detail; a Learning Entry has its Learning Kind, its provider and optionally a summary, a Period and a Credential, and a Book its Rating, but no detail; an Experience Entry has its Assignments instead. Every Entry except a Hidden Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section: a Projects one by its summary, a Learning one as on its Topic Page, an Experience one by its role, organisation, Location, Period and every one of its Assignments by name, description and Tools alone.
 _Avoid_: Item, record, card
 
 **Featured Entry**:
-An Entry the owner has chosen to show in its Topic's Section on the Home Page, in the same order as on its Topic Page. Never a Hidden Entry.
+An Entry the owner has chosen to show in its Topic's Section on the Home Page, in the same order as on its Topic Page. Never a Hidden Entry, and never a Study Project.
 _Avoid_: Highlight, pinned, top entry, latest entries
 
 **Hidden Entry**:
@@ -93,12 +93,32 @@ A body of work the owner did within one Experience Entry, such as a product or a
 _Avoid_: Project (within a job), engagement, job project
 
 **Tools**:
-The languages, frameworks and services used on an Assignment, as the owner words them per Language. Separate from the Technologies: a Tool need not be one of them, and the two may overlap.
+The languages, frameworks and services used on an Assignment or a Projects Entry, as the owner words them per Language. Separate from the Technologies: a Tool need not be one of them, and the two may overlap.
 _Avoid_: Stack, Technologies, tech stack (for an Assignment's list)
 
 **Location**:
 Where an Experience Entry's job was done, as the owner words it per Language: a city, a country, or remote.
 _Avoid_: Region, place, address
+
+**Projects**:
+The Topic covering what the owner has built outside their jobs, one Entry per project. Its Topic Page groups its Entries by Project Kind, in Project Kind order, each group in the order the owner writes them; a Project Kind with no shown Entries has no group. Its Section shows its Featured Entries, all of them Products.
+_Avoid_: Portfolio, pet projects, work
+
+**Project Kind**:
+One of Product and Study Project, in that order. Every Projects Entry is of exactly one. A Product is built to be used, by the owner or by a client outside any employment; a Study Project is built mainly to learn, such as a course capstone.
+_Avoid_: Category, type, work project, learning project
+
+**Live Site**:
+The link to where a Projects Entry runs, if it has one, shown as a link icon right after the Entry's name and opening in a new tab. Identical in every Language.
+_Avoid_: Demo, URL, project link
+
+**Source**:
+The link to a Projects Entry's source code, if it is public. Identical in every Language. An Entry may have a Source, a Live Site, both or neither.
+_Avoid_: Repo, GitHub link, code link
+
+**Screenshot**:
+An image of a Projects Entry, which may have none or several, in the order the owner chooses: the same images in every Language, each described per Language for screen readers.
+_Avoid_: Image, picture, preview, gallery
 
 **Learning**:
 The Topic covering what the owner has studied or is studying: education, courses, certifications and books. Each Learning Entry has a title and a provider: whoever offered it, such as an institution, a platform, an issuer or an author. Its Topic Page groups its Entries by Learning Kind, in Learning Kind order, each group in the order the owner writes them; a Learning Kind with no shown Entries has no group. Its Section groups its Featured Entries the same way.

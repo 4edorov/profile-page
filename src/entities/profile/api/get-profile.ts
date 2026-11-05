@@ -14,6 +14,7 @@ import allTechnologies from "../../../../content/technologies.json";
 import { newestFirst } from "../lib/order";
 import {
   LEARNING_KINDS,
+  PROJECT_KINDS,
   type About,
   type Contact,
   type Entry,
@@ -23,6 +24,9 @@ import {
   type LearningGroup,
   type LearningKind,
   type ProjectEntry,
+  type ProjectGroup,
+  type ProjectKind,
+  type Projects,
   type Technology,
 } from "../model/types";
 
@@ -33,13 +37,18 @@ const about = {
   ru: { ...ruAbout, stack, technologies, portrait },
 } satisfies Record<Language, About>;
 const experience = { en: enExperience, ru: ruExperience } satisfies Record<Language, ExperienceEntry[]>;
-const projects = { en: enProjects, ru: ruProjects } satisfies Record<Language, ProjectEntry[]>;
+const screenshotFiles = import.meta.glob<string>("../../../../content/projects/**/*", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+const projects = { en: checkProjects(enProjects), ru: checkProjects(ruProjects) } satisfies Record<Language, Projects>;
 const contact = { en: enContact, ru: ruContact } satisfies Record<Language, Contact>;
 const learning = { en: checkLearning(enLearning), ru: checkLearning(ruLearning) } satisfies Record<Language, Learning>;
 
 const entries: Entry[] = [
   ...Object.values(experience).flat(),
-  ...Object.values(projects).flat(),
+  ...Object.values(projects).flatMap((byKind) => PROJECT_KINDS.flatMap((kind) => byKind[kind])),
   ...Object.values(learning).flatMap((byKind) => LEARNING_KINDS.flatMap((kind): LearningEntry[] => byKind[kind])),
 ];
 for (const entry of entries) {
@@ -73,12 +82,15 @@ export function getExperience(language: Language): ExperienceEntry[] {
   return experience[language].filter(shown).toSorted(newestFirst);
 }
 
-export function getProjects(language: Language): ProjectEntry[] {
-  return projects[language].filter(shown);
+export function getProjects(language: Language, { featuredOnly = false } = {}): ProjectGroup[] {
+  const keep = kept(featuredOnly);
+  return PROJECT_KINDS.map((kind) => ({ kind, entries: projects[language][kind].filter(keep) })).filter(
+    (group) => group.entries.length > 0,
+  );
 }
 
 export function getLearning(language: Language, { featuredOnly = false } = {}): LearningGroup[] {
-  const keep = (entry: Entry) => shown(entry) && (!featuredOnly || entry.featured);
+  const keep = kept(featuredOnly);
   const byKind = learning[language];
   const groups: { [Kind in LearningKind]: Extract<LearningGroup, { kind: Kind }> } = {
     education: { kind: "education", entries: byKind.education.filter(keep) },
@@ -97,19 +109,49 @@ function shown(entry: Entry): boolean {
   return !entry.hidden;
 }
 
-// Types can't catch an extra key in imported JSON, so the Learning Kinds and Ratings are checked on load.
-function checkLearning(byKind: Record<LearningKind, LearningEntry[]>): Learning {
-  const kinds = Object.keys(byKind);
-  if (kinds.length !== LEARNING_KINDS.length || !LEARNING_KINDS.every((kind) => kinds.includes(kind))) {
-    throw new Error(`Learning has the kinds "${kinds.join(", ")}", not "${LEARNING_KINDS.join(", ")}"`);
+function kept(featuredOnly: boolean): (entry: Entry) => boolean {
+  return (entry) => shown(entry) && (!featuredOnly || entry.featured);
+}
+
+// Types can't catch an extra key in imported JSON, so the kinds are checked on load.
+function checkKinds(topic: string, byKind: Record<string, Entry[]>, kinds: readonly string[]): void {
+  const keys = Object.keys(byKind);
+  if (keys.length !== kinds.length || !kinds.every((kind) => keys.includes(kind))) {
+    throw new Error(`${topic} has the kinds "${keys.join(", ")}", not "${kinds.join(", ")}"`);
   }
   const ids = new Set<string>();
   for (const entry of Object.values(byKind).flat()) {
     if (ids.has(entry.id)) {
-      throw new Error(`Learning Entry id "${entry.id}" is used more than once`);
+      throw new Error(`${topic} Entry id "${entry.id}" is used more than once`);
     }
     ids.add(entry.id);
   }
+}
+
+function checkProjects(byKind: Record<ProjectKind, ProjectEntry[]>): Projects {
+  checkKinds("Projects", byKind, PROJECT_KINDS);
+  for (const entry of byKind.study) {
+    if (entry.featured) {
+      throw new Error(`Study Project "${entry.id}" is featured`);
+    }
+  }
+  const resolve = (entry: ProjectEntry): ProjectEntry => ({
+    ...entry,
+    screenshots: entry.screenshots.map((screenshot) => ({ ...screenshot, src: screenshotUrl(entry, screenshot.src) })),
+  });
+  return { product: byKind.product.map(resolve), study: byKind.study.map(resolve) };
+}
+
+function screenshotUrl(entry: ProjectEntry, src: string): string {
+  const url = screenshotFiles[`../../../../content/${src}`];
+  if (url === undefined) {
+    throw new Error(`Screenshot "${src}" of Projects Entry "${entry.id}" is not a file in content/projects/`);
+  }
+  return url;
+}
+
+function checkLearning(byKind: Record<LearningKind, LearningEntry[]>): Learning {
+  checkKinds("Learning", byKind, LEARNING_KINDS);
   for (const kind of LEARNING_KINDS) {
     for (const entry of byKind[kind]) {
       if (kind === "book" && entry.rating === null) {

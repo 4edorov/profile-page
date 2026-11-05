@@ -1,20 +1,33 @@
-[
-  {
-    "id": "profile-site",
-    "featured": true,
-    "hidden": false,
-    "name": "Сайт-профиль",
-    "url": "https://github.com/4edorov/profile-page",
-    "summary": "Этот сайт: предварительно отрендеренное SPA на React Router на двух языках.",
-    "details": ["Временная подробность о проекте."]
-  },
-  {
-    "id": "placeholder-project",
-    "featured": false,
-    "hidden": false,
-    "name": "Временный проект",
-    "url": null,
-    "summary": "Временное описание проекта.",
-    "details": ["Временная подробность о проекте."]
-  }
-]
+{
+  "product": [
+    {
+      "id": "profile-site",
+      "featured": true,
+      "hidden": false,
+      "name": "Сайт-профиль",
+      "summary": "Этот сайт: предварительно отрендеренное SPA на React Router на двух языках.",
+      "tools": ["React", "React Router", "TypeScript", "Tailwind CSS"],
+      "url": "https://example.com",
+      "sourceUrl": "https://github.com/4edorov/profile-page",
+      "screenshots": [
+        {
+          "src": "projects/profile-site/placeholder.webp",
+          "alt": "Временный скриншот сайта-профиля."
+        }
+      ]
+    }
+  ],
+  "study": [
+    {
+      "id": "placeholder-study-project",
+      "featured": false,
+      "hidden": false,
+      "name": "Временный учебный проект",
+      "summary": "Временное описание учебного проекта.",
+      "tools": ["JavaScript"],
+      "url": null,
+      "sourceUrl": null,
+      "screenshots": []
+    }
+  ]
+}

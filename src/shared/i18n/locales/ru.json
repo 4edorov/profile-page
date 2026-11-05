@@ -78,6 +78,11 @@
     "rating": "Рейтинг Goodreads: {{score}} из 5"
   },
   "projects": {
+    "kinds": {
+      "product": "Продукты",
+      "study": "Учебные проекты"
+    },
+    "source": "Исходный код",
     "visit": "Открыть {{name}}"
   },
   "resume": {

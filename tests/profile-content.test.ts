@@ -12,6 +12,10 @@ interface RawPeriod {
 interface RawEntry extends RawPeriod {
   id: string;
   url?: string | null;
+  sourceUrl?: string | null;
+  name?: string;
+  tools?: string[];
+  screenshots?: { src: string; alt: string }[];
   period?: RawPeriod | null;
   credential?: string | null;
   rating?: { score: number; url: string } | null;
@@ -26,7 +30,7 @@ function rawEntries(language: Language, topic: "experience" | "projects" | "lear
   return Array.isArray(content) ? content : Object.values(content).flat();
 }
 
-async function loadWith(topic: "experience" | "learning", content: unknown) {
+async function loadWith(topic: "experience" | "projects" | "learning", content: unknown) {
   vi.resetModules();
   vi.doMock(`../content/en/${topic}.json`, () => ({ default: content }));
   try {
@@ -107,6 +111,71 @@ describe("Hidden Entries", () => {
         { ...entry("hidden", { featured: false, hidden: true }), assignments: [assignment([])] },
       ]),
     ).rejects.toThrow('Assignment "Assignment" of Experience Entry "hidden" has no responsibilities');
+  });
+});
+
+describe("Projects", () => {
+  function project(id: string, flags = { featured: false, hidden: false }) {
+    return { id, ...flags, name: "Name", summary: "Summary.", tools: [], url: null, sourceUrl: null, screenshots: [] };
+  }
+
+  test("are grouped by Project Kind in order, each in the owner's order, leaving out kinds with no shown Entries", async () => {
+    const { getProjects } = await loadWith("projects", {
+      study: [project("second-study"), project("first-study")],
+      product: [project("hidden", { featured: false, hidden: true })],
+    });
+    expect(getProjects("en").map(({ kind, entries }) => [kind, entries.map(({ id }) => id)])).toEqual([
+      ["study", ["second-study", "first-study"]],
+    ]);
+  });
+
+  test("keep only Featured Entries when asked", async () => {
+    const { getProjects } = await loadWith("projects", {
+      product: [project("plain"), project("featured", { featured: true, hidden: false })],
+      study: [project("study")],
+    });
+    expect(
+      getProjects("en", { featuredOnly: true }).map(({ kind, entries }) => [kind, entries.map(({ id }) => id)]),
+    ).toEqual([["product", ["featured"]]]);
+  });
+
+  test("resolve each Screenshot to its built file", async () => {
+    const { getProjects } = await loadWith("projects", {
+      product: [{ ...project("site"), screenshots: [{ src: "projects/profile-site/placeholder.webp", alt: "Alt." }] }],
+      study: [],
+    });
+    const [screenshot] = getProjects("en")[0]?.entries[0]?.screenshots ?? [];
+    expect(screenshot?.src).toMatch(/placeholder.*\.webp$/);
+  });
+
+  test.each([
+    ["an unknown", { product: [], study: [], work: [] }, "Projects has the kinds"],
+    ["a missing", { product: [] }, "Projects has the kinds"],
+    [
+      "an id used in two Project Kinds",
+      { product: [project("site")], study: [project("site", { featured: false, hidden: true })] },
+      'Projects Entry id "site" is used more than once',
+    ],
+    [
+      "a Featured Study Project",
+      { product: [], study: [project("study", { featured: true, hidden: false })] },
+      'Study Project "study" is featured',
+    ],
+    [
+      "a Screenshot, of a Hidden Entry too, with no file",
+      {
+        product: [
+          {
+            ...project("hidden", { featured: false, hidden: true }),
+            screenshots: [{ src: "projects/missing.webp", alt: "Alt." }],
+          },
+        ],
+        study: [],
+      },
+      'Screenshot "projects/missing.webp" of Projects Entry "hidden" is not a file in content/projects/',
+    ],
+  ])("reject %s", async (_, content, message) => {
+    await expect(loadWith("projects", content)).rejects.toThrow(message);
   });
 });
 
@@ -201,9 +270,10 @@ describe.each(LANGUAGES)("Profile Content in %s", (language) => {
     expect(badPeriods).toEqual([]);
   });
 
-  test("Experience and Projects Entries, Credentials and Ratings, Hidden ones' too, link only to https URLs", () => {
+  test("Experience Entries, Live Sites, Sources, Credentials and Ratings, Hidden ones' too, link only to https URLs", () => {
     const urls = [
-      ...[...rawEntries(language, "experience"), ...rawEntries(language, "projects")].map(({ url }) => url),
+      ...rawEntries(language, "experience").map(({ url }) => url),
+      ...rawEntries(language, "projects").flatMap(({ url, sourceUrl }) => [url, sourceUrl]),
       ...rawEntries(language, "learning").flatMap(({ credential, rating }) => [credential, rating?.url]),
     ];
     const badUrls = urls.filter((url) => url != null && !url.startsWith("https://"));
@@ -237,6 +307,17 @@ describe.each(LANGUAGES)("Profile Content in %s", (language) => {
           !rating.url.startsWith("https://www.goodreads.com/book/show/")),
     );
     expect(badRatings.map(({ id }) => id)).toEqual([]);
+  });
+
+  test("no Projects Entry, Hidden ones included, has an empty name, summary, Tool or Screenshot description", () => {
+    const empty = rawEntries(language, "projects").filter(
+      ({ name, summary, tools, screenshots }) =>
+        !name?.trim() ||
+        !summary?.trim() ||
+        (tools ?? []).some((tool) => !tool.trim()) ||
+        (screenshots ?? []).some(({ alt }) => !alt.trim()),
+    );
+    expect(empty.map(({ id }) => id)).toEqual([]);
   });
 
   test("no Learning Entry, Hidden ones included, has an empty title, provider or summary", () => {
