@@ -24,9 +24,9 @@ export function loader({ request }: LoaderFunctionArgs) {
     about: pickAbout(language, [...ABOUT_META_FIELDS, "stack", "technologies", "tagline"]),
     experience: getExperience(language).filter((entry) => entry.featured),
     projects: getProjects(language).filter((entry) => entry.featured),
-    learning: getLearning(language)
-      .flatMap((group) => group.entries)
-      .filter((entry) => entry.featured),
+    learning: getLearning(language).flatMap(({ kind, entries }) =>
+      entries.filter((entry) => entry.featured).map((entry) => ({ kind, entry })),
+    ),
   };
 }
 
@@ -101,9 +101,9 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
         more={{ to: pagePath(language, "learning"), label: t("home.more.learning") }}
       >
         <EntryList>
-          {learning.map((entry) => (
+          {learning.map(({ kind, entry }) => (
             <li key={entry.id}>
-              <LearningEntry entry={entry} />
+              <LearningEntry kind={kind} entry={entry} />
             </li>
           ))}
         </EntryList>

@@ -30,7 +30,7 @@ export default function Learning({ loaderData }: PageProps<typeof loader>) {
             <ul className="mt-3 space-y-6">
               {entries.map((entry) => (
                 <li key={entry.id}>
-                  <LearningEntry entry={entry} />
+                  <LearningEntry kind={kind} entry={entry} />
                 </li>
               ))}
             </ul>
