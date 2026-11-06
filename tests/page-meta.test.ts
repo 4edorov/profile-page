@@ -50,6 +50,13 @@ test.each<[PageId, Language, string, string]>([
     { property: "og:url", content: url(pageId, language) },
     { property: "og:locale", content: ogLocales[language] },
     { property: "og:locale:alternate", content: ogLocales[other] },
+    { property: "og:image", content: expect.stringMatching(/^https:\/\/example\.com\/.+\.jpg$/) as unknown },
+    { property: "og:image:width", content: "1200" },
+    { property: "og:image:height", content: "630" },
+    { property: "og:image:type", content: "image/jpeg" },
+    { property: "og:image:alt", content: "Ada Lovelace" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:image:alt", content: "Ada Lovelace" },
   ]);
 });
 

@@ -1,6 +1,7 @@
 import type { MetaDescriptor } from "react-router";
 import { DEFAULT_LANGUAGE, getI18n, LANGUAGES, languageFromPath, OG_LOCALES } from "@/shared/i18n";
 import { absoluteUrl, pagePath, type PageId } from "@/shared/routing";
+import previewImage from "./preview-image.jpg";
 
 // Structural, because `shared` can't import `entities` (ADR 0004).
 interface PageMetaData {
@@ -49,6 +50,13 @@ export function pageMeta(pageId: PageId) {
         property: "og:locale:alternate",
         content: OG_LOCALES[alternate],
       })),
+      { property: "og:image", content: absoluteUrl(previewImage) },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:type", content: "image/jpeg" },
+      { property: "og:image:alt", content: name },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image:alt", content: name },
     ];
   };
 }
