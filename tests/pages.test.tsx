@@ -142,17 +142,19 @@ test.each(["en", "ru"] as const)(
   },
 );
 
-test.each(PAGE_IDS.filter((pageId) => pageId !== "about"))(
-  "the %s Page's loader leaves out the Introduction, the Bio and the Portrait",
-  (pageId) => {
-    const { loader } = routeModule(findRoute(`en/${pageId}`));
-    const request = new Request(`https://example.com/en/${pageId}`);
-    const { about } = loader?.({ request, params: {}, context: {} } as LoaderFunctionArgs) as { about: object };
-    for (const field of ["introduction", "bio", "portrait"]) {
-      expect(about).not.toHaveProperty(field);
-    }
-  },
-);
+test.each(
+  PAGE_IDS.filter((pageId) => pageId !== "about").map((pageId) => ({
+    pageId,
+    fields: pageId === "home" ? ["introduction", "bio"] : ["introduction", "bio", "portrait"],
+  })),
+)("the $pageId Page's loader leaves out $fields", ({ pageId, fields }) => {
+  const { loader } = routeModule(findRoute(`en/${pageId}`));
+  const request = new Request(`https://example.com/en/${pageId}`);
+  const { about } = loader?.({ request, params: {}, context: {} } as LoaderFunctionArgs) as { about: object };
+  for (const field of fields) {
+    expect(about).not.toHaveProperty(field);
+  }
+});
 
 test("shows only Featured Entries on the Home Page, with links to their Topic Pages", async () => {
   renderPath("/en/");

@@ -19,7 +19,7 @@
     },
     "about": {
       "title": "{{page}} — {{name}}",
-      "description": "{{summary}}"
+      "description": "About {{name}}, {{headline}}: experience, stack and way of working."
     },
     "experience": {
       "title": "{{page}} — {{name}}",

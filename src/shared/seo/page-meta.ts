@@ -1,12 +1,21 @@
 import type { MetaDescriptor } from "react-router";
-import { DEFAULT_LANGUAGE, getI18n, LANGUAGES, languageFromPath, OG_LOCALES } from "@/shared/i18n";
+import { DEFAULT_LANGUAGE, getI18n, type Language, LANGUAGES, languageFromPath, OG_LOCALES } from "@/shared/i18n";
 import { absoluteUrl, pagePath, type PageId } from "@/shared/routing";
 import previewImage from "./preview-image.jpg";
 
-// Structural, because `shared` can't import `entities` (ADR 0004).
-interface PageMetaData {
-  about: { name: string; headline: string; summary: string };
+interface AboutMeta {
+  name: string;
+  headline: string;
+  summary: string;
 }
+
+// Structural, because `shared` can't import `entities` (ADR 0004).
+type PageMetaData =
+  | { about: AboutMeta; owner?: undefined }
+  | {
+      about: AboutMeta & { stack: string[]; portrait: string };
+      owner: { alternateNames: string[]; profiles: string[] };
+    };
 
 interface PageMetaArgs {
   loaderData: PageMetaData | undefined;
@@ -57,6 +66,33 @@ export function pageMeta(pageId: PageId) {
       { property: "og:image:alt", content: name },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image:alt", content: name },
+      ...(loaderData.owner ? [ownerProfilePage(loaderData, language, url)] : []),
     ];
+  };
+}
+
+function ownerProfilePage(
+  { about, owner }: Extract<PageMetaData, { owner: object }>,
+  language: Language,
+  url: string,
+): MetaDescriptor {
+  return {
+    "script:ld+json": {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      url,
+      inLanguage: language,
+      mainEntity: {
+        "@type": "Person",
+        name: about.name,
+        alternateName: owner.alternateNames,
+        jobTitle: about.headline,
+        description: about.summary,
+        image: absoluteUrl(about.portrait),
+        url,
+        sameAs: owner.profiles,
+        knowsAbout: about.stack,
+      },
+    },
   };
 }

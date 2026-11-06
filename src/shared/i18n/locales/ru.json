@@ -19,7 +19,7 @@
     },
     "about": {
       "title": "{{page}} — {{name}}",
-      "description": "{{summary}}"
+      "description": "О себе: {{name}}, {{headline}}. Опыт, стек и подход к работе."
     },
     "experience": {
       "title": "{{page}} — {{name}}",
