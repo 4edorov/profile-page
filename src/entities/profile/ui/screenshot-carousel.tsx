@@ -10,7 +10,7 @@ export function ScreenshotCarousel({ name, screenshots }: { name: string; screen
   const { t } = useTranslation();
   const trackRef = useRef<HTMLDivElement>(null);
   const [current, setCurrent] = useState(0);
-  const several = screenshots.length > 1;
+  const hasControls = screenshots.length > 1;
   // Leaving `behavior` out lets the track's CSS make this smooth, or instant under reduced motion.
   const show = (index: number) => trackRef.current?.scrollTo({ left: index * trackRef.current.clientWidth });
   return (
@@ -33,7 +33,7 @@ export function ScreenshotCarousel({ name, screenshots }: { name: string; screen
             />
           ))}
         </div>
-        {several && (
+        {hasControls && (
           <>
             <IconButton
               label={t("projects.screenshots.previous")}
@@ -54,7 +54,7 @@ export function ScreenshotCarousel({ name, screenshots }: { name: string; screen
           </>
         )}
       </div>
-      {several && (
+      {hasControls && (
         <div className="mt-1 flex justify-center">
           {screenshots.map((screenshot, index) => (
             <button
