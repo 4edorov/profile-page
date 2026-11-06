@@ -484,6 +484,31 @@ test.each([
   },
 );
 
+test.each([
+  ["en", "Projects", "All projects"],
+  ["ru", "Проекты", "Все проекты"],
+] as const)(
+  "the Projects Section in %s shows each Featured Product's card as on the Projects Page, under no Project Kind heading",
+  async (language, heading, more) => {
+    const { scope } = await findTopic("Section", "projects", language, heading);
+    const featured = getProjects(language).flatMap(({ kind, entries }) =>
+      entries.filter((entry) => entry.featured).map((entry) => ({ kind, entry })),
+    );
+    expect(featured.map(({ kind }) => kind)).toEqual(["product"]);
+    expect(
+      within(scope)
+        .getAllByRole("heading")
+        .map((title) => title.tagName),
+    ).toEqual(["H2", "H3"]);
+    expectProjectCards(
+      scope,
+      language,
+      featured.map(({ entry }) => entry),
+    );
+    expect(within(scope).getByRole("link", { name: more }).getAttribute("href")).toBe(`/${language}/projects`);
+  },
+);
+
 const TIMELINE_PERIODS: Record<"en" | "ru", Record<string, string>> = {
   en: {
     "economics-degree": "Sep 2003 – May 2008",
