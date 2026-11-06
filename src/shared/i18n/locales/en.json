@@ -83,6 +83,7 @@
       "study": "Study Projects"
     },
     "source": "Source",
+    "tools": "Technologies",
     "visit": "Visit {{name}}"
   },
   "resume": {

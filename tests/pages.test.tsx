@@ -2,7 +2,14 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { createRoutesStub, type LoaderFunctionArgs } from "react-router";
 import { afterEach, expect, test } from "vitest";
-import { type Assignment, getAbout, getExperience, getLearning, getProjects } from "@/entities/profile";
+import {
+  type Assignment,
+  getAbout,
+  getExperience,
+  getLearning,
+  getProjects,
+  type ProjectEntry,
+} from "@/entities/profile";
 import { PAGE_IDS } from "@/shared/routing";
 import { setTheme } from "@/shared/theme";
 import "./dialog-shim";
@@ -423,12 +430,48 @@ test("the Learning Page groups Entries by Learning Kind, without empty ones", as
   expect(groups).toEqual(["Образование", "Сертификаты", "Книги"]);
 });
 
+const PROJECT_LABELS = {
+  en: { visit: "Visit", source: "Source" },
+  ru: { visit: "Открыть", source: "Исходный код" },
+} as const;
+
+function expectProjectCards(scope: HTMLElement, language: "en" | "ru", entries: ProjectEntry[]) {
+  const { visit, source } = PROJECT_LABELS[language];
+  const cards = within(scope)
+    .getAllByRole("heading", { level: 3 })
+    .map((name) => name.closest("li") as HTMLElement);
+  expect(cards.map((card) => within(card).getByRole("heading").textContent)).toEqual(
+    entries.map((entry) => entry.name),
+  );
+  entries.forEach((entry, index) => {
+    const card = within(cards[index] as HTMLElement);
+    expect(card.getByText(entry.summary)).toBeDefined();
+    const liveSite = card.queryByRole("link", { name: new RegExp(`^${visit} ${entry.name}`) });
+    expect(liveSite?.getAttribute("href") ?? null).toBe(entry.url);
+    const sourceLink = card.queryByRole("link", { name: new RegExp(`^${source}`) });
+    expect(
+      sourceLink && {
+        name: sourceLink.textContent,
+        href: sourceLink.getAttribute("href"),
+        target: sourceLink.getAttribute("target"),
+      },
+    ).toEqual(entry.sourceUrl && { name: `${source} ${NEW_TAB[language]}`, href: entry.sourceUrl, target: "_blank" });
+    const tools = card.queryByRole("list", { name: TOOLS_LABELS[language] });
+    expect(
+      tools &&
+        within(tools)
+          .getAllByRole("listitem")
+          .map((tool) => tool.textContent),
+    ).toEqual(entry.tools.length > 0 ? entry.tools : null);
+  });
+}
+
 test.each([
-  ["en", "Projects", ["Products", "Study Projects"], "Visit", "Source"],
-  ["ru", "Проекты", ["Продукты", "Учебные проекты"], "Открыть", "Исходный код"],
+  ["en", "Projects", ["Products", "Study Projects"]],
+  ["ru", "Проекты", ["Продукты", "Учебные проекты"]],
 ] as const)(
-  "the Projects Page in %s groups Entries by Project Kind, each with its links, summary and Tools",
-  async (language, heading, names, visit, source) => {
+  "the Projects Page in %s groups Entries by Project Kind, each a card with its links, summary and Tool chips",
+  async (language, heading, names) => {
     renderPath(`/${language}/projects`);
     await screen.findByRole("heading", { level: 1, name: heading });
     const groups = within(screen.getByRole("main")).getAllByRole("heading", { level: 2 });
@@ -436,22 +479,7 @@ test.each([
 
     const shown = getProjects(language);
     groups.forEach((group, position) => {
-      const items = within(group.closest("section") as HTMLElement).getAllByRole("listitem");
-      const entries = shown[position]?.entries ?? [];
-      expect(items.map((item) => within(item).getByRole("heading", { level: 3 }).textContent)).toEqual(
-        entries.map((entry) => entry.name),
-      );
-      entries.forEach((entry, index) => {
-        const item = within(items[index] as HTMLElement);
-        expect(item.getByText(entry.summary)).toBeDefined();
-        const liveSite = item.queryByRole("link", { name: new RegExp(`^${visit} ${entry.name}`) });
-        expect(liveSite?.getAttribute("href") ?? null).toBe(entry.url);
-        const sourceLink = item.queryByRole("link", { name: new RegExp(`^${source}`) });
-        expect(sourceLink?.getAttribute("href") ?? null).toBe(entry.sourceUrl);
-        if (entry.tools.length > 0) {
-          expect(item.getByText(entry.tools.join(", "))).toBeDefined();
-        }
-      });
+      expectProjectCards(group.closest("section") as HTMLElement, language, shown[position]?.entries ?? []);
     });
   },
 );

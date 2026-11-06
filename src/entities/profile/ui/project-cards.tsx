@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { withLayout } from "@/shared/lib";
+import { Chip } from "@/shared/ui/chip";
 import { Link } from "@/shared/ui/link";
 import { Heading, Text } from "@/shared/ui/typography";
 import type { ProjectEntry } from "../model/types";
@@ -7,9 +8,9 @@ import { ExternalLinkIcon } from "./icons";
 
 export function ProjectCards({ entries, className }: { entries: ProjectEntry[]; className?: string }) {
   return (
-    <ul className={withLayout("space-y-6", className)}>
+    <ul className={withLayout("grid gap-4 md:grid-cols-2", className)}>
       {entries.map((entry) => (
-        <li key={entry.id}>
+        <li key={entry.id} className="rounded-lg border border-text/20 p-5">
           <ProjectCard entry={entry} />
         </li>
       ))}
@@ -34,9 +35,17 @@ function ProjectCard({ entry }: { entry: ProjectEntry }) {
         )}
       </div>
       <p className="mt-1">{entry.summary}</p>
-      {entry.tools.length > 0 && <Text tone="muted">{entry.tools.join(", ")}</Text>}
+      {entry.tools.length > 0 && (
+        <Text as="ul" size="sm" label={t("projects.tools")} className="mt-3 flex flex-wrap gap-2">
+          {entry.tools.map((tool) => (
+            <li key={tool}>
+              <Chip>{tool}</Chip>
+            </li>
+          ))}
+        </Text>
+      )}
       {entry.sourceUrl !== null && (
-        <Link to={entry.sourceUrl} newTab className="mt-1 inline-block">
+        <Link to={entry.sourceUrl} newTab className="mt-3 inline-block">
           {t("projects.source")}
         </Link>
       )}
