@@ -23,7 +23,7 @@ export function loader({ request }: LoaderFunctionArgs) {
   const language = languageFromRequest(request);
   return {
     about: pickAbout(language, [...ABOUT_META_FIELDS, "stack", "technologies", "tagline"]),
-    experience: getExperience(language).filter((entry) => entry.featured),
+    experience: getExperience(language, { featuredOnly: true }),
     projects: getProjects(language, { featuredOnly: true }).flatMap((group) => group.entries),
     learning: getLearning(language, { featuredOnly: true }),
   };

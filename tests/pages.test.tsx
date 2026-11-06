@@ -5,6 +5,7 @@ import { afterEach, expect, test } from "vitest";
 import {
   type Assignment,
   getAbout,
+  getContact,
   getExperience,
   getLearning,
   getProjects,
@@ -159,11 +160,7 @@ test("shows only Featured Entries on the Home Page, with links to their Topic Pa
   expect(section).not.toBeNull();
   const scope = within(section as HTMLElement);
   const entries = scope.getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent);
-  expect(entries).toEqual(
-    getExperience("en")
-      .filter((entry) => entry.featured)
-      .map((entry) => entry.role),
-  );
+  expect(entries).toEqual(getExperience("en", { featuredOnly: true }).map((entry) => entry.role));
   expect(scope.getByRole("link", { name: "All experience" }).getAttribute("href")).toBe("/en/experience");
 });
 
@@ -241,7 +238,7 @@ async function findExperience(on: keyof typeof TOPIC_ON, language: "en" | "ru", 
   const items = within(scope)
     .getAllByRole("heading", { level })
     .map((entry) => entry.closest("li") as HTMLElement);
-  const entries = getExperience(language).filter((entry) => !featuredOnly || entry.featured);
+  const entries = getExperience(language, { featuredOnly });
   return { scope, items, level, entries };
 }
 
@@ -603,14 +600,16 @@ test("the Theme starts in Light, and a switch lasts across Pages and Languages",
 });
 
 test.each([
-  ["/en/", "Contact"],
-  ["/ru/learning", "Контакты"],
-  ["/ru/nope", "Контакты"],
-])("%s has a Footer holding the Contact Section", async (path, heading) => {
+  ["/en/", "en", "Contact"],
+  ["/ru/learning", "ru", "Контакты"],
+  ["/ru/nope", "ru", "Контакты"],
+] as const)("%s has a Footer holding the Contact Section", async (path, language, heading) => {
   renderPath(path);
   const footer = within(await screen.findByRole("contentinfo"));
   expect(footer.getByRole("heading", { name: heading })).toBeDefined();
-  expect(footer.getByRole("link", { name: /^GitHub/ }).getAttribute("href")).toBe("https://github.com/4edorov");
+  expect(footer.getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(
+    getContact(language).links.map(({ url }) => url),
+  );
 });
 
 test.each([
@@ -628,16 +627,11 @@ test.each([
 );
 
 test.each([
-  ["/en/", "Email me", "https://www.linkedin.com/in/alexander-fedorov-229008156/", "(opens in a new tab)"],
-  [
-    "/ru/",
-    "Написать мне",
-    "https://www.linkedin.com/in/alexander-fedorov-229008156/?locale=ru-RU",
-    "(откроется в новой вкладке)",
-  ],
-])(
-  "on %s the Contact Section links to email, GitHub and LinkedIn, opening the last two in a new tab and saying so",
-  async (path, email, linkedIn, newTab) => {
+  ["/en/", "en", "(opens in a new tab)"],
+  ["/ru/", "ru", "(откроется в новой вкладке)"],
+] as const)(
+  "on %s the Contact Section links to every Contact link, opening web ones in a new tab and saying so",
+  async (path, language, newTab) => {
     renderPath(path);
     const links = within(await screen.findByRole("contentinfo"))
       .getAllByRole("link")
@@ -647,11 +641,14 @@ test.each([
         target: link.getAttribute("target"),
         rel: link.getAttribute("rel"),
       }));
-    expect(links).toEqual([
-      { name: email, href: "mailto:4edorov@gmail.com", target: null, rel: null },
-      { name: `GitHub ${newTab}`, href: "https://github.com/4edorov", target: "_blank", rel: "noopener" },
-      { name: `LinkedIn ${newTab}`, href: linkedIn, target: "_blank", rel: "noopener" },
-    ]);
+    expect(links).toEqual(
+      getContact(language).links.map(({ label, url }) =>
+        url.startsWith("https://")
+          ? { name: `${label} ${newTab}`, href: url, target: "_blank", rel: "noopener" }
+          : { name: label, href: url, target: null, rel: null },
+      ),
+    );
+    expect(new Set(links.map(({ href }) => href?.split(":")[0]))).toEqual(new Set(["mailto", "https"]));
   },
 );
 

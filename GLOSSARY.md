@@ -85,7 +85,7 @@ The owner's data shown on Pages, organised by Topic, written per Language and id
 _Avoid_: Content (unqualified), data, CMS content
 
 **Experience**:
-The Topic covering the jobs the owner has held, one Entry per role at an organisation: its role, its organisation (optionally linked to the organisation's website), its Location, its Period and its Assignments. A promotion starts a new Entry.
+The Topic covering the jobs the owner has held, one Entry per role at an organisation: its role, its organisation (optionally linked to the organisation's website), its Location, its Period and its Assignments. A promotion starts a new Entry. Its Entries run newest first by Period, whatever order the owner writes them in: those still in progress first, then by latest end month, then by latest start month, and otherwise in the order the owner writes them.
 _Avoid_: Jobs, work history, career, employment
 
 **Assignment**:
