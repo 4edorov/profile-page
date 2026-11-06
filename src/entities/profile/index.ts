@@ -13,7 +13,7 @@ export { ExperienceTimeline } from "./ui/experience-timeline";
 export { LearningEntry } from "./ui/learning-entry";
 export { LearningGroups } from "./ui/learning-groups";
 export { PeriodLabel } from "./ui/period-label";
-export { ProjectCards } from "./ui/project-cards";
+export { ProjectEntries } from "./ui/project-entries";
 export { ProjectGroups } from "./ui/project-groups";
 export { Tagline } from "./ui/tagline";
 export { TechnologyCloud } from "./ui/technology-cloud";

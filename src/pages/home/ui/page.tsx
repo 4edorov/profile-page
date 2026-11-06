@@ -8,7 +8,7 @@ import {
   getProjects,
   LearningGroups,
   pickAbout,
-  ProjectCards,
+  ProjectEntries,
   Tagline,
   TechnologyCloud,
   TechnologyMarquee,
@@ -82,7 +82,7 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
         heading={t("pages.projects")}
         more={{ to: pagePath(language, "projects"), label: t("home.more.projects") }}
       >
-        <ProjectCards entries={projects} className="mt-6" />
+        <ProjectEntries entries={projects} className="mt-6" />
       </TopicSection>
 
       <TopicSection

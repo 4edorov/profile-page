@@ -1,25 +1,25 @@
 import { useTranslation } from "react-i18next";
 import { withLayout } from "@/shared/lib";
-import { Chip } from "@/shared/ui/chip";
 import { Link } from "@/shared/ui/link";
-import { Heading, Text } from "@/shared/ui/typography";
-import type { ProjectEntry } from "../model/types";
+import { Heading } from "@/shared/ui/typography";
+import type { ProjectEntry as ProjectEntryData } from "../model/types";
 import { ExternalLinkIcon } from "./icons";
 import { ScreenshotCarousel } from "./screenshot-carousel";
+import { ToolChips } from "./tool-chips";
 
-export function ProjectCards({ entries, className }: { entries: ProjectEntry[]; className?: string }) {
+export function ProjectEntries({ entries, className }: { entries: ProjectEntryData[]; className?: string }) {
   return (
     <ul className={withLayout("grid gap-4 md:grid-cols-2", className)}>
       {entries.map((entry) => (
         <li key={entry.id} className="rounded-lg border border-text/20 p-5">
-          <ProjectCard entry={entry} />
+          <ProjectEntry entry={entry} />
         </li>
       ))}
     </ul>
   );
 }
 
-function ProjectCard({ entry }: { entry: ProjectEntry }) {
+function ProjectEntry({ entry }: { entry: ProjectEntryData }) {
   const { t } = useTranslation();
   return (
     <>
@@ -37,15 +37,7 @@ function ProjectCard({ entry }: { entry: ProjectEntry }) {
       </div>
       {entry.screenshots.length > 0 && <ScreenshotCarousel name={entry.name} screenshots={entry.screenshots} />}
       <p className="mt-1">{entry.summary}</p>
-      {entry.tools.length > 0 && (
-        <Text as="ul" size="sm" label={t("projects.tools")} className="mt-3 flex flex-wrap gap-2">
-          {entry.tools.map((tool) => (
-            <li key={tool}>
-              <Chip>{tool}</Chip>
-            </li>
-          ))}
-        </Text>
-      )}
+      <ToolChips tools={entry.tools} className="mt-3" />
       {entry.sourceUrl !== null && (
         <Link to={entry.sourceUrl} newTab className="mt-3 inline-block">
           {t("projects.source")}

@@ -47,6 +47,7 @@
     }
   },
   "technologies": "Технологии",
+  "tools": "Технологии",
   "opensInNewTab": "(откроется в новой вкладке)",
   "close": "Закрыть",
   "about": {
@@ -63,7 +64,6 @@
       "responsibilities": "Обязанности",
       "achievements": "Достижения",
       "team": "Команда",
-      "tools": "Технологии",
       "details": "Подробнее"
     }
   },
@@ -83,7 +83,6 @@
       "study": "Учебные проекты"
     },
     "source": "Исходный код",
-    "tools": "Технологии",
     "visit": "Открыть {{name}}",
     "screenshots": {
       "region": "Скриншоты {{name}}",

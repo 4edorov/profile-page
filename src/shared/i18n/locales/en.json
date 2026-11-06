@@ -47,6 +47,7 @@
     }
   },
   "technologies": "Technologies",
+  "tools": "Technologies",
   "opensInNewTab": "(opens in a new tab)",
   "close": "Close",
   "about": {
@@ -63,7 +64,6 @@
       "responsibilities": "Responsibilities",
       "achievements": "Achievements",
       "team": "Team",
-      "tools": "Technologies",
       "details": "Details"
     }
   },
@@ -83,7 +83,6 @@
       "study": "Study Projects"
     },
     "source": "Source",
-    "tools": "Technologies",
     "visit": "Visit {{name}}",
     "screenshots": {
       "region": "Screenshots of {{name}}",

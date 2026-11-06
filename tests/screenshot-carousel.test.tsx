@@ -2,7 +2,7 @@
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { I18nextProvider } from "react-i18next";
 import { afterEach, expect, test } from "vitest";
-import { ProjectCards, type ProjectEntry } from "@/entities/profile";
+import { ProjectEntries, type ProjectEntry } from "@/entities/profile";
 import { getI18n, type Language } from "@/shared/i18n";
 
 afterEach(cleanup);
@@ -19,10 +19,10 @@ const entry: ProjectEntry = {
   screenshots: [],
 };
 
-function renderCard(screenshots: ProjectEntry["screenshots"], language: Language = "en") {
+function renderEntry(screenshots: ProjectEntry["screenshots"], language: Language = "en") {
   render(
     <I18nextProvider i18n={getI18n(language)}>
-      <ProjectCards entries={[{ ...entry, screenshots }]} />
+      <ProjectEntries entries={[{ ...entry, screenshots }]} />
     </I18nextProvider>,
   );
 }
@@ -32,20 +32,20 @@ const table = { src: "table.webp", alt: "The table." };
 const team = { src: "team.webp", alt: "The team page." };
 
 test("an Entry without Screenshots has no Screenshot Carousel", () => {
-  renderCard([]);
+  renderEntry([]);
   expect(screen.queryByRole("region")).toBeNull();
   expect(screen.queryByRole("img")).toBeNull();
 });
 
 test("one Screenshot shows alone in a region named after the Entry, without buttons or dots", () => {
-  renderCard([main]);
+  renderEntry([main]);
   const carousel = screen.getByRole("region", { name: "Screenshots of Dashboard" });
   expect(within(carousel).getByRole("img", { name: "The main page." }).getAttribute("src")).toBe("main.webp");
   expect(within(carousel).queryAllByRole("button")).toEqual([]);
 });
 
 test("several Screenshots get previous and next buttons, the previous one disabled at the start, and one dot each", () => {
-  renderCard([main, table, team], "ru");
+  renderEntry([main, table, team], "ru");
   const carousel = screen.getByRole("region", { name: "Скриншоты Dashboard" });
   expect(
     within(carousel)
