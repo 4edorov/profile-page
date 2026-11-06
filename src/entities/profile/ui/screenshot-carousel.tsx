@@ -18,8 +18,10 @@ export function ScreenshotCarousel({ name, screenshots }: { name: string; screen
   return (
     <section aria-label={t("projects.screenshots.region", { name })} className="my-3">
       <div className="relative">
+        {/* Chrome makes a scroller with nothing focusable inside an unlabelled Tab stop; the buttons already move it. */}
         <div
           ref={trackRef}
+          tabIndex={-1}
           onScroll={(event) => {
             setCurrent(Math.round(event.currentTarget.scrollLeft / event.currentTarget.clientWidth));
           }}

@@ -87,3 +87,9 @@ test("the next button keeps focus and becomes disabled on reaching the last Scre
   fireEvent.click(next);
   expect(screen.getByRole("button", { name: "Screenshot 3 of 3" }).getAttribute("aria-current")).toBe("true");
 });
+
+test("the scrolling frame stays out of the Tab order", () => {
+  renderEntry([main, table]);
+  const frame = screen.getByRole("img", { name: "The main page." }).parentElement as HTMLElement;
+  expect(frame.getAttribute("tabindex")).toBe("-1");
+});
