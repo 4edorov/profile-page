@@ -61,8 +61,12 @@ A block of content within a Page, below the Header.
 _Avoid_: Part, component, widget (when meaning visitor-facing content)
 
 **Page Metadata**:
-A Page's title, description, canonical URL, Language alternates and link-preview tags, worded per Page in UI Strings and filled from its Language and Profile Content; no Page assembles its own. The Not Found Page has only a title and is never indexed.
+A Page's title, description, canonical URL, Language alternates and link-preview tags with the Preview Image, worded per Page in UI Strings and filled from its Language and Profile Content; no Page assembles its own. The Not Found Page has only a title and is never indexed.
 _Avoid_: SEO tags, head, meta (in prose)
+
+**Preview Image**:
+The image a link preview of a Page shows when its link is shared, beside the Page's title and description: one hand-made wide image without text, the same for every Page and every Language, described per Language for screen readers by the owner's name. Part of the Profile Site's own look, not Profile Content. The Not Found Page has none.
+_Avoid_: og:image, OG image, social card, thumbnail
 
 ## Languages
 
