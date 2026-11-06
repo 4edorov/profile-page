@@ -25,7 +25,7 @@ The Page dedicated to one Topic, showing more than that Topic's Section on the H
 _Avoid_: Detail page, subpage
 
 **Entry**:
-One item of Experience, Projects or Learning (a job, a project, a course), written once per Language. A Projects Entry has its Project Kind, a name, a summary and its Tools, and optionally a Live Site, a Source and Screenshots, but no detail; a Learning Entry has its Learning Kind, its provider and optionally a summary, a Period and a Credential, and a Book its Rating, but no detail; an Experience Entry has its Assignments instead. Every Entry except a Hidden Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section: a Projects one by its summary, a Learning one as on its Topic Page, an Experience one by its role, organisation, Location, Period and every one of its Assignments by name, description and Tools alone.
+One item of Experience, Projects or Learning (a job, a project, a course), written once per Language. A Projects Entry has its Project Kind, a name, a summary and its Tools, and optionally a Live Site, a Source and Screenshots, but no detail; a Learning Entry has its Learning Kind, its provider and optionally a summary, a Period and a Credential, and a Book its Rating, but no detail; an Experience Entry has its Assignments instead. Every Entry except a Hidden Entry appears on its Topic Page; only Featured Entries appear in its Topic's Section: a Projects or Learning one as on its Topic Page, an Experience one by its role, organisation, Location, Period and every one of its Assignments by name, description and Tools alone.
 _Avoid_: Item, record, card
 
 **Featured Entry**:
@@ -117,7 +117,7 @@ The link to a Projects Entry's source code, if it is public. Identical in every 
 _Avoid_: Repo, GitHub link, code link
 
 **Screenshot**:
-An image of a Projects Entry, which may have none or several, in the order the owner chooses: the same images in every Language, each described per Language for screen readers.
+An image of a Projects Entry, which may have none or several, in the order the owner chooses: the same images in every Language, each described per Language for screen readers, and shown in the Entry's Screenshot Carousel.
 _Avoid_: Image, picture, preview, gallery
 
 **Learning**:
@@ -189,6 +189,10 @@ _Avoid_: Ticker, carousel, slider, cloud (for the row)
 **Timeline**:
 The line joining the Experience Entries in the Experience Section and on its Topic Page, or the Certifications in the Learning Section and on its Topic Page, or the Education Entries on the Learning Topic Page alone, in their usual order, each Entry at its own evenly spaced marker with its Period beside it, if it has one; on phone-sized screens the Period sits above the Entry instead. Shows order, not elapsed time: overlapping or distant Periods are spaced alike.
 _Avoid_: History, journey, career path
+
+**Screenshot Carousel**:
+The frame showing a Projects Entry's Screenshots one at a time, in the owner's order, each fitted whole into the same 16:10 frame. The visitor moves through them with previous and next buttons, by swiping, or by the dots below that mark which one is in view; it never moves on its own and doesn't wrap around. An Entry with one Screenshot shows it alone, without controls; one with none has no Screenshot Carousel. Slides instantly for visitors who ask for reduced motion.
+_Avoid_: Slider, gallery, slideshow, carousel (unqualified)
 
 **Assignment Details**:
 What an Assignment's details button opens on the Experience Topic Page, over the rest of the Page: that Assignment's responsibilities, achievements and team, under its name and organisation, leaving out any that are empty. Closes on request and returns the visitor to where they were.
