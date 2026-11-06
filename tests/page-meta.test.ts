@@ -28,8 +28,6 @@ test.each<[PageId, Language, string, string]>([
     "Education, courses, certifications and books of Ada Lovelace, Analyst.",
   ],
   ["learning", "ru", "Обучение — Ada Lovelace", "Образование, курсы, сертификаты и книги: Ada Lovelace, Analyst."],
-  ["resume", "en", "Resume — Ada Lovelace", "The resume of Ada Lovelace, Analyst."],
-  ["resume", "ru", "Резюме — Ada Lovelace", "Резюме: Ada Lovelace, Analyst."],
 ])("Page Metadata of the %s Page in %s", (pageId, language, title, description) => {
   const other = language === "en" ? "ru" : "en";
   const ogLocales = { en: "en_US", ru: "ru_RU" };

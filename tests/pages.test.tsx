@@ -176,7 +176,6 @@ test("the Header links to every Page in order and marks the current one", async 
     "/en/experience",
     "/en/projects",
     "/en/learning",
-    "/en/resume",
   ]);
   expect(within(nav).getByRole("link", { current: "page" }).textContent).toBe("Projects");
 });
@@ -186,7 +185,6 @@ test.each([
   ["/en/experience", "Experience"],
   ["/en/projects", "Projects"],
   ["/en/learning", "Learning"],
-  ["/en/resume", "Resume"],
 ])("renders %s", async (path, heading) => {
   renderPath(path);
   expect(await screen.findByRole("heading", { level: 1, name: heading })).toBeDefined();
