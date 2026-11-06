@@ -8,6 +8,7 @@ import {
   getProjects,
   LearningGroups,
   pickAbout,
+  ProjectEntries,
   Tagline,
   TechnologyCloud,
   TechnologyMarquee,
@@ -81,16 +82,7 @@ export default function Home({ loaderData }: PageProps<typeof loader>) {
         heading={t("pages.projects")}
         more={{ to: pagePath(language, "projects"), label: t("home.more.projects") }}
       >
-        <EntryList>
-          {projects.map((entry) => (
-            <li key={entry.id}>
-              <Heading level="entry" as="h3">
-                {entry.name}
-              </Heading>
-              <p className="mt-1">{entry.summary}</p>
-            </li>
-          ))}
-        </EntryList>
+        <ProjectEntries entries={projects} className="mt-6" />
       </TopicSection>
 
       <TopicSection
@@ -124,10 +116,6 @@ function TopicSection({
       <MoreLink to={more.to}>{more.label}</MoreLink>
     </section>
   );
-}
-
-function EntryList({ children }: { children: React.ReactNode }) {
-  return <ul className="mt-3 space-y-4">{children}</ul>;
 }
 
 function MoreLink({ to, children }: { to: string; children: React.ReactNode }) {

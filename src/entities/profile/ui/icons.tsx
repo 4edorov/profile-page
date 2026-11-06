@@ -11,6 +11,10 @@ export function ExternalLinkIcon() {
   );
 }
 
+export function ChevronIcon({ direction }: { direction: "left" | "right" }) {
+  return <Icon>{direction === "left" ? <path d="m15 18-6-6 6-6" /> : <path d="m9 18 6-6-6-6" />}</Icon>;
+}
+
 export function StarIcon() {
   return (
     <Icon size="sm">
