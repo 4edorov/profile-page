@@ -13,7 +13,7 @@ export function IconButton({
       type="button"
       aria-label={label}
       title={label}
-      className={withLayout(`${ICON_CONTROL_LOOK} w-10`, className)}
+      className={withLayout(`${ICON_CONTROL_LOOK} w-10 disabled:pointer-events-none disabled:opacity-40`, className)}
       {...button}
     >
       {children}

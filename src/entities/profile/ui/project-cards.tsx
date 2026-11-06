@@ -5,6 +5,7 @@ import { Link } from "@/shared/ui/link";
 import { Heading, Text } from "@/shared/ui/typography";
 import type { ProjectEntry } from "../model/types";
 import { ExternalLinkIcon } from "./icons";
+import { ScreenshotCarousel } from "./screenshot-carousel";
 
 export function ProjectCards({ entries, className }: { entries: ProjectEntry[]; className?: string }) {
   return (
@@ -34,6 +35,7 @@ function ProjectCard({ entry }: { entry: ProjectEntry }) {
           </Link>
         )}
       </div>
+      {entry.screenshots.length > 0 && <ScreenshotCarousel name={entry.name} screenshots={entry.screenshots} />}
       <p className="mt-1">{entry.summary}</p>
       {entry.tools.length > 0 && (
         <Text as="ul" size="sm" label={t("projects.tools")} className="mt-3 flex flex-wrap gap-2">

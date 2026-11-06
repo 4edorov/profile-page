@@ -84,7 +84,13 @@
     },
     "source": "Source",
     "tools": "Technologies",
-    "visit": "Visit {{name}}"
+    "visit": "Visit {{name}}",
+    "screenshots": {
+      "region": "Screenshots of {{name}}",
+      "previous": "Previous screenshot",
+      "next": "Next screenshot",
+      "dot": "Screenshot {{number}} of {{total}}"
+    }
   },
   "resume": {
     "placeholder": "The resume will appear here soon."
