@@ -4,7 +4,7 @@ import { IconButton } from "@/shared/ui/button";
 import type { Screenshot } from "../model/types";
 import { ChevronIcon } from "./icons";
 
-const ARROW_LAYOUT = "absolute top-1/2 -translate-y-1/2 rounded-full bg-background/80";
+const ARROW_LAYOUT = "absolute top-1/2 -translate-y-1/2";
 
 export function ScreenshotCarousel({ name, screenshots }: { name: string; screenshots: Screenshot[] }) {
   const { t } = useTranslation();
@@ -41,6 +41,7 @@ export function ScreenshotCarousel({ name, screenshots }: { name: string; screen
           <>
             <IconButton
               label={t("projects.screenshots.previous")}
+              overImage
               aria-disabled={atFirst || undefined}
               onClick={() => !atFirst && show(current - 1)}
               className={`${ARROW_LAYOUT} left-1`}
@@ -49,6 +50,7 @@ export function ScreenshotCarousel({ name, screenshots }: { name: string; screen
             </IconButton>
             <IconButton
               label={t("projects.screenshots.next")}
+              overImage
               aria-disabled={atLast || undefined}
               onClick={() => !atLast && show(current + 1)}
               className={`${ARROW_LAYOUT} right-1`}
