@@ -78,8 +78,8 @@ export function pickAbout<Field extends keyof About>(language: Language, fields:
   return Object.fromEntries(fields.map((field) => [field, all[field]])) as Pick<About, Field>;
 }
 
-export function getExperience(language: Language): ExperienceEntry[] {
-  return experience[language].filter(shown).toSorted(newestFirst);
+export function getExperience(language: Language, { featuredOnly = false } = {}): ExperienceEntry[] {
+  return experience[language].filter(kept(featuredOnly)).toSorted(newestFirst);
 }
 
 export function getProjects(language: Language, { featuredOnly = false } = {}): ProjectGroup[] {
