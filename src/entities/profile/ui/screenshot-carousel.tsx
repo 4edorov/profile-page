@@ -11,6 +11,8 @@ export function ScreenshotCarousel({ name, screenshots }: { name: string; screen
   const trackRef = useRef<HTMLDivElement>(null);
   const [current, setCurrent] = useState(0);
   const hasControls = screenshots.length > 1;
+  const atFirst = current === 0;
+  const atLast = current === screenshots.length - 1;
   // Leaving `behavior` out lets the track's CSS make this smooth, or instant under reduced motion.
   const show = (index: number) => trackRef.current?.scrollTo({ left: index * trackRef.current.clientWidth });
   return (
@@ -37,16 +39,16 @@ export function ScreenshotCarousel({ name, screenshots }: { name: string; screen
           <>
             <IconButton
               label={t("projects.screenshots.previous")}
-              disabled={current === 0}
-              onClick={() => show(current - 1)}
+              aria-disabled={atFirst || undefined}
+              onClick={() => !atFirst && show(current - 1)}
               className={`${ARROW_LAYOUT} left-1`}
             >
               <ChevronIcon direction="left" />
             </IconButton>
             <IconButton
               label={t("projects.screenshots.next")}
-              disabled={current === screenshots.length - 1}
-              onClick={() => show(current + 1)}
+              aria-disabled={atLast || undefined}
+              onClick={() => !atLast && show(current + 1)}
               className={`${ARROW_LAYOUT} right-1`}
             >
               <ChevronIcon direction="right" />
