@@ -1,6 +1,7 @@
 {
   "name": "profile-page",
   "private": true,
+  "version": "1.0.0",
   "type": "module",
   "packageManager": "pnpm@10.17.0",
   "engines": {

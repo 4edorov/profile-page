@@ -201,3 +201,9 @@ _Avoid_: Slider, gallery, slideshow, carousel (unqualified)
 **Assignment Details**:
 What an Assignment's details button opens on the Experience Topic Page, over the rest of the Page: that Assignment's responsibilities, achievements and team, under its name and organisation, leaving out any that are empty. Closes on request and returns the visitor to where they were.
 _Avoid_: Modal, popup, dialog (in prose)
+
+## Releases
+
+**Version**:
+A numbered state of the Profile Site that goes live, numbered major.minor.patch: major when a Page or Language goes away or URLs change, minor when visitors get something new to see, patch for fixes and Profile Content changes. Its notes are in the CHANGELOG. Every deploy is of a Version.
+_Avoid_: Release, build, deploy (when meaning the numbered state)

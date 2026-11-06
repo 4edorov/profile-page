@@ -1,6 +1,6 @@
 # Self-hosted nginx, deployed manually over SSH, no CI
 
-The Profile Site is served by nginx on the owner's own server with a custom domain, and deployed by running `pnpm run deploy` locally: it refuses to run with uncommitted changes, runs lint, typecheck, tests and the build, then rsyncs the build in place over SSH. There is no CI, so those local checks are the only gate. The nginx config is versioned in `deploy/nginx/` but installed by hand, so a routine deploy can never break the server config.
+The Profile Site is served by nginx on the owner's own server with a custom domain, and deployed by running `pnpm run deploy` locally: it refuses to run with uncommitted changes or a HEAD that isn't its Version's tag on `origin`, runs lint, typecheck, tests and the build, then rsyncs the build in place over SSH. There is no CI, so those local checks are the only gate. The nginx config is versioned in `deploy/nginx/` but installed by hand, so a routine deploy can never break the server config.
 
 ## Considered Options
 
@@ -9,4 +9,4 @@ The Profile Site is served by nginx on the owner's own server with a custom doma
 
 ## Consequences
 
-Rollback means checking out an earlier commit and deploying again. `/VERSION` on the live site shows the commit that is deployed.
+Every deploy is of a tagged Version, so rollback means checking out an earlier Version's tag and deploying again. `/VERSION` on the live site shows the deployed Version and its commit.
