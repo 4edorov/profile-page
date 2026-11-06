@@ -23,15 +23,25 @@ set +a
 : "${DEPLOY_HOST:?DEPLOY_HOST must be set in .env.deploy}"
 : "${DEPLOY_PATH:?DEPLOY_PATH must be set in .env.deploy}"
 
-# What goes live must be exactly a commit, so VERSION identifies it.
+# What goes live must be exactly a tagged Version, so VERSION identifies it.
 if [[ -n "$(git status --porcelain)" ]]; then
   echo "Refusing to deploy: the working tree has uncommitted changes." >&2
+  exit 1
+fi
+version="$(node -p 'require("./package.json").version')"
+tag="v${version}"
+if [[ "$(git rev-parse -q --verify "refs/tags/${tag}^{commit}")" != "$(git rev-parse HEAD)" ]]; then
+  echo "Refusing to deploy: HEAD is not tagged ${tag}. See \"Cutting a Version\" in README.md." >&2
+  exit 1
+fi
+if [[ "$(git ls-remote --tags origin "refs/tags/${tag}" | cut -f1)" != "$(git rev-parse "refs/tags/${tag}")" ]]; then
+  echo "Refusing to deploy: ${tag} is not on origin. Run: git push origin ${tag}" >&2
   exit 1
 fi
 
 pnpm run check
 pnpm run build
-git rev-parse HEAD > build/client/VERSION
+printf '%s\n%s\n' "$version" "$(git rev-parse HEAD)" > build/client/VERSION
 
 rsync_cmd=(rsync -rlz -e "ssh -p ${DEPLOY_PORT:-22}" ${dry_run:+"$dry_run"})
 target="${DEPLOY_HOST}:${DEPLOY_PATH%/}"
@@ -41,4 +51,4 @@ target="${DEPLOY_HOST}:${DEPLOY_PATH%/}"
 "${rsync_cmd[@]}" build/client/ "${target}/"
 "${rsync_cmd[@]}" --delete build/client/ "${target}/"
 
-echo "Deployed $(cat build/client/VERSION) to ${target}${dry_run:+ (dry run)}"
+echo "Deployed ${tag} ($(git rev-parse --short HEAD)) to ${target}${dry_run:+ (dry run)}"

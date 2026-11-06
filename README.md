@@ -9,7 +9,7 @@ A professional Profile Site. It's an SPA built with React 19, React Router 8 and
 - **react-i18next** for UI Strings, with bundled and typed resources.
 - **Tailwind CSS 4**, limited to four colors per Theme (Background, Surface, Text, Primary), plus the green of the Open to Work light, in `src/app/app.css`. Every visit starts in Light, whatever the system setting. The Header switches the Theme, and the choice is never stored.
 - **Vite 8**, **Vitest**, **ESLint** (type-aware typescript-eslint, react-hooks, jsx-a11y), **Prettier**, **Steiger** and **knip**.
-- **Self-hosted nginx**, deployed manually over SSH. See [ADR-0003](docs/adr/0003-self-hosted-manual-deploy.md).
+- **Self-hosted nginx**, deployed manually over SSH, one tagged Version at a time. See [ADR-0003](docs/adr/0003-self-hosted-manual-deploy.md).
 
 ## Development
 
@@ -40,7 +40,7 @@ Dependencies are updated once a month, by the owner or an agent. At 09:00 on the
 4. Fix every high or critical `pnpm audit` finding, dev-only ones included, since dev tools run on the machine that deploys. Update the package that pulls it in, or, if that has no fix yet, add a `pnpm.overrides` entry until it does. Lower severities can wait for a fix.
 5. Remove every `pnpm.peerDependencyRules`, `pnpm.packageExtensions` and `pnpm.overrides` entry that's no longer needed: a stale one hides the next real conflict.
 6. Run `pnpm check`. If a package that reaches the build changed (any `dependencies` entry, or a build tool such as Vite, Tailwind or `@react-router/dev`), also build, run `pnpm preview`, and check a Page in both Languages and both Themes, and the Technology Cloud.
-7. Open the PR. Once it's merged, the owner deploys if a package that reaches the build changed.
+7. Open the PR. Once it's merged, if a package that reaches the build changed, cut a patch Version (see "Cutting a Version") for the owner to deploy.
 
 An agent stops, comments on the issue and relabels it `ready-for-human` when a high or critical finding has no fix or safe override, when a major needs code changes or would take the branch over 500 lines, or when verification fails for an unclear reason.
 
@@ -62,6 +62,7 @@ Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-fe
 | `content/portrait.jpg`                            | The Portrait, written once for every Language: a JPEG at least 768×1024; the About Page shows its 3:4 middle.                         |
 | `src/shared/seo/preview-image.jpg`                | The Preview Image, the same for every Page and Language: a 1200×630 JPEG of at most 300 KB, without text.                             |
 | `public/favicon.*`, `public/apple-touch-icon.png` | The favicon as SVG, and drawn from it once: a 32×32 + 48×48 ICO and a 180×180 square PNG for iOS. Redraw both after changing the SVG. |
+| `CHANGELOG.md`                                    | What changed on the live site, one section per Version.                                                                               |
 | `deploy/nginx/`                                   | nginx site config and shared snippet.                                                                                                 |
 | `scripts/deploy.sh`                               | Build and deploy over SSH.                                                                                                            |
 
@@ -92,6 +93,23 @@ The nginx config handles:
 - long-term caching of `/assets/*`, with `no-cache` for HTML
 - `X-Robots-Tag: noindex` on the `.data` files client navigation fetches, so search engines index only Pages
 
+## Cutting a Version
+
+Every deploy is of a Version, numbered major.minor.patch as **Version** in [GLOSSARY.md](GLOSSARY.md) defines. A Version is cut in a release PR and tagged on `main` by the owner:
+
+1. On a `<n>-release-<version>` branch, run `pnpm version <version> --no-git-tag-version`, which sets `version` in `package.json` without committing or tagging.
+2. In `CHANGELOG.md`, add a `## [<version>] - YYYY-MM-DD` section dated the day the owner will tag it, and its link at the bottom. Write it from the PRs merged since the last tag (`git log --merges --oneline "$(git describe --tags --abbrev=0)"..origin/main`), in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) groups, in English, for a visitor: leave out changes that only touch tooling, hooks or tests.
+3. Open the PR. Once it's merged, the owner tags the merge commit and deploys:
+
+```sh
+git switch main && git pull
+git tag -a v1.0.0 -m "1.0.0"
+git push origin v1.0.0
+pnpm run deploy
+```
+
+The tag goes on `main`'s merge commit, not the release branch's commit, because the deploy script deploys only a HEAD that carries the tag.
+
 ## Deploy
 
 ```sh
@@ -102,9 +120,9 @@ pnpm run deploy
 
 The deploy script:
 
-- refuses to run with uncommitted changes
+- refuses to run with uncommitted changes, or unless HEAD carries the tag `v<version>` from `package.json` and that tag is on `origin`
 - runs `pnpm check` and the build
 - rsyncs `build/client/` in place over SSH in three passes (new assets, then pages, then removal of stale files)
-- writes the deployed commit to `/VERSION`
+- writes the deployed Version and its commit to `/VERSION`
 
-To roll back, check out an earlier commit and deploy again.
+To roll back, check out an earlier Version's tag (`git checkout v1.0.0`) and deploy again.
