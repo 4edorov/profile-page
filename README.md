@@ -82,7 +82,7 @@ A UI String key that's missing from `ru.json` is a type error. Profile Content f
 1. Copy `deploy/nginx/profile-site-pages.conf` to `/etc/nginx/snippets/profile-site-pages.conf`.
 2. Copy `deploy/nginx/profile-site.conf` into your nginx sites (for example `/etc/nginx/sites-available/`, then symlink it into `sites-enabled/`). It serves `4edorov.com` from `/var/www/profile-site` (must match `DEPLOY_PATH`), redirects `www` and http to `https://4edorov.com`, and uses the existing Certbot certificate in `/etc/letsencrypt/live/4edorov.com/`.
 3. Disable the old site (`rm /etc/nginx/sites-enabled/4edorov.com`) so its server names don't conflict, then run `nginx -t && systemctl reload nginx` and `certbot renew --dry-run`.
-4. Make sure the deploy user can write to the web root over SSH, and that the server has `rsync` installed.
+4. Create the web root, owned by the deploy user (`sudo install -d -o <user> -g <user> -m 755 /var/www/profile-site`), and make sure the server has `rsync` installed.
 
 The nginx config handles:
 
@@ -121,6 +121,7 @@ pnpm run deploy
 The deploy script:
 
 - refuses to run with uncommitted changes, or unless HEAD carries the tag `v<version>` from `package.json` and that tag is on `origin`
+- refuses to run unless the server has `rsync` and the deploy user can write to `DEPLOY_PATH`
 - runs `pnpm check` and the build
 - rsyncs `build/client/` in place over SSH in three passes (new assets, then pages, then removal of stale files)
 - writes the deployed Version and its commit to `/VERSION`

@@ -39,12 +39,18 @@ if [[ "$(git ls-remote --tags origin "refs/tags/${tag}" | cut -f1)" != "$(git re
   exit 1
 fi
 
+target="${DEPLOY_HOST}:${DEPLOY_PATH%/}"
+# macOS's openrsync reports an unwritable target only as "unexpected end of file".
+if ! ssh -p "${DEPLOY_PORT:-22}" "$DEPLOY_HOST" "command -v rsync >/dev/null && test -d '${DEPLOY_PATH%/}' && test -w '${DEPLOY_PATH%/}'"; then
+  echo "Refusing to deploy: ${target} is missing or not writable by the deploy user, or the server has no rsync. See \"Server setup\" in README.md." >&2
+  exit 1
+fi
+
 pnpm run check
 pnpm run build
 printf '%s\n%s\n' "$version" "$(git rev-parse HEAD)" > build/client/VERSION
 
 rsync_cmd=(rsync -rlz -e "ssh -p ${DEPLOY_PORT:-22}" ${dry_run:+"$dry_run"})
-target="${DEPLOY_HOST}:${DEPLOY_PATH%/}"
 
 # Assets, then the HTML that references them, then deletions: visitors mid-deploy never get HTML pointing at missing files.
 "${rsync_cmd[@]}" build/client/assets/ "${target}/assets/"
