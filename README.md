@@ -80,8 +80,8 @@ A UI String key that's missing from `ru.json` is a type error. Profile Content f
 ## Server setup (once)
 
 1. Copy `deploy/nginx/profile-site-pages.conf` to `/etc/nginx/snippets/profile-site-pages.conf`.
-2. Copy `deploy/nginx/profile-site.conf` into your nginx sites (for example `/etc/nginx/sites-available/`, then symlink it into `sites-enabled/`). Replace `profile.example.com` with your domain and `/var/www/profile-site` with your web root.
-3. Add TLS your usual way (for example `certbot --nginx -d your.domain`), then run `nginx -t && systemctl reload nginx`.
+2. Copy `deploy/nginx/profile-site.conf` into your nginx sites (for example `/etc/nginx/sites-available/`, then symlink it into `sites-enabled/`). It serves `4edorov.com` from `/var/www/profile-site` (must match `DEPLOY_PATH`), redirects `www` and http to `https://4edorov.com`, and uses the existing Certbot certificate in `/etc/letsencrypt/live/4edorov.com/`.
+3. Disable the old site (`rm /etc/nginx/sites-enabled/4edorov.com`) so its server names don't conflict, then run `nginx -t && systemctl reload nginx` and `certbot renew --dry-run`.
 4. Make sure the deploy user can write to the web root over SSH, and that the server has `rsync` installed.
 
 The nginx config handles:
