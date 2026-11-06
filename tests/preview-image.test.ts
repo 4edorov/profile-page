@@ -3,7 +3,8 @@ import { expect, test } from "vitest";
 import { pageMeta } from "@/shared/seo";
 
 const PREVIEW_IMAGE = new URL("../src/shared/seo/preview-image.jpg", import.meta.url);
-const MAX_BYTES = 300 * 1024;
+const WHATSAPP_PREVIEW_MAX_BYTES = 300 * 1024;
+const NOT_FRAME_HEADERS = [0xffc4, 0xffc8, 0xffcc];
 
 function jpegSize(bytes: Buffer): { width: number; height: number } {
   if (bytes.readUInt16BE(0) !== 0xffd8) {
@@ -12,7 +13,7 @@ function jpegSize(bytes: Buffer): { width: number; height: number } {
   let offset = 2;
   while (offset < bytes.length) {
     const marker = bytes.readUInt16BE(offset);
-    const isStartOfFrame = marker >= 0xffc0 && marker <= 0xffcf && ![0xffc4, 0xffc8, 0xffcc].includes(marker);
+    const isStartOfFrame = marker >= 0xffc0 && marker <= 0xffcf && !NOT_FRAME_HEADERS.includes(marker);
     if (isStartOfFrame) {
       return { height: bytes.readUInt16BE(offset + 5), width: bytes.readUInt16BE(offset + 7) };
     }
@@ -21,7 +22,7 @@ function jpegSize(bytes: Buffer): { width: number; height: number } {
   throw new Error("JPEG has no frame header");
 }
 
-function declared(property: string): string | undefined {
+function metaContent(property: string): string | undefined {
   const tags = pageMeta("home")({
     loaderData: { about: { name: "", headline: "", summary: "" } },
     location: { pathname: "/en/" },
@@ -33,8 +34,8 @@ function declared(property: string): string | undefined {
 test("the Preview Image is a JPEG of the size its Page Metadata declares, small enough for every platform", () => {
   const bytes = readFileSync(PREVIEW_IMAGE);
   const { width, height } = jpegSize(bytes);
-  expect(declared("og:image:type")).toBe("image/jpeg");
-  expect(String(width)).toBe(declared("og:image:width"));
-  expect(String(height)).toBe(declared("og:image:height"));
-  expect(bytes.length).toBeLessThanOrEqual(MAX_BYTES);
+  expect(metaContent("og:image:type")).toBe("image/jpeg");
+  expect(String(width)).toBe(metaContent("og:image:width"));
+  expect(String(height)).toBe(metaContent("og:image:height"));
+  expect(bytes.length).toBeLessThanOrEqual(WHATSAPP_PREVIEW_MAX_BYTES);
 });

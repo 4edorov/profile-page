@@ -50,18 +50,19 @@ There's no dependency-update bot (Dependabot version updates or Renovate). With 
 
 Code under `src/` follows Feature-Sliced Design. See [ADR-0004](docs/adr/0004-feature-sliced-design.md).
 
-| Path                             | What                                                                                                               |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `src/shared/routing/pages.ts`    | Every Page's path, in Header order. Routes, prerendering, the sitemap and the Header are derived from it.          |
-| `src/app/routes.ts`              | One route tree per Language, plus a top-level 404.                                                                 |
-| `src/app/layouts/frame.tsx`      | Every Page's frame: the Header, the Page and the Footer in a 1280px column.                                        |
-| `src/pages/<page>/ui/page.tsx`   | Each Page's route module: `loader`, `meta` and component. `<page>` is its key in `PAGE_PATHS`, except `not-found`. |
-| `src/shared/i18n/locales/*.json` | UI Strings.                                                                                                        |
-| `content/{en,ru}/<topic>.json`   | Profile Content, one file per Topic. Its types live in `src/entities/profile`.                                     |
-| `content/technologies.json`      | The Technologies, written once for every Language; `stack` marks the Stack.                                        |
-| `content/portrait.jpg`           | The Portrait, written once for every Language: a JPEG at least 768×1024; the About Page shows its 3:4 middle.      |
-| `deploy/nginx/`                  | nginx site config and shared snippet.                                                                              |
-| `scripts/deploy.sh`              | Build and deploy over SSH.                                                                                         |
+| Path                               | What                                                                                                               |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `src/shared/routing/pages.ts`      | Every Page's path, in Header order. Routes, prerendering, the sitemap and the Header are derived from it.          |
+| `src/app/routes.ts`                | One route tree per Language, plus a top-level 404.                                                                 |
+| `src/app/layouts/frame.tsx`        | Every Page's frame: the Header, the Page and the Footer in a 1280px column.                                        |
+| `src/pages/<page>/ui/page.tsx`     | Each Page's route module: `loader`, `meta` and component. `<page>` is its key in `PAGE_PATHS`, except `not-found`. |
+| `src/shared/i18n/locales/*.json`   | UI Strings.                                                                                                        |
+| `content/{en,ru}/<topic>.json`     | Profile Content, one file per Topic. Its types live in `src/entities/profile`.                                     |
+| `content/technologies.json`        | The Technologies, written once for every Language; `stack` marks the Stack.                                        |
+| `content/portrait.jpg`             | The Portrait, written once for every Language: a JPEG at least 768×1024; the About Page shows its 3:4 middle.      |
+| `src/shared/seo/preview-image.jpg` | The Preview Image, the same for every Page and Language: a 1200×630 JPEG of at most 300 KB, without text.          |
+| `deploy/nginx/`                    | nginx site config and shared snippet.                                                                              |
+| `scripts/deploy.sh`                | Build and deploy over SSH.                                                                                         |
 
 ### Adding a Page
 
