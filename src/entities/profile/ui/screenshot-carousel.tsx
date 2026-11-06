@@ -25,7 +25,7 @@ export function ScreenshotCarousel({ name, screenshots }: { name: string; screen
           onScroll={(event) => {
             setCurrent(Math.round(event.currentTarget.scrollLeft / event.currentTarget.clientWidth));
           }}
-          className="flex aspect-[16/10] snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto scroll-smooth rounded-md bg-surface motion-reduce:scroll-auto"
+          className="flex aspect-[16/10] snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto scroll-smooth rounded-md bg-surface motion-reduce:scroll-auto [&::-webkit-scrollbar]:hidden"
         >
           {screenshots.map((screenshot) => (
             <img
