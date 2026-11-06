@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { expect, test } from "vitest";
-import { getAbout } from "@/entities/profile";
+import { getAbout, getContact } from "@/entities/profile";
 import { LANGUAGES, type Language } from "@/shared/i18n";
 import { PAGE_IDS, type PageId } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
@@ -15,8 +15,8 @@ function url(pageId: PageId, language: Language): string {
 test.each<[PageId, Language, string, string]>([
   ["home", "en", "Ada Lovelace — Analyst", "Notes on the Analytical Engine."],
   ["home", "ru", "Ada Lovelace — Analyst", "Notes on the Analytical Engine."],
-  ["about", "en", "About — Ada Lovelace", "Notes on the Analytical Engine."],
-  ["about", "ru", "Обо мне — Ada Lovelace", "Notes on the Analytical Engine."],
+  ["about", "en", "About — Ada Lovelace", "About Ada Lovelace, Analyst: experience, stack and way of working."],
+  ["about", "ru", "Обо мне — Ada Lovelace", "О себе: Ada Lovelace, Analyst. Опыт, стек и подход к работе."],
   ["experience", "en", "Experience — Ada Lovelace", "Work experience of Ada Lovelace, Analyst."],
   ["experience", "ru", "Опыт — Ada Lovelace", "Опыт работы: Ada Lovelace, Analyst."],
   ["projects", "en", "Projects — Ada Lovelace", "Projects by Ada Lovelace, Analyst."],
@@ -60,6 +60,16 @@ test.each<[PageId, Language, string, string]>([
   ]);
 });
 
+function ownMeta(pageId: PageId, language: Language) {
+  const request = new Request(url(pageId, language));
+  const { loader, meta } = routeModule(findRoute(`${language}/${pageId}`));
+  if (!loader || !meta) {
+    throw new Error(`The ${pageId} Page's route module needs a loader and a meta`);
+  }
+  const loaderData = loader({ request, params: {}, context: {} } as LoaderFunctionArgs);
+  return meta({ loaderData, location: { pathname: new URL(request.url).pathname } });
+}
+
 test("no Page Metadata without loader data", () => {
   expect(pageMeta("home")({ loaderData: undefined, location: { pathname: "/en/" } })).toEqual([]);
 });
@@ -67,13 +77,7 @@ test("no Page Metadata without loader data", () => {
 test.each(PAGE_IDS.flatMap((pageId) => LANGUAGES.map((language) => [pageId, language] as const)))(
   "the %s Page's own meta, fed its own loader in %s, is canonical for that Page and names the owner",
   (pageId, language) => {
-    const request = new Request(url(pageId, language));
-    const { loader, meta } = routeModule(findRoute(`${language}/${pageId}`));
-    if (!loader || !meta) {
-      throw new Error(`The ${pageId} Page's route module needs a loader and a meta`);
-    }
-    const loaderData = loader({ request, params: {}, context: {} } as LoaderFunctionArgs);
-    const tags = meta({ loaderData, location: { pathname: new URL(request.url).pathname } });
+    const tags = ownMeta(pageId, language);
     expect(tags).toContainEqual({ tagName: "link", rel: "canonical", href: url(pageId, language) });
     expect(tags).toContainEqual({
       property: "og:title",
@@ -81,3 +85,43 @@ test.each(PAGE_IDS.flatMap((pageId) => LANGUAGES.map((language) => [pageId, lang
     });
   },
 );
+
+test.each<[Language, Language]>([
+  ["en", "ru"],
+  ["ru", "en"],
+])(
+  "the Home Page in %s describes the owner to search engines from its Profile Content, by the same profiles in every Language",
+  (language, other) => {
+    const about = getAbout(language);
+    const profiles = getContact("en")
+      .links.filter((link) => link.id !== "email")
+      .map((link) => link.url);
+    expect(ownMeta("home", language)).toContainEqual({
+      "script:ld+json": {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        url: url("home", language),
+        inLanguage: language,
+        mainEntity: {
+          "@type": "Person",
+          name: about.name,
+          alternateName: [getAbout(other).name],
+          jobTitle: about.headline,
+          description: about.summary,
+          image: expect.stringMatching(/^https:\/\/example\.com\/.+\.jpg$/) as unknown,
+          url: url("home", language),
+          sameAs: profiles,
+          knowsAbout: about.stack,
+        },
+      },
+    });
+  },
+);
+
+test.each(
+  PAGE_IDS.filter((pageId) => pageId !== "home").flatMap((pageId) =>
+    LANGUAGES.map((language) => [pageId, language] as const),
+  ),
+)("the %s Page in %s does not describe the owner", (pageId, language) => {
+  expect(ownMeta(pageId, language).some((tag) => "script:ld+json" in tag)).toBe(false);
+});

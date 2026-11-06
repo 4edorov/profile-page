@@ -6,7 +6,12 @@ import { Heading } from "@/shared/ui/typography";
 import { Frame } from "./layouts/frame";
 import "./app.css";
 
-export const links: Route.LinksFunction = () => [{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml" }];
+export const links: Route.LinksFunction = () => [
+  // Sizes, not "any", so browsers that read SVG prefer it over the ICO.
+  { rel: "icon", href: "/favicon.ico", sizes: "32x32 48x48" },
+  { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+  { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const language = useLanguage();
