@@ -1,4 +1,4 @@
-import type { Language } from "@/shared/i18n";
+import { DEFAULT_LANGUAGE, type Language, LANGUAGES } from "@/shared/i18n";
 import enAbout from "../../../../content/en/about.json";
 import enContact from "../../../../content/en/contact.json";
 import enExperience from "../../../../content/en/experience.json";
@@ -11,6 +11,7 @@ import ruExperience from "../../../../content/ru/experience.json";
 import ruLearning from "../../../../content/ru/learning.json";
 import ruProjects from "../../../../content/ru/projects.json";
 import allTechnologies from "../../../../content/technologies.json";
+import { isWebLink } from "../lib/contact";
 import { newestFirst } from "../lib/order";
 import {
   LEARNING_KINDS,
@@ -23,6 +24,7 @@ import {
   type LearningEntry,
   type LearningGroup,
   type LearningKind,
+  type Owner,
   type ProjectEntry,
   type ProjectGroup,
   type ProjectKind,
@@ -103,6 +105,14 @@ export function getLearning(language: Language, { featuredOnly = false } = {}): 
 
 export function getContact(language: Language): Contact {
   return contact[language];
+}
+
+export function getOwner(language: Language): Owner {
+  return {
+    alternateNames: LANGUAGES.filter((other) => other !== language).map((other) => about[other].name),
+    // The Default Language's URLs in every Language: a query such as LinkedIn's `?locale=` differs per Language.
+    sameAs: contact[DEFAULT_LANGUAGE].links.filter(isWebLink).map((link) => link.url),
+  };
 }
 
 function shown(entry: Entry): boolean {

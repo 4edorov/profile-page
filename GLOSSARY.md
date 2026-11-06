@@ -61,7 +61,7 @@ A block of content within a Page, below the Header.
 _Avoid_: Part, component, widget (when meaning visitor-facing content)
 
 **Page Metadata**:
-A Page's title, description, canonical URL, Language alternates and link-preview tags with the Preview Image, worded per Page in UI Strings and filled from its Language and Profile Content; no Page assembles its own. Every Page has its own description. The Home Page's also describes the owner to search engines, from the same Profile Content it shows. The Not Found Page has only a title and is never indexed.
+A Page's title, description, canonical URL, Language alternates and link-preview tags with the Preview Image, worded per Page in UI Strings and filled from its Language and Profile Content; no Page assembles its own. Every Page has its own description. The Home Page's also describes the owner to search engines, from the same Profile Content it shows, as the same person in every Language. The Not Found Page has only a title and is never indexed.
 _Avoid_: SEO tags, head, meta (in prose), structured data (in prose)
 
 **Preview Image**:

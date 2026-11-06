@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { expect, test } from "vitest";
-import { getAbout, getContact } from "@/entities/profile";
+import { getAbout, getOwner } from "@/entities/profile";
 import { LANGUAGES, type Language } from "@/shared/i18n";
 import { PAGE_IDS, type PageId } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
@@ -90,12 +90,9 @@ test.each<[Language, Language]>([
   ["en", "ru"],
   ["ru", "en"],
 ])(
-  "the Home Page in %s describes the owner to search engines from its Profile Content, by the same profiles in every Language",
+  "the Home Page in %s describes the owner to search engines from its Profile Content, as the same Person in every Language",
   (language, other) => {
     const about = getAbout(language);
-    const profiles = getContact("en")
-      .links.filter((link) => link.id !== "email")
-      .map((link) => link.url);
     expect(ownMeta("home", language)).toContainEqual({
       "script:ld+json": {
         "@context": "https://schema.org",
@@ -104,13 +101,14 @@ test.each<[Language, Language]>([
         inLanguage: language,
         mainEntity: {
           "@type": "Person",
+          "@id": "https://example.com/en/#owner",
           name: about.name,
           alternateName: [getAbout(other).name],
           jobTitle: about.headline,
           description: about.summary,
           image: expect.stringMatching(/^https:\/\/example\.com\/.+\.jpg$/) as unknown,
           url: url("home", language),
-          sameAs: profiles,
+          sameAs: getOwner("en").sameAs,
           knowsAbout: about.stack,
         },
       },

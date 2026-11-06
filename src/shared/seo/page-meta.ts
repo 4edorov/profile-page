@@ -14,7 +14,7 @@ type PageMetaData =
   | { about: AboutMeta; owner?: undefined }
   | {
       about: AboutMeta & { stack: string[]; portrait: string };
-      owner: { alternateNames: string[]; profiles: string[] };
+      owner: { alternateNames: string[]; sameAs: string[] };
     };
 
 interface PageMetaArgs {
@@ -84,13 +84,14 @@ function ownerProfilePage(
       inLanguage: language,
       mainEntity: {
         "@type": "Person",
+        "@id": `${absoluteUrl(pagePath(DEFAULT_LANGUAGE, "home"))}#owner`,
         name: about.name,
         alternateName: owner.alternateNames,
         jobTitle: about.headline,
         description: about.summary,
         image: absoluteUrl(about.portrait),
         url,
-        sameAs: owner.profiles,
+        sameAs: owner.sameAs,
         knowsAbout: about.stack,
       },
     },

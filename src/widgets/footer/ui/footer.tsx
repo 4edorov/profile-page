@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import type { Contact } from "@/entities/profile";
+import { type Contact, isWebLink } from "@/entities/profile";
 import { ButtonLink } from "@/shared/ui/link";
 import { Heading, Text } from "@/shared/ui/typography";
 import { EnvelopeIcon, GitHubIcon, LinkedInIcon } from "./icons";
@@ -35,7 +35,7 @@ export function Footer({ contact: { openToWork, links } }: { contact: Contact })
             const Icon = ICONS[link.id];
             return (
               <li key={link.id}>
-                <ButtonLink to={link.url} newTab={link.url.startsWith("https://")}>
+                <ButtonLink to={link.url} newTab={isWebLink(link)}>
                   {Icon && <Icon />}
                   {link.label}
                 </ButtonLink>

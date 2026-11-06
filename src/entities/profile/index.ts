@@ -4,9 +4,11 @@ export {
   getContact,
   getExperience,
   getLearning,
+  getOwner,
   getProjects,
   pickAbout,
 } from "./api/get-profile";
+export { isWebLink } from "./lib/contact";
 export { LEARNING_KINDS, type Assignment, type Contact, type Period, type ProjectEntry } from "./model/types";
 export { ExperienceTimeline } from "./ui/experience-timeline";
 export { LearningEntry } from "./ui/learning-entry";

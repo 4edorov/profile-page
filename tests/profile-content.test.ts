@@ -30,7 +30,7 @@ function rawEntries(language: Language, topic: "experience" | "projects" | "lear
   return Array.isArray(content) ? content : Object.values(content).flat();
 }
 
-async function loadWith(topic: "experience" | "projects" | "learning", content: unknown) {
+async function loadWith(topic: "experience" | "projects" | "learning" | "contact", content: unknown) {
   vi.resetModules();
   vi.doMock(`../content/en/${topic}.json`, () => ({ default: content }));
   try {
@@ -48,9 +48,13 @@ test("Technologies are unique and link only to https URLs", () => {
   expect(badUrls).toEqual([]);
 });
 
+const plain = { featured: false, hidden: false };
+const featured = { featured: true, hidden: false };
+const hidden = { featured: false, hidden: true };
+
 function experienceEntry(
   id: string,
-  flags = { featured: false, hidden: false },
+  flags = plain,
   period: { start: string; end: string | null } = { start: "2020-01", end: null },
 ) {
   return {
@@ -70,14 +74,12 @@ function assignment(responsibilities = ["Responsibility."]) {
 }
 
 describe("Experience", () => {
-  const plain = { featured: false, hidden: false };
-  const featured = { featured: true, hidden: false };
   const content = [
     experienceEntry("earlier-start", featured, { start: "2015-01", end: "2018-01" }),
     experienceEntry("tie-first", plain, { start: "2019-01", end: "2020-06" }),
     experienceEntry("in-progress", plain, { start: "2020-01", end: null }),
     experienceEntry("later-start", plain, { start: "2016-01", end: "2018-01" }),
-    experienceEntry("hidden", { featured: false, hidden: true }, { start: "2021-01", end: null }),
+    experienceEntry("hidden", hidden, { start: "2021-01", end: null }),
     experienceEntry("tie-second", featured, { start: "2019-01", end: "2020-06" }),
   ];
 
@@ -101,8 +103,8 @@ describe("Experience", () => {
 describe("Hidden Entries", () => {
   test("are left out", async () => {
     const { getExperience: get } = await loadWith("experience", [
-      experienceEntry("shown", { featured: false, hidden: false }),
-      experienceEntry("hidden", { featured: false, hidden: true }),
+      experienceEntry("shown"),
+      experienceEntry("hidden", hidden),
     ]);
     expect(get("en").map(({ id }) => id)).toEqual(["shown"]);
   });
@@ -110,36 +112,34 @@ describe("Hidden Entries", () => {
   test("cannot be featured", async () => {
     await expect(
       loadWith("experience", [
-        experienceEntry("shown", { featured: true, hidden: false }),
+        experienceEntry("shown", featured),
         experienceEntry("hidden", { featured: true, hidden: true }),
       ]),
     ).rejects.toThrow('Entry "hidden" is both hidden and featured');
   });
 
   test("still need an Assignment when in Experience", async () => {
-    await expect(
-      loadWith("experience", [{ ...experienceEntry("hidden", { featured: false, hidden: true }), assignments: [] }]),
-    ).rejects.toThrow('Experience Entry "hidden" has no Assignments');
+    await expect(loadWith("experience", [{ ...experienceEntry("hidden", hidden), assignments: [] }])).rejects.toThrow(
+      'Experience Entry "hidden" has no Assignments',
+    );
   });
 
   test("still need a responsibility on every Assignment", async () => {
     await expect(
-      loadWith("experience", [
-        { ...experienceEntry("hidden", { featured: false, hidden: true }), assignments: [assignment([])] },
-      ]),
+      loadWith("experience", [{ ...experienceEntry("hidden", hidden), assignments: [assignment([])] }]),
     ).rejects.toThrow('Assignment "Assignment" of Experience Entry "hidden" has no responsibilities');
   });
 });
 
 describe("Projects", () => {
-  function project(id: string, flags = { featured: false, hidden: false }) {
+  function project(id: string, flags = plain) {
     return { id, ...flags, name: "Name", summary: "Summary.", tools: [], url: null, sourceUrl: null, screenshots: [] };
   }
 
   test("are grouped by Project Kind in order, each in the owner's order, leaving out kinds with no shown Entries", async () => {
     const { getProjects } = await loadWith("projects", {
       study: [project("second-study"), project("first-study")],
-      product: [project("hidden", { featured: false, hidden: true })],
+      product: [project("hidden", hidden)],
     });
     expect(getProjects("en").map(({ kind, entries }) => [kind, entries.map(({ id }) => id)])).toEqual([
       ["study", ["second-study", "first-study"]],
@@ -148,7 +148,7 @@ describe("Projects", () => {
 
   test("keep only Featured Entries when asked", async () => {
     const { getProjects } = await loadWith("projects", {
-      product: [project("plain"), project("featured", { featured: true, hidden: false })],
+      product: [project("plain"), project("featured", featured)],
       study: [project("study")],
     });
     expect(
@@ -172,12 +172,12 @@ describe("Projects", () => {
     ["a missing", { product: [] }, "Projects has the kinds"],
     [
       "an id used in two Project Kinds",
-      { product: [project("site")], study: [project("site", { featured: false, hidden: true })] },
+      { product: [project("site")], study: [project("site", hidden)] },
       'Projects Entry id "site" is used more than once',
     ],
     [
       "a Featured Study Project",
-      { product: [], study: [project("study", { featured: true, hidden: false })] },
+      { product: [], study: [project("study", featured)] },
       'Study Project "study" is featured',
     ],
     [
@@ -185,7 +185,7 @@ describe("Projects", () => {
       {
         product: [
           {
-            ...project("hidden", { featured: false, hidden: true }),
+            ...project("hidden", hidden),
             screenshots: [{ src: "projects/missing.webp", alt: "Alt." }],
           },
         ],
@@ -269,6 +269,20 @@ describe("Learning", () => {
       loadWith("learning", { education: [], course: [], certification: [], book: [], ...kinds }),
     ).rejects.toThrow(message);
   });
+});
+
+test("the owner is the same Person in every Language, known by the Default Language's web Contact links", async () => {
+  const { getOwner } = await loadWith("contact", {
+    openToWork: false,
+    links: [
+      { id: "mail", label: "Mail", url: "mailto:owner@example.com" },
+      { id: "site", label: "Site", url: "https://owner.example" },
+      { id: "code", label: "Code", url: "https://code.example/owner" },
+    ],
+  });
+  for (const language of LANGUAGES) {
+    expect(getOwner(language).sameAs).toEqual(["https://owner.example", "https://code.example/owner"]);
+  }
 });
 
 describe.each(LANGUAGES)("Profile Content in %s", (language) => {
