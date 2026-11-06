@@ -89,7 +89,7 @@ The Topic covering the jobs the owner has held, one Entry per role at an organis
 _Avoid_: Jobs, work history, career, employment
 
 **Assignment**:
-A body of work the owner did within one Experience Entry, such as a product or a client project; every Experience Entry has at least one, in the order the owner writes them. It has a name, a one-line description, the owner's responsibilities on it (at least one), their achievements, the make-up of the team it was done with (such as "3 frontend developers"), and its Tools. Its responsibilities, achievements and team show only on the Experience Topic Page. Written per Language. Has no Period and is never featured or hidden on its own; one that ran across a promotion appears under each Entry it spans. Never a Projects Entry: the Projects Topic doesn't list the owner's work for their employers.
+A body of work the owner did within one Experience Entry, such as a product or a client project; every Experience Entry has at least one, in the order the owner writes them. It has a name, a one-line description, the owner's responsibilities on it (at least one), their achievements, the make-up of the team it was done with (such as "3 frontend developers"), and its Tools. Its responsibilities, achievements and team show only on the Experience Topic Page. Written per Language. Has no Period and is never featured or hidden on its own; one that ran across a promotion appears under each Entry it spans. One may also be shown as a Product in Projects, written separately there.
 _Avoid_: Project (within a job), engagement, job project
 
 **Tools**:
@@ -101,11 +101,11 @@ Where an Experience Entry's job was done, as the owner words it per Language: a 
 _Avoid_: Region, place, address
 
 **Projects**:
-The Topic covering what the owner has built outside their jobs, one Entry per project. Its Topic Page groups its Entries by Project Kind, in Project Kind order, each group in the order the owner writes them; a Project Kind with no shown Entries has no group. Its Section shows its Featured Entries, all of them Products.
+The Topic covering what the owner has built, including work for an employer they choose to show, one Entry per project. Its Topic Page groups its Entries by Project Kind, in Project Kind order, each group in the order the owner writes them; a Project Kind with no shown Entries has no group. Its Section shows its Featured Entries, all of them Products.
 _Avoid_: Portfolio, pet projects, work
 
 **Project Kind**:
-One of Product and Study Project, in that order. Every Projects Entry is of exactly one. A Product is built to be used, by the owner or by a client outside any employment; a Study Project is built mainly to learn, such as a course capstone.
+One of Product and Study Project, in that order. Every Projects Entry is of exactly one. A Product is built to be used, by the owner, a client or an employer; a Study Project is built mainly to learn, such as a course capstone.
 _Avoid_: Category, type, work project, learning project
 
 **Live Site**:

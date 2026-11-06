@@ -1,32 +1,87 @@
 {
   "product": [
     {
-      "id": "profile-site",
+      "id": "qofa-dashboard",
       "featured": true,
       "hidden": false,
-      "name": "Сайт-профиль",
-      "summary": "Этот сайт: предварительно отрендеренное SPA на React Router на двух языках.",
-      "tools": ["React", "React Router", "TypeScript", "Tailwind CSS"],
-      "url": "https://example.com",
-      "sourceUrl": "https://github.com/4edorov/profile-page",
+      "name": "QOFA dashboard",
+      "summary": "Сайт, в котором футбольные ассоциации организуют турниры и собирают статистику по клубам, командам и игрокам.",
+      "tools": [
+        "Next.js (SSR, SSG)",
+        "React",
+        "React Router",
+        "TanStack Query",
+        "Zustand",
+        "Radix UI",
+        "SCSS",
+        "FSD архитектура",
+        "Storybook"
+      ],
+      "url": "https://qofa.kz/",
+      "sourceUrl": null,
       "screenshots": [
         {
-          "src": "projects/profile-site/placeholder.webp",
-          "alt": "Временный скриншот сайта-профиля."
+          "src": "projects/qofa-dashboard/football-main.webp",
+          "alt": "Главная страница QOFA dashboard."
+        },
+        {
+          "src": "projects/qofa-dashboard/football-table.webp",
+          "alt": "Таблица турниров QOFA dashboard."
+        },
+        {
+          "src": "projects/qofa-dashboard/football-match.webp",
+          "alt": "Страница матча QOFA dashboard."
+        },
+        {
+          "src": "projects/qofa-dashboard/football-team.webp",
+          "alt": "Страница команды QOFA dashboard."
         }
       ]
     }
   ],
   "study": [
     {
-      "id": "placeholder-study-project",
+      "id": "js-calculator",
       "featured": false,
       "hidden": false,
-      "name": "Временный учебный проект",
-      "summary": "Временное описание учебного проекта.",
-      "tools": ["JavaScript"],
-      "url": null,
-      "sourceUrl": null,
+      "name": "Калькулятор",
+      "summary": "Учебный проект freeCodeCamp.",
+      "tools": ["JavaScript", "CSS", "Vue"],
+      "url": "https://codepen.io/4edorov/project/full/AkzdLd/",
+      "sourceUrl": "https://github.com/4edorov/jscalculator",
+      "screenshots": []
+    },
+    {
+      "id": "pomodoro-clock",
+      "featured": false,
+      "hidden": false,
+      "name": "Таймер Pomodoro",
+      "summary": "Учебный проект freeCodeCamp.",
+      "tools": ["JavaScript", "CSS", "Vue"],
+      "url": "https://4edorov.github.io/pomodoro_clock/",
+      "sourceUrl": "https://github.com/4edorov/pomodoro_clock",
+      "screenshots": []
+    },
+    {
+      "id": "tic-tac-toe-game",
+      "featured": false,
+      "hidden": false,
+      "name": "Крестики-нолики",
+      "summary": "Учебный проект freeCodeCamp.",
+      "tools": ["JavaScript", "CSS", "Vue"],
+      "url": "https://4edorov.github.io/tic-tac-game/#/",
+      "sourceUrl": "https://github.com/4edorov/tic-tac-game",
+      "screenshots": []
+    },
+    {
+      "id": "simon-game",
+      "featured": false,
+      "hidden": false,
+      "name": "Игра Simon",
+      "summary": "Учебный проект freeCodeCamp.",
+      "tools": ["JavaScript", "CSS", "Vue"],
+      "url": "https://4edorov.github.io/simon-game/",
+      "sourceUrl": "https://github.com/4edorov/simon-game",
       "screenshots": []
     }
   ]

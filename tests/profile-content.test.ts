@@ -141,11 +141,13 @@ describe("Projects", () => {
 
   test("resolve each Screenshot to its built file", async () => {
     const { getProjects } = await loadWith("projects", {
-      product: [{ ...project("site"), screenshots: [{ src: "projects/profile-site/placeholder.webp", alt: "Alt." }] }],
+      product: [
+        { ...project("site"), screenshots: [{ src: "projects/qofa-dashboard/football-main.webp", alt: "Alt." }] },
+      ],
       study: [],
     });
     const [screenshot] = getProjects("en")[0]?.entries[0]?.screenshots ?? [];
-    expect(screenshot?.src).toMatch(/placeholder.*\.webp$/);
+    expect(screenshot?.src).toMatch(/football-main.*\.webp$/);
   });
 
   test.each([
