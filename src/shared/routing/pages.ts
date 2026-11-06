@@ -4,7 +4,6 @@ export const PAGE_PATHS = {
   experience: "experience",
   projects: "projects",
   learning: "learning",
-  resume: "resume",
 } as const;
 
 export type PageId = keyof typeof PAGE_PATHS;

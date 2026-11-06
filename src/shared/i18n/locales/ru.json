@@ -9,8 +9,7 @@
     "about": "Обо мне",
     "experience": "Опыт",
     "projects": "Проекты",
-    "learning": "Обучение",
-    "resume": "Резюме"
+    "learning": "Обучение"
   },
   "meta": {
     "home": {
@@ -32,10 +31,6 @@
     "learning": {
       "title": "{{page}} — {{name}}",
       "description": "Образование, курсы, сертификаты и книги: {{name}}, {{headline}}."
-    },
-    "resume": {
-      "title": "{{page}} — {{name}}",
-      "description": "Резюме: {{name}}, {{headline}}."
     }
   },
   "home": {
@@ -90,9 +85,6 @@
       "next": "Следующий скриншот",
       "dot": "Скриншот {{number}} из {{total}}"
     }
-  },
-  "resume": {
-    "placeholder": "Резюме скоро появится здесь."
   },
   "period": {
     "present": "по настоящее время",

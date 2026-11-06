@@ -9,8 +9,7 @@
     "about": "About",
     "experience": "Experience",
     "projects": "Projects",
-    "learning": "Learning",
-    "resume": "Resume"
+    "learning": "Learning"
   },
   "meta": {
     "home": {
@@ -32,10 +31,6 @@
     "learning": {
       "title": "{{page}} — {{name}}",
       "description": "Education, courses, certifications and books of {{name}}, {{headline}}."
-    },
-    "resume": {
-      "title": "{{page}} — {{name}}",
-      "description": "The resume of {{name}}, {{headline}}."
     }
   },
   "home": {
@@ -90,9 +85,6 @@
       "next": "Next screenshot",
       "dot": "Screenshot {{number}} of {{total}}"
     }
-  },
-  "resume": {
-    "placeholder": "The resume will appear here soon."
   },
   "period": {
     "present": "present",
