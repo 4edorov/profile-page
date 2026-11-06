@@ -1,32 +1,87 @@
 {
   "product": [
     {
-      "id": "profile-site",
+      "id": "qofa-dashboard",
       "featured": true,
       "hidden": false,
-      "name": "Profile Site",
-      "summary": "This site: a prerendered React Router SPA in two Languages.",
-      "tools": ["React", "React Router", "TypeScript", "Tailwind CSS"],
-      "url": "https://example.com",
-      "sourceUrl": "https://github.com/4edorov/profile-page",
+      "name": "QOFA dashboard",
+      "summary": "A website where football associations run tournaments and collect statistics on clubs, teams and players.",
+      "tools": [
+        "Next.js (SSR, SSG)",
+        "React",
+        "React Router",
+        "TanStack Query",
+        "Zustand",
+        "Radix UI",
+        "SCSS",
+        "FSD architecture",
+        "Storybook"
+      ],
+      "url": "https://qofa.kz/",
+      "sourceUrl": null,
       "screenshots": [
         {
-          "src": "projects/profile-site/placeholder.webp",
-          "alt": "Placeholder screenshot of the Profile Site."
+          "src": "projects/qofa-dashboard/football-main.webp",
+          "alt": "The main page of the QOFA dashboard."
+        },
+        {
+          "src": "projects/qofa-dashboard/football-table.webp",
+          "alt": "The tournaments table of the QOFA dashboard."
+        },
+        {
+          "src": "projects/qofa-dashboard/football-match.webp",
+          "alt": "The match page of the QOFA dashboard."
+        },
+        {
+          "src": "projects/qofa-dashboard/football-team.webp",
+          "alt": "The team page of the QOFA dashboard."
         }
       ]
     }
   ],
   "study": [
     {
-      "id": "placeholder-study-project",
+      "id": "js-calculator",
       "featured": false,
       "hidden": false,
-      "name": "Placeholder study project",
-      "summary": "Placeholder study project summary.",
-      "tools": ["JavaScript"],
-      "url": null,
-      "sourceUrl": null,
+      "name": "Calculator",
+      "summary": "freeCodeCamp study project.",
+      "tools": ["JavaScript", "CSS", "Vue"],
+      "url": "https://codepen.io/4edorov/project/full/AkzdLd/",
+      "sourceUrl": "https://github.com/4edorov/jscalculator",
+      "screenshots": []
+    },
+    {
+      "id": "pomodoro-clock",
+      "featured": false,
+      "hidden": false,
+      "name": "Pomodoro Clock",
+      "summary": "freeCodeCamp study project.",
+      "tools": ["JavaScript", "CSS", "Vue"],
+      "url": "https://4edorov.github.io/pomodoro_clock/",
+      "sourceUrl": "https://github.com/4edorov/pomodoro_clock",
+      "screenshots": []
+    },
+    {
+      "id": "tic-tac-toe-game",
+      "featured": false,
+      "hidden": false,
+      "name": "Tic Tac Toe Game",
+      "summary": "freeCodeCamp study project.",
+      "tools": ["JavaScript", "CSS", "Vue"],
+      "url": "https://4edorov.github.io/tic-tac-game/#/",
+      "sourceUrl": "https://github.com/4edorov/tic-tac-game",
+      "screenshots": []
+    },
+    {
+      "id": "simon-game",
+      "featured": false,
+      "hidden": false,
+      "name": "Simon Game",
+      "summary": "freeCodeCamp study project.",
+      "tools": ["JavaScript", "CSS", "Vue"],
+      "url": "https://4edorov.github.io/simon-game/",
+      "sourceUrl": "https://github.com/4edorov/simon-game",
       "screenshots": []
     }
   ]
