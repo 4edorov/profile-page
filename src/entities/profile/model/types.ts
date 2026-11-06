@@ -114,3 +114,8 @@ export interface ContactLink {
   label: string;
   url: string;
 }
+
+export interface Owner {
+  alternateNames: string[];
+  sameAs: string[];
+}

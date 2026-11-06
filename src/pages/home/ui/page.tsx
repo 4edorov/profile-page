@@ -3,10 +3,9 @@ import type { LoaderFunctionArgs } from "react-router";
 import {
   ABOUT_META_FIELDS,
   ExperienceTimeline,
-  getAbout,
-  getContact,
   getExperience,
   getLearning,
+  getOwner,
   getProjects,
   LearningGroups,
   pickAbout,
@@ -15,7 +14,7 @@ import {
   TechnologyCloud,
   TechnologyMarquee,
 } from "@/entities/profile";
-import { DEFAULT_LANGUAGE, LANGUAGES, languageFromRequest, useLanguage } from "@/shared/i18n";
+import { languageFromRequest, useLanguage } from "@/shared/i18n";
 import { pagePath, type PageProps } from "@/shared/routing";
 import { pageMeta } from "@/shared/seo";
 import { Link } from "@/shared/ui/link";
@@ -25,12 +24,7 @@ export function loader({ request }: LoaderFunctionArgs) {
   const language = languageFromRequest(request);
   return {
     about: pickAbout(language, [...ABOUT_META_FIELDS, "stack", "technologies", "tagline", "portrait"]),
-    owner: {
-      alternateNames: LANGUAGES.filter((other) => other !== language).map((other) => getAbout(other).name),
-      profiles: getContact(DEFAULT_LANGUAGE)
-        .links.filter((link) => link.id !== "email")
-        .map((link) => link.url),
-    },
+    owner: getOwner(language),
     experience: getExperience(language, { featuredOnly: true }),
     projects: getProjects(language, { featuredOnly: true }).flatMap((group) => group.entries),
     learning: getLearning(language, { featuredOnly: true }),
