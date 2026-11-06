@@ -88,6 +88,7 @@ The nginx config handles:
 - the `/` redirect by `Accept-Language`
 - the trailing-slash rules (`/en` → `/en/` and `/en/x/` → `/en/x`)
 - the 404 page for each Language
+- a 404 for `/index.html`, React Router's SPA fallback, which no Page uses
 - long-term caching of `/assets/*`, with `no-cache` for HTML
 - `X-Robots-Tag: noindex` on the `.data` files client navigation fetches, so search engines index only Pages
 
